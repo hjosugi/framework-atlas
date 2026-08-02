@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hjosugi.github.io/framework-atlas/schema/freshness-report-v1.schema.json",
+  "title": "Framework Atlas review-only freshness report",
+  "type": "object",
+  "required": ["version", "state", "attemptedAt", "lastSuccessfulAt", "repositoryChanges", "sourceChanges", "reviewDue", "policy"],
+  "properties": {
+    "version": {"const": 1}, "state": {"enum": ["complete", "partial", "rate_limited"]},
+    "attemptedAt": {"type": "string", "format": "date-time"}, "lastSuccessfulAt": {"type": ["string", "null"], "format": "date-time"},
+    "repositoryChanges": {"type": "array"}, "sourceChanges": {"type": "array"}, "reviewDue": {"type": "array"},
+    "policy": {"const": "review artifact only; canonical entities, claims, edges and decisions are never rewritten"}
+  }
+}

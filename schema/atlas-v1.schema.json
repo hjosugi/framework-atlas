@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hjosugi.github.io/framework-atlas/schema/atlas-v1.schema.json",
+  "title": "Framework Atlas entity",
+  "type": "object",
+  "required": ["id", "name", "kind", "cohort", "profile", "disposition", "summary", "sources"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "name": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["application-framework", "http-framework", "router", "ui-framework", "data-framework", "desktop-mobile", "tui", "architecture-case", "library", "platform", "other"]},
+    "cohort": {"enum": ["enterprise-boot", "convention-fullstack", "typed-api", "minimal-http", "frontend-ui", "edge-runtime", "router-component", "data-ai", "cross-platform", "architecture"]},
+    "profile": {"enum": ["deep", "standard", "seed"]},
+    "disposition": {"enum": ["included", "adjacent", "quarantined"]},
+    "summary": {"type": "string", "minLength": 1},
+    "observedVersion": {"type": "string"},
+    "releaseSource": {"type": "string", "format": "uri"},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri"}}
+  },
+  "additionalProperties": true
+}

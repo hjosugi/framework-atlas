@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hjosugi.github.io/framework-atlas/schema/unresolved-v1.schema.json",
+  "title": "Framework Atlas unresolved design point",
+  "type": "object",
+  "required": ["id", "ownerEntity", "cohort", "dimension", "question", "options", "tradeoff", "status", "lastReviewed", "resolutionIssue", "profileDoc"],
+  "properties": {
+    "id": {"type": "string"}, "ownerEntity": {"type": "string"}, "cohort": {"type": "string"}, "dimension": {"type": "string"},
+    "question": {"type": "string"}, "options": {"type": "array", "minItems": 1}, "tradeoff": {"type": "string"}, "status": {"type": "string"},
+    "reason": {"type": "string"}, "nextEvidence": {"type": "string"}, "lastReviewed": {"type": "string", "format": "date"},
+    "resolutionIssue": {"type": "string", "format": "uri"}, "profileDoc": {"type": "string"}, "decisionEvidence": {"type": "string", "format": "uri"}
+  },
+  "additionalProperties": false
+}

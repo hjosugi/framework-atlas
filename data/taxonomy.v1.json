@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "kinds": {
+    "application-framework": "実行、設定、統合、運用面まで含むアプリケーション基盤",
+    "http-framework": "HTTPサーバ、ルーティング、middlewareを主責務とする基盤",
+    "router": "URLまたは画面遷移の照合を主責務とする部品",
+    "ui-framework": "画面・コンポーネント・状態更新を主責務とする基盤",
+    "data-framework": "データ、AI、ORM、API生成を主責務とする基盤",
+    "desktop-mobile": "desktop/mobile配布とネイティブ連携を扱う基盤",
+    "tui": "terminal UIを構築する基盤",
+    "architecture-case": "フレームワーク上の本番アーキテクチャ事例",
+    "library": "単独でapplication lifecycleを所有しない再利用部品",
+    "platform": "framework applicationをhostまたは配布するruntime/tooling基盤",
+    "other": "収集語に一致するが比較母集団外"
+  },
+  "profiles": ["deep", "standard", "seed"],
+  "dispositions": ["included", "adjacent", "quarantined"],
+  "genericKinds": ["framework", "router", "library", "platform", "case-study", "other"],
+  "relations": ["built-on", "officially-inspired-by", "successor-of", "component-of", "commonly-hosted-by", "competes-with", "resembles"],
+  "evidenceKinds": ["official", "primary-code", "inference"],
+  "confidence": ["high", "medium", "low"],
+  "relationCyclePolicy": {"acyclic": ["built-on", "successor-of", "component-of"], "cyclesAllowed": ["competes-with", "resembles"]},
+  "rule": "分類はリポジトリtopicだけで決めず、公式description、README、公開APIの主責務を順に確認する"
+}

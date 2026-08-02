@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "cellStates": ["claim", "unknown", "unmeasured", "not-applicable"],
+  "matrices": [
+    {
+      "id": "backend-application",
+      "label": "Backend application framework",
+      "targets": ["spring-boot", "fastapi", "gin", "kofun-boot"],
+      "rows": [
+        {"dimension": "contract source", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "Spring MVC/WebFluxの宣言を選べる", "cost": "routeとschemaの単一権威は別設計"},
+          "fastapi": {"state": "claim", "claimIds": ["fastapi-types", "fastapi-openapi"], "strength": "Python宣言から複数artifact", "cost": "runtime annotationとdomain型は同一でない"},
+          "gin": {"state": "claim", "claimIds": ["gin-binding"], "strength": "HTTP境界が小さい", "cost": "OpenAPI/clientの権威は別途必要"},
+          "kofun-boot": {"state": "unknown", "unresolvedId": "u-openapi-authority", "strength": "closed ADTを正準候補にできる", "cost": "language capabilityが未完"}
+        }},
+        {"dimension": "routing", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "MVC/reactiveをecosystemで統合", "cost": "auto-config conditionの可視化が必要"},
+          "fastapi": {"state": "claim", "claimIds": ["fastapi-openapi"], "strength": "handler signatureとAPI docが近い", "cost": "route ordering/conflictは検証対象"},
+          "gin": {"state": "claim", "claimIds": ["gin-middleware"], "strength": "明示的登録とmiddleware", "cost": "mutable request contextへの依存"},
+          "kofun-boot": {"state": "unknown", "unresolvedId": "u-openapi-authority", "strength": "static dispatchと到達不能検査", "cost": "compiler/HTTP adapterの実装待ち"}
+        }},
+        {"dimension": "validation", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "Bean Validation等を統合可能", "cost": "domain invariantとの二重化を避ける"},
+          "fastapi": {"state": "claim", "claimIds": ["fastapi-types"], "strength": "parse/validation/schemaを接続", "cost": "Pydantic modelとdomain modelのcoupling risk"},
+          "gin": {"state": "claim", "claimIds": ["gin-binding"], "strength": "boundary helperが単純", "cost": "schema派生は標準外"},
+          "kofun-boot": {"state": "unknown", "unresolvedId": "u-openapi-authority", "strength": "parse failureをclosed resultへ", "cost": "validator interpreter未実装"}
+        }},
+        {"dimension": "DI / effects", "cells": {
+          "spring-boot": {"state": "claim", "claimIds": ["spring-auto"], "strength": "containerとauto-configの大きなecosystem", "cost": "暗黙conditionとlifecycleの理解"},
+          "fastapi": {"state": "claim", "claimIds": ["fastapi-di"], "strength": "function signatureのdependency graph", "cost": "ambient framework dependency化を防ぐ"},
+          "gin": {"state": "claim", "claimIds": ["gin-middleware"], "strength": "constructor/function wiringを選べる", "cost": "production bundleは利用者所有"},
+          "kofun-boot": {"state": "unknown", "unresolvedId": "u-effect-system", "strength": "capability argumentsを静的表示", "cost": "type/compile complexity"}
+        }},
+        {"dimension": "ORM / data model", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "Spring Data等を選択可能", "cost": "Boot本体とdata projectを分離して評価"},
+          "fastapi": {"state": "unknown", "strength": "ORMを強制しない", "cost": "transaction/session patternがprojectごとに割れる"},
+          "gin": {"state": "not-applicable", "strength": "HTTP coreへdata choiceを持ち込まない", "cost": "baselineを自前で定義"},
+          "kofun-boot": {"state": "unknown", "strength": "schema-to-query portを独立可能", "cost": "Kofun Boot R5の実装待ち"}
+        }},
+        {"dimension": "concurrency / cancellation", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "servlet/reactive/task abstractionを選べる", "cost": "model間のcontext伝播差"},
+          "fastapi": {"state": "unknown", "strength": "ASGI async lifecycle", "cost": "blocking IOとdetached taskを管理"},
+          "gin": {"state": "unknown", "strength": "Go context/goroutine/tooling", "cost": "request終了後のlifetimeとleak"},
+          "kofun-boot": {"state": "unknown", "unresolvedId": "u-effect-system", "strength": "scoped taskを標準化する候補", "cost": "Kofun Boot R4/L6の実装待ち"}
+        }},
+        {"dimension": "configuration visibility", "cells": {
+          "spring-boot": {"state": "claim", "claimIds": ["spring-auto"], "strength": "override可能なopinion", "cost": "condition reportがないと不可視"},
+          "fastapi": {"state": "unknown", "strength": "Python compositionが直接見える", "cost": "deployment configは別面"},
+          "gin": {"state": "unknown", "strength": "explicit wiring", "cost": "統一したconfig provenanceは標準外"},
+          "kofun-boot": {"state": "unknown", "strength": "granted capability/config reportを生成可能", "cost": "Kofun Boot R2/L3の実装待ち"}
+        }},
+        {"dimension": "observability / operations", "cells": {
+          "spring-boot": {"state": "claim", "claimIds": ["spring-ops"], "strength": "health/metricsをboot面に含む", "cost": "exposure/security policyが必要"},
+          "fastapi": {"state": "unknown", "strength": "ASGI middleware ecosystem", "cost": "標準production baselineは限定的"},
+          "gin": {"state": "unknown", "strength": "libraryを選べる", "cost": "metrics/health/shutdownをprojectが統合"},
+          "kofun-boot": {"state": "unknown", "strength": "effect traceとhealth contractを統合候補", "cost": "replay/operations実装待ち"}
+        }},
+        {"dimension": "security defaults", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "Spring Securityとの統合", "cost": "別projectの責務をBoot claimにしない"},
+          "fastapi": {"state": "unknown", "strength": "OpenAPI security scheme/dependency", "cost": "policy/RBACはapplication責務"},
+          "gin": {"state": "unknown", "strength": "middlewareで明示", "cost": "secure default bundleは標準外"},
+          "kofun-boot": {"state": "unknown", "strength": "capability denialをclosed resultへ", "cost": "security module未実装"}
+        }},
+        {"dimension": "shutdown / resource scope", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "application context lifecycle", "cost": "bean/task lifecycle全体の調整"},
+          "fastapi": {"state": "unknown", "strength": "ASGI lifespan/context manager", "cost": "background task durabilityとは別"},
+          "gin": {"state": "unknown", "strength": "http.Server shutdownとcontext cancellation", "cost": "worker/goroutine ownershipを自前で固定"},
+          "kofun-boot": {"state": "unknown", "unresolvedId": "u-effect-system", "strength": "structured scopeを型とruntimeで検証候補", "cost": "language/runtime blocker"}
+        }},
+        {"dimension": "deployment", "cells": {
+          "spring-boot": {"state": "claim", "claimIds": ["spring-standalone"], "strength": "stand-alone artifactとembedded server", "cost": "JVM/native条件差"},
+          "fastapi": {"state": "unknown", "strength": "ASGI server/process choices", "cost": "frameworkとserver/process managerを別評価"},
+          "gin": {"state": "unknown", "strength": "single binaryにしやすい", "cost": "migration/assets/config provenanceは別"},
+          "kofun-boot": {"state": "unknown", "strength": "native/WASM adapter候補", "cost": "runtime portability実装待ち"}
+        }},
+        {"dimension": "portability", "cells": {
+          "spring-boot": {"state": "unknown", "strength": "JVM ecosystemとcontainer/native options", "cost": "platform artifactごとの制約"},
+          "fastapi": {"state": "unknown", "strength": "ASGI portability", "cost": "Python/runtime native dependencies"},
+          "gin": {"state": "unknown", "strength": "Go cross compilation", "cost": "CGO/dependency条件"},
+          "kofun-boot": {"state": "unknown", "strength": "protocol core + Linux/WASM/edge adapter", "cost": "Kofun Boot R6実装待ち"}
+        }},
+        {"dimension": "performance", "cells": {
+          "spring-boot": {"state": "unmeasured", "unresolvedId": "u-performance", "strength": "複数execution model", "cost": "同一条件測定なし"},
+          "fastapi": {"state": "unmeasured", "unresolvedId": "u-performance", "strength": "async ASGI", "cost": "公式引用をAtlas測定にしない"},
+          "gin": {"state": "unmeasured", "unresolvedId": "u-performance", "strength": "small HTTP path", "cost": "marketing 40xを比較値にしない"},
+          "kofun-boot": {"state": "unmeasured", "unresolvedId": "u-performance", "strength": "static dispatch候補", "cost": "実行可能同等harness未完"}
+        }}
+      ]
+    },
+    {
+      "id": "frontend-ui", "label": "Frontend UI", "targets": ["react", "vue"],
+      "rows": [
+        {"dimension": "state update", "cells": {"react": {"state": "claim", "claimIds": ["react-components"], "strength": "explicit component state", "cost": "ecosystem選択"}, "vue": {"state": "claim", "claimIds": ["vue-reactivity"], "strength": "reactive dependency tracking", "cost": "proxy/ref semanticsの理解"}}},
+        {"dimension": "server routing", "cells": {"react": {"state": "not-applicable", "strength": "UI library境界を保つ", "cost": "framework/routerが必要"}, "vue": {"state": "not-applicable", "strength": "coreとrouterを別entity化", "cost": "full-stack機能はNuxt等の責務"}}}
+      ]
+    },
+    {
+      "id": "router-components", "label": "Router components", "targets": ["httprouter", "chi", "vue-router", "tanstack-router"],
+      "rows": [
+        {"dimension": "host boundary", "cells": {"httprouter": {"state": "unknown", "strength": "server matcher", "cost": "application contractは別"}, "chi": {"state": "unknown", "strength": "net/http composition", "cost": "client stateは対象外"}, "vue-router": {"state": "unknown", "strength": "Vue client navigation", "cost": "HTTP server dispatchは対象外"}, "tanstack-router": {"state": "unknown", "strength": "typed client/search params", "cost": "host integration条件"}}},
+        {"dimension": "dispatch performance", "cells": {"httprouter": {"state": "unmeasured", "unresolvedId": "u-performance", "strength": "radix design", "cost": "Atlas測定なし"}, "chi": {"state": "unmeasured", "unresolvedId": "u-performance", "strength": "composable", "cost": "Atlas測定なし"}, "vue-router": {"state": "not-applicable", "strength": "navigation semantics", "cost": "server benchmarkと非比較"}, "tanstack-router": {"state": "not-applicable", "strength": "type safety", "cost": "server matcherと非比較"}}}
+      ]
+    },
+    {
+      "id": "architecture-case", "label": "Architecture case", "targets": ["modular-monolith-ddd"],
+      "rows": [
+        {"dimension": "module ownership", "cells": {"modular-monolith-ddd": {"state": "claim", "claimIds": ["ddd-modules"], "strength": "separate schema/composition root", "cost": "eventual consistencyとoperational workers"}}},
+        {"dimension": "test evidence", "cells": {"modular-monolith-ddd": {"state": "claim", "claimIds": ["ddd-tests"], "strength": "複数test層", "cost": "real dependency/tooling runtime"}}}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hjosugi.github.io/framework-atlas/schema/claim-v1.schema.json",
+  "title": "Framework Atlas evidence claim",
+  "type": "object",
+  "required": ["id", "entity", "dimension", "claim", "evidenceKind", "source", "verified"],
+  "properties": {
+    "id": {"type": "string"}, "entity": {"type": "string"}, "dimension": {"type": "string"}, "claim": {"type": "string"},
+    "evidenceKind": {"enum": ["official", "primary-code", "inference"]}, "sourceKind": {"type": "string"},
+    "claimKind": {"enum": ["source-summary", "marketing", "atlas-measurement"]}, "metricStatus": {"enum": ["measured", "unmeasured"]},
+    "source": {"type": "string", "format": "uri"}, "verified": {"type": "string", "format": "date"},
+    "revision": {"type": "string"}, "confidence": {"enum": ["high", "medium", "low"]}, "reviewDue": {"type": "string", "format": "date"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hjosugi.github.io/framework-atlas/schema/relation-v1.schema.json",
+  "title": "Framework Atlas relation",
+  "type": "object",
+  "required": ["id", "from", "type", "evidenceKind", "confidence", "summary", "source"],
+  "oneOf": [{"required": ["to"], "not": {"required": ["toExternal"]}}, {"required": ["toExternal"], "not": {"required": ["to"]}}],
+  "properties": {
+    "id": {"type": "string"}, "from": {"type": "string"}, "to": {"type": "string"}, "toExternal": {"type": "string"},
+    "type": {"type": "string"}, "evidenceKind": {"enum": ["official", "primary-code", "inference"]},
+    "confidence": {"enum": ["high", "medium", "low"]}, "summary": {"type": "string"}, "source": {"type": "string", "format": "uri"}
+  },
+  "additionalProperties": false
+}

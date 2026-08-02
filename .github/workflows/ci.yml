@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate data, tests, generated site and reproducibility
+        run: make check
+      - name: Build release archive
+        run: make zip VERSION=v0.1.0
+      - name: Extract archive and verify manifest
+        run: |
+          mkdir -p /tmp/framework-atlas-extract
+          unzip -q dist/framework-atlas-v0.1.0.zip -d /tmp/framework-atlas-extract
+          test -s /tmp/framework-atlas-extract/MANIFEST.json
+          test -s /tmp/framework-atlas-extract/docs/index.html
+          (cd dist && sha256sum -c SHA256SUMS)
+          (cd /tmp/framework-atlas-extract && python3 scripts/validate.py)
+          (cd /tmp/framework-atlas-extract && python3 scripts/build_site.py --check)
+          (cd /tmp/framework-atlas-extract && python3 -m unittest discover -s tests -v)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: framework-atlas-v0.1.0
+          path: |
+            dist/framework-atlas-v0.1.0.zip
+            dist/SHA256SUMS

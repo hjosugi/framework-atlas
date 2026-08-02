@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hjosugi.github.io/framework-atlas/schema/snapshot-manifest-v1.schema.json",
+  "title": "Framework Atlas GitHub snapshot manifest",
+  "type": "object",
+  "required": ["version", "state", "topic", "query", "apiRevision", "attemptedAt", "recordsSha256", "items"],
+  "properties": {
+    "version": {"const": 1}, "state": {"enum": ["complete", "partial", "rate_limited", "truncated"]}, "topic": {"type": "string"},
+    "query": {"type": "object"}, "apiRevision": {"const": "2022-11-28"}, "attemptedAt": {"type": "string", "format": "date-time"},
+    "lastSuccessfulAt": {"type": ["string", "null"], "format": "date-time"}, "recordsSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "items": {"type": "array"}, "windows": {"type": "array"}, "limitations": {"type": "array"}, "failure": {"type": "object"}
+  },
+  "additionalProperties": true
+}

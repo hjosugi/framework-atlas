@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "defaults": {"observedAt": "2026-08-02"},
+  "generations": [
+    {"id": "g-integrated-web", "label": "統合Webアプリケーション", "from": 2004, "to": 2013, "entities": ["rails", "django", "laravel", "symfony-routing"], "shift": "ORM、routing、templates、CLIを一つの規約体系に統合", "source": "https://rubyonrails.org/doctrine"},
+    {"id": "g-component-ui", "label": "component UIとserver分離", "from": 2013, "to": 2018, "entities": ["react", "vue-2", "vue-router", "mithril", "single-spa", "ui-router"], "shift": "UIを宣言的componentに分解し、router/state/dataを選択可能に", "source": "https://react.dev/learn"},
+    {"id": "g-boot-typed", "label": "Bootと型駆動API", "from": 2014, "to": 2021, "entities": ["spring-boot", "fastapi", "gin", "servant", "postgrest", "chi", "httprouter"], "shift": "運用既定値または型・schemaからartifactを派生", "source": "https://spring.io/projects/spring-boot"},
+    {"id": "g-runtime-portable", "label": "edge・multi-runtime・end-to-end型", "from": 2021, "to": 2026, "entities": ["hono", "elysia", "axum", "tanstack-router", "drizzle"], "shift": "Web Standards、複数runtime、型推論、portable adaptersが設計軸に", "source": "https://hono.dev/docs/"},
+    {"id": "g-cross-platform", "label": "cross-platform application shells", "from": 2013, "to": 2026, "entities": ["ionic", "expo", "tauri", "bubble-tea", "textual"], "shift": "UIとnative/terminal capabilityの境界を明示", "source": "https://v2.tauri.app/concept/architecture/"},
+    {"id": "g-agent-data", "label": "stateful agent/data workflows", "from": 2022, "to": 2026, "entities": ["langgraph", "llamaindex"], "shift": "durable state、tool side effects、retrieval pipelineをframeworkが管理", "source": "https://docs.langchain.com/oss/python/langgraph/overview"}
+  ]
+}

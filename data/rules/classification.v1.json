@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "reasonCodes": ["network-router-vpn", "security-exploit", "router-os", "android-navigation", "ambiguous-topic", "application-framework-api"],
+  "exactOverrides": [
+    {"fullName": "getlantern/lantern", "disposition": "quarantined", "reasonCode": "network-router-vpn", "source": "https://github.com/getlantern/lantern"},
+    {"fullName": "threat9/routersploit", "disposition": "quarantined", "reasonCode": "security-exploit", "source": "https://github.com/threat9/routersploit"},
+    {"fullName": "istoreos/istoreos", "disposition": "quarantined", "reasonCode": "router-os", "source": "https://github.com/istoreos/istoreos"},
+    {"fullName": "alibaba/ARouter", "disposition": "quarantined", "reasonCode": "android-navigation", "source": "https://github.com/alibaba/ARouter"}
+  ],
+  "include": [
+    {"when": "主公開APIがアプリ、HTTP、routing、UI、data、desktop/mobile、TUIの構築を提供する", "result": "included"},
+    {"when": "本番アーキテクチャの再現可能な実装と設計根拠を持つ", "result": "included"}
+  ],
+  "quarantine": [
+    {"when": "routerがネットワーク機器またはVPNを意味する", "reason": "語義衝突"},
+    {"when": "攻撃・スキャンツールでありアプリ構築APIではない", "reason": "用途不一致"},
+    {"when": "OS/distributionでありframework APIではない", "reason": "成果物種別不一致"},
+    {"when": "特定プラットフォームのnavigation補助でWeb router比較に直接入らない", "reason": "比較軸不一致。周辺候補として隔離"}
+  ],
+  "precedence": ["official-homepage", "official-documentation", "repository-readme", "github-topics"],
+  "unknownPolicy": "不明な対象はreview_requiredとし、人手reviewなしにincludedへ昇格しない"
+}

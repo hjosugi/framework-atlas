@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "id": "modular-monolith-ddd",
+  "source": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+  "scope": "フレームワーク製品ではなく、フレームワーク上に本番級境界と検証を置くケーススタディ",
+  "sourceManifest": {
+    "revision": "91c8ef24b4cb6ef558c95d8267fa07d68c7059f8",
+    "committedAt": "2024-04-20T06:46:26Z",
+    "observedAt": "2026-08-02",
+    "repositoryArchived": false,
+    "lastPushedAt": "2024-06-04T17:51:26Z",
+    "maintenanceInterpretation": "GitHub repository is not archived, but recent repository activity is not inferred from stars or metadata updates",
+    "authorScope": "The README presents a production-oriented implementation example while excluding requirements analysis, strategic DDD, infrastructure/deployment process and ongoing maintenance concerns; it explicitly warns that architecture must fit the problem context",
+    "historicalCaveats": ["IdentityServer Resource Owner Password flow shown by the case is historical and must not be copied as a current security default", "Library versions and SQL Stream Store choices are evidence of this revision, not current product recommendations", "The case contains no event-sourcing snapshot implementation"],
+    "pointers": [
+      {"kind": "readme-claim", "pattern": "bounded-modules", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/README.md#31-high-level-view"},
+      {"kind": "code", "pattern": "cqrs-pipeline", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/BuildingBlocks/Infrastructure/DomainEventsDispatching/UnitOfWorkCommandHandlerDecorator.cs"},
+      {"kind": "code", "pattern": "outbox-inbox", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/Modules/Meetings/Infrastructure/Configuration/Processing/Outbox"},
+      {"kind": "code", "pattern": "event-sourcing", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/Modules/Payments/Infrastructure/AggregateStore/SqlStreamAggregateStore.cs"},
+      {"kind": "code", "pattern": "architecture-tests", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/Modules/Meetings/Tests/ArchTests"},
+      {"kind": "code", "pattern": "test-layers", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/BuildingBlocks/Tests/IntegrationTests/Probing/Poller.cs"},
+      {"kind": "decision", "pattern": "bounded-modules", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/docs/architecture-decision-log"},
+      {"kind": "diagram", "pattern": "bounded-modules", "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/docs/C4"}
+    ]
+  },
+  "domainModel": {
+    "strategicScope": "Strategic DDD and domain discovery are explicitly out of scope; bounded modules shown here are implementation evidence, not proof that the contexts were optimally discovered",
+    "moduleInterface": ["execute command with result", "execute command without result", "execute query"],
+    "aggregateInvariant": "An aggregate owns business invariants and is the transaction consistency boundary; public behavior changes state and emits domain events",
+    "encapsulationInvariant": "Only the module contract is externally visible. OOP private/internal keywords are one mechanism; other languages must enforce the same ownership through module visibility and dependency gates",
+    "persistence": "Domain types remain persistence ignorant; infrastructure maps them to a module-owned database schema",
+    "databaseBoundary": "Modules may share one physical database deployment while owning separate schemas. Sharing a database server is not the same as sharing tables/schema",
+    "integrationDependency": "Other modules depend only on published integration-event contracts, not internal domain/data types",
+    "cost": "More projects, mapping code, workers, eventual consistency and operational recovery. Simple CRUD contexts may use a thinner model rather than imitating every layer",
+    "mappingInterface": ["moduleBoundary", "commandQuery", "effects", "outboxInbox", "eventSourcing", "testing", "lifecycle", "architectureGate", "patternDecisions"]
+  },
+  "flows": {
+    "commandQuery": {
+      "sequence": ["HTTP adapter authenticates/authorizes and creates typed command/query", "module facade resolves handler graph", "logging decorator opens correlation context", "validation decorator rejects boundary errors", "handler runs write aggregate or read projection", "unit-of-work decorator dispatches domain events and commits", "adapter maps success or failure"],
+      "order": ["logging", "validation", "handler", "domain event dispatch", "unit-of-work commit"],
+      "failurePropagation": "Validation/handler exceptions abort commit in the reference case; functional mappings translate expected failures into closed result values while unexpected defects remain faults",
+      "commandResultTradeoff": "Returning a created identifier is practical but blurs strict command/query separation; the case records this as an ADR",
+      "mediatorTradeoff": "Loose invoker/handler coupling and uniform decorators versus runtime indirection and harder handler discovery",
+      "cqrsBoundary": "Read and write models differ; separate databases are not required"
+    },
+    "outboxInbox": {
+      "producerTransaction": ["apply aggregate change", "append integration event to outbox", "commit module database transaction"],
+      "delivery": ["worker claims due outbox records", "publish event", "record published/processed state with bounded retry"],
+      "consumerTransaction": ["insert/check inbox idempotency key", "invoke command", "commit domain change and processed marker"],
+      "guarantee": "at-least-once delivery and at-least-once processing; never exactly-once",
+      "requiredFields": ["message id/idempotency key", "producer/module", "event type and schema version", "occurred time", "ordering scope/key", "attempt count", "next attempt", "processed/published time", "last failure"],
+      "ordering": "Define only the scope that needs order, such as one aggregate stream; do not claim global order",
+      "poisonPolicy": "Bound retries, preserve payload/failure, quarantine for operator review and allow explicit replay",
+      "crashPoints": [
+        {"point": "before producer commit", "replay": "neither domain change nor outbox is visible"},
+        {"point": "after producer commit before publish", "replay": "worker republishes pending outbox"},
+        {"point": "after publish before published marker", "replay": "duplicate delivery is accepted and consumer idempotency suppresses duplicate effect"},
+        {"point": "after inbox insert before consumer commit", "replay": "transaction rollback makes inbox and domain change both retryable"},
+        {"point": "after consumer commit before acknowledgement", "replay": "duplicate is detected by processed inbox marker"}
+      ],
+      "directCallTradeoff": "Forbidding direct module calls lowers data/type coupling and permits extraction, but adds latency, eventual consistency and recovery operations",
+      "kofunLinks": ["https://github.com/hjosugi/kofun-boot/issues/4", "https://github.com/hjosugi/kofun-boot/issues/6"]
+    },
+    "eventStore": {
+      "write": ["load stream and expected revision", "apply command to aggregate", "append versioned events", "publish through outbox"],
+      "projection": ["read from checkpoint", "upcast/version event", "idempotently update read model", "commit projection and checkpoint together or make replay safe"],
+      "migration": {"additive": "new readers accept old event versions", "upcast": "pure adapters transform historical payloads without rewriting history", "destructive": "forbidden without export, rehearsal, rollback/forward recovery and retained original stream"},
+      "snapshot": "not implemented by the reference case; absence is recorded, not advertised as a feature",
+      "storagePolicy": "SQL Stream Store is case evidence only. Framework mappings depend on an event-store port, not that library"
+    }
+  },
+  "testEvidence": [
+    {"level": "domain unit", "proves": "public aggregate behavior and business rules in isolation", "doesNotProve": "database mapping or asynchronous delivery"},
+    {"level": "architecture", "proves": "declared dependencies, visibility and naming conventions", "doesNotProve": "runtime behavior; compiler rules are preferred when possible"},
+    {"level": "integration", "proves": "one use case with controlled real database and module composition", "doesNotProve": "multi-module eventual flow"},
+    {"level": "system integration", "proves": "observable multi-module asynchronous result with polling timeout", "doesNotProve": "all production failure schedules"},
+    {"level": "mutation", "proves": "selected test assertions kill code mutations", "doesNotProve": "complete requirements; coverage alone is not adequacy"},
+    {"level": "SUT preparation", "proves": "repeatable public-API setup for manual/system tests", "doesNotProve": "the scenario assertions unless a test observes them"}
+  ],
+  "patterns": [
+    {
+      "id": "bounded-modules",
+      "name": "Bounded modules",
+      "problem": "単一deployableの内部でdomain ownershipと変更影響を局所化する",
+      "mechanism": "moduleごとのApplication/Domain/Infrastructure/IntegrationEvents、private schema、composition root",
+      "invariant": "他moduleは公開integration event contract以外へ依存しない",
+      "failureMode": "共有model/databaseを直接参照すると境界が名目化する"
+    },
+    {
+      "id": "cqrs-pipeline",
+      "name": "CQRS handler pipeline",
+      "problem": "use caseとcross-cutting concernを分離する",
+      "mechanism": "command/query handlerとlogging/validation/unit-of-work decorators",
+      "invariant": "状態変更はcommand境界を通り、commitは一つのunit of workで行う",
+      "failureMode": "mediatorの間接層がhandler探索とtraceを難しくする"
+    },
+    {
+      "id": "outbox-inbox",
+      "name": "Transactional Outbox/Inbox",
+      "problem": "database commitとmodule event配送のdual writeを避ける",
+      "mechanism": "producer transactionでoutboxへ記録し、consumerはinboxで重複を検出する",
+      "invariant": "at-least-onceを前提にhandlerをidempotentにする",
+      "failureMode": "exactly-onceと誤認すると再配送で副作用が重複する"
+    },
+    {
+      "id": "event-sourcing",
+      "name": "Event Sourcing",
+      "problem": "aggregate stateを事実列から復元しprojectionを独立更新する",
+      "mechanism": "expected version付きevent stream、aggregate replay、subscription checkpoint、projection",
+      "invariant": "現在状態はevent historyから復元可能で、監査ログだけならEvent Sourcingと呼ばない。projectionはcheckpointと同じtransactionまたは冪等再実行で進む",
+      "failureMode": "event version/upcasting、projection replay、poison event、破壊的migrationを無設計にすると復旧不能になる。参照事例にsnapshot実装がないことを機能として誤記しない"
+    },
+    {
+      "id": "architecture-tests",
+      "name": "Executable architecture",
+      "problem": "文書化したdependency ruleが時間とともに腐る",
+      "mechanism": "architecture testsでlayer、visibility、naming、DDD conventionを検査する",
+      "invariant": "compilerで守れないload-bearing ruleには失敗するgateを置く",
+      "failureMode": "ファイル名だけを検査しsemantic dependencyを見なければ偽の安心になる"
+    },
+    {
+      "id": "test-layers",
+      "name": "Layered evidence",
+      "problem": "純粋domain ruleから非同期module統合まで異なる失敗を検出する",
+      "mechanism": "unit、architecture、integration、system integration、mutation testを分離し、localとCIで同じbuild logicを呼ぶ",
+      "invariant": "非同期testはobservable effectとtimeoutを持つ。所有するDBはproduction相当を使い、元に戻せない外部APIだけをtest doubleにする",
+      "failureMode": "sleep固定待機やin-memory代替だけでは競合とDB差を隠す。code coverageをadequacyと同一視せずmutation survivorを要求漏れとして調べる。共通build DSLにはtooling costもある"
+    }
+  ],
+  "mappings": [
+    {
+      "target": "spring-boot",
+      "targetLabel": "Spring Boot",
+      "moduleBoundary": "Spring Modulith application modulesまたはJava package boundary。ArchUnit/Modulith verificationで依存を固定",
+      "commandQuery": "Application serviceまたは明示的handler。AOP/ordered interceptorsはdecorator順序をtestで固定",
+      "effects": "transactional service + TransactionSynchronization。domain eventとexternal integration eventを分離",
+      "outboxInbox": "同一RDB transactionのoutbox、scheduler/CDC publisher、consumer idempotency key",
+      "eventSourcing": "通常のJPA modelと混同せず、必要なaggregateだけevent store adapterへ",
+      "testing": "plain domain unit、ApplicationContext slice、Testcontainers integration、ArchUnit/Modulith structure",
+      "warning": "Spring Modulithは参照caseと同一物ではない。auto-configurationの暗黙性をmodule-owned configやdomain modelへ漏らさず、condition reportとstartup gateを証拠にする",
+      "lifecycle": "Spring transactionでdomain writeとoutboxをcommitし、external event publicationはcommit後。container beanをdomain objectへ注入しない",
+      "architectureGate": "src/test/java/.../ArchitectureTests.java でmodule package dependency、domainからSpring/adapterへの依存禁止、公開event contractだけの参照をArchUnitまたはSpring Modulithで検査",
+      "implementationIssues": ["https://github.com/hjosugi/framework-atlas/issues/33"],
+      "patternDecisions": [
+        {"pattern": "bounded-modules", "decision": "adapt", "reason": "Spring Modulith verificationを利用できるがmodule ownershipはapplicationが宣言する"},
+        {"pattern": "cqrs-pipeline", "decision": "adapt", "reason": "AOPだけに隠さずordered handler decoratorをtestする"},
+        {"pattern": "outbox-inbox", "decision": "adopt", "reason": "RDB transactionとexternal publicationのdual writeを除く"},
+        {"pattern": "event-sourcing", "decision": "adapt", "reason": "必要なaggregateだけに限定しJPA defaultにしない"},
+        {"pattern": "architecture-tests", "decision": "adopt", "reason": "package/module ruleを実行可能にする"},
+        {"pattern": "test-layers", "decision": "adopt", "reason": "Spring contextとreal dependency差を段階別に検出する"}
+      ]
+    },
+    {
+      "target": "fastapi",
+      "targetLabel": "FastAPI",
+      "moduleBoundary": "Python packageの公開portとcomposition moduleを分離。import graphを静的gateで検査",
+      "commandQuery": "route dependencyは認証/transaction contextまで。use case handlerへHTTP objectを渡さない",
+      "effects": "async context managerでresource lifetime、Result/Either相当のdomain failureをHTTP adapterで変換",
+      "outboxInbox": "SQL transaction内outboxとbackground publisher。FastAPI BackgroundTasksをdurable queueとして扱わない",
+      "eventSourcing": "event schema/version/checkpointをapplication protocolとして明示",
+      "testing": "pure domain test、dependency override boundary test、実DB integration、ASGI end-to-end",
+      "warning": "Pydantic request modelをdomain entity/ORM rowと同一化しない。DependsとOpenAPIは便利だがdomain/module boundaryの代替ではない",
+      "lifecycle": "request-scoped AsyncSessionはyield dependency/async context managerでcloseし、detached taskへ渡さない。BackgroundTasksはresponse後実行でありdurable deliveryではない",
+      "architectureGate": "tests/architecture/test_import_boundaries.py でdomain→FastAPI/SQLAlchemy import、module間internal import、HTTP modelのapplication流入を拒否",
+      "implementationIssues": ["https://github.com/hjosugi/framework-atlas/issues/34"],
+      "patternDecisions": [
+        {"pattern": "bounded-modules", "decision": "adapt", "reason": "package公開portとimport gateで所有権を実装"},
+        {"pattern": "cqrs-pipeline", "decision": "adapt", "reason": "Dependsをhandler locatorにせずplain callableを合成"},
+        {"pattern": "outbox-inbox", "decision": "adopt", "reason": "BackgroundTasksではdurabilityを証明できない"},
+        {"pattern": "event-sourcing", "decision": "adapt", "reason": "event protocolをPydantic/DB modelから独立version化"},
+        {"pattern": "architecture-tests", "decision": "adopt", "reason": "Python import自由度をCI gateで補う"},
+        {"pattern": "test-layers", "decision": "adopt", "reason": "dependency overrideだけでなくreal DB/ASGI境界を通す"}
+      ]
+    },
+    {
+      "target": "gin",
+      "targetLabel": "Gin",
+      "moduleBoundary": "Go internal packageと小さいport interface。main/composition rootだけがadapterを配線",
+      "commandQuery": "Gin ContextはHTTP adapter内で値へdecodeし、command/query handlerはcontext.Contextとtyped inputを受け取る",
+      "effects": "明示的function composition、deferによるresource cleanup、typed error mapping",
+      "outboxInbox": "sql.Txへaggregate writeとoutbox insertを同居させ、workerは別processでも再開可能にする",
+      "eventSourcing": "append(expectedVersion, events)とload(stream)をportとして隔離",
+      "testing": "table-driven domain test、package dependency check、real database integration、httptest boundary",
+      "warning": "middlewareへbusiness ruleを積むと順序依存の隠れたapplication frameworkになる",
+      "lifecycle": "Gin Contextはrequest中だけHTTP adapterが所有する。goroutineには必要値とrequest.Context派生scopeだけを渡し、server shutdownでaccept停止→task cancel→bounded drainを行う",
+      "architectureGate": "internal/によるvisibility、go list -deps/import graph、import cycle compiler error、staticcheckでdomain→gin/sql adapter依存を拒否",
+      "implementationIssues": ["https://github.com/hjosugi/framework-atlas/issues/35"],
+      "patternDecisions": [
+        {"pattern": "bounded-modules", "decision": "adopt", "reason": "internal packageと小さいport interfaceでcompiler支援が得られる"},
+        {"pattern": "cqrs-pipeline", "decision": "adapt", "reason": "mediator libraryよりconstructor wiringとfunction decoratorを第一案にする"},
+        {"pattern": "outbox-inbox", "decision": "adopt", "reason": "sql.Tx内でdomain writeとoutbox insertをatomicにする"},
+        {"pattern": "event-sourcing", "decision": "adapt", "reason": "storage libraryではなくexpected-version portだけをcoreへ"},
+        {"pattern": "architecture-tests", "decision": "adopt", "reason": "internal/import/compiler/staticcheckを組み合わせる"},
+        {"pattern": "test-layers", "decision": "adopt", "reason": "table test、real DB、httptest、fault injectionを分離"}
+      ]
+    },
+    {
+      "target": "kofun-boot",
+      "targetLabel": "Kofun Boot",
+      "moduleBoundary": "moduleが公開port、owned data、effect capability、integration contractを一宣言する",
+      "commandQuery": "ADT command/queryとpure handlerを中心に、logging/validation/unit-of-workを順序付きinterpreterで合成",
+      "effects": "Functional Core / Imperative Shell。Clock、Random、DB、HTTP、Spawnをcapabilityとして明示し、scopeで解放",
+      "outboxInbox": "transaction capabilityがdomain writeとoutboxを一commitし、delivery interpreterはat-least-onceとidempotencyを型・gateで要求",
+      "eventSourcing": "Event<A>のversioned codec、NonEmpty history、expected revision、projection checkpointを標準port候補にする",
+      "testing": "pure law/property、architecture ownership、adapter contract、real dependency、fault injection、mutation相当のgate",
+      "warning": "reflection/container/class inheritanceを持ち込まず、Monadという語をAPI表面に露出すること自体を目的にしない。expected failureはexceptionでなくclosed ADTにする",
+      "lifecycle": "Clock/Random/DB/HTTP/Log/Spawn capabilityをargumentにし、scoped task、cancel、backpressure、replayをruntime gateで証明する。現時点でlanguage/runtime capabilityが不足する部分はblockedとして分離",
+      "architectureGate": "module declarationからowned core/shell/contract/testsを検証し、producer gateでevent schema driftと未付与capability参照を拒否",
+      "implementationIssues": ["https://github.com/hjosugi/kofun-boot/issues/1", "https://github.com/hjosugi/kofun-boot/issues/3", "https://github.com/hjosugi/kofun-boot/issues/4", "https://github.com/hjosugi/kofun-boot/issues/6", "https://github.com/hjosugi/kofun-boot/issues/16", "https://github.com/hjosugi/kofun-boot/issues/18", "https://github.com/hjosugi/kofun-boot/issues/19", "https://github.com/hjosugi/kofun-boot/issues/23", "https://github.com/hjosugi/kofun-boot/issues/36"],
+      "patternDecisions": [
+        {"pattern": "bounded-modules", "decision": "adopt", "reason": "core/shell/contract/tests ownershipを一宣言し#36へ実装"},
+        {"pattern": "cqrs-pipeline", "decision": "adapt", "reason": "class mediatorでなくADT command/queryとinterpreterへ"},
+        {"pattern": "outbox-inbox", "decision": "adapt", "reason": "transaction/outboxは#23、concurrency/idempotencyは#6/#19の実行能力に依存"},
+        {"pattern": "event-sourcing", "decision": "adapt", "reason": "optional durable workflowとして#23へ。core requirementにはしない"},
+        {"pattern": "architecture-tests", "decision": "adopt", "reason": "capabilityとmodule schema driftをproducer gateで拒否"},
+        {"pattern": "test-layers", "decision": "adapt", "reason": "pure law、byte replay #4、real adapter、fault injectionへ翻訳"}
+      ]
+    }
+  ],
+  "adoptionOrder": [
+    "module ownershipと禁止dependencyを先に宣言しarchitecture gateを置く",
+    "一つのuse caseをpure core + typed effect boundaryとして通す",
+    "transaction + outbox + idempotent inboxを故障注入で検証する",
+    "同期境界で十分でない箇所だけevent sourcingまたは非同期統合を導入する",
+    "unitからsystemまで各testが何を証明しないかを記録する"
+  ]
+}

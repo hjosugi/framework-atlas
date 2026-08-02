@@ -1,0 +1,8 @@
+{
+  "total_count": 101,
+  "incomplete_results": false,
+  "items": [
+    {"node_id": "NODE-A", "id": 1, "name": "old-name", "full_name": "example/old-name", "html_url": "https://github.com/example/old-name", "fork": false, "archived": false, "topics": ["framework"]},
+    {"node_id": "NODE-F", "id": 2, "name": "fork", "full_name": "example/fork", "html_url": "https://github.com/example/fork", "fork": true, "archived": false, "topics": ["framework"]}
+  ]
+}

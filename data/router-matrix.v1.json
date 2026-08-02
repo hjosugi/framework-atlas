@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "observedAt": "2026-08-02",
+  "routers": [
+    {"entity": "httprouter", "scope": "server", "matchingAmbiguity": "one named parameter per path segment; conflicts rejected by tree insertion", "registrationCost": "unmeasured", "dispatchCost": "unmeasured; radix-tree design is not an Atlas benchmark", "typeSafety": "handler parameters remain strings", "repositoryState": "not-archived", "source": "https://github.com/julienschmidt/httprouter"},
+    {"entity": "chi", "scope": "server", "matchingAmbiguity": "ordered route/middleware composition; conflicts require application tests", "registrationCost": "unmeasured", "dispatchCost": "unmeasured", "typeSafety": "standard net/http plus string URL params", "repositoryState": "not-archived", "source": "https://github.com/go-chi/chi"},
+    {"entity": "gorilla-mux", "scope": "server", "matchingAmbiguity": "matcher order and predicates are application-visible", "registrationCost": "unmeasured", "dispatchCost": "unmeasured", "typeSafety": "string variables and net/http", "repositoryState": "not-archived", "source": "https://github.com/gorilla/mux"},
+    {"entity": "vue-router", "scope": "client", "matchingAmbiguity": "nested client route ranking and navigation semantics", "registrationCost": "not-applicable to server dispatch", "dispatchCost": "not-applicable to server benchmark", "typeSafety": "route typing depends on declarations/tooling", "repositoryState": "not-archived", "source": "https://router.vuejs.org/"},
+    {"entity": "tanstack-router", "scope": "client/server-capable", "matchingAmbiguity": "typed route tree and search parameter declarations", "registrationCost": "unmeasured", "dispatchCost": "unmeasured", "typeSafety": "typed paths, params and search state", "repositoryState": "not-archived", "source": "https://tanstack.com/router/latest"}
+  ],
+  "kofunDecision": {"decision": "adapt", "reason": "static dispatch and conflict rejection are adopted; framework-specific mutable context and unverified performance claims are rejected", "implementationIssue": "https://github.com/hjosugi/kofun-boot/issues/16"}
+}

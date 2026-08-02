@@ -1,0 +1,35 @@
+name: freshness-review
+
+on:
+  schedule:
+    - cron: '17 3 1 1,4,7,10 *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: freshness
+        name: Generate review-only report
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/freshness_report.py --output freshness-report.json
+      - name: Upload report even when partial or rate-limited
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: freshness-report-${{ github.run_id }}
+          path: freshness-report.json
+      - name: Do not report partial collection as fresh
+        if: steps.freshness.outcome != 'success'
+        run: |
+          echo 'Freshness report is partial or rate-limited; review the uploaded artifact.' >&2
+          exit 1

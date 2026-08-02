@@ -1,0 +1,1 @@
+{"version": 1, "kind": "entity", "record": {"id": "sample", "kind": "framework", "source": "https://example.com"}, "expectedPointer": "/record/observedAt"}

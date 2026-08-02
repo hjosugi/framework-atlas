@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "repositories": [
+    {"fullName": "getlantern/lantern", "description": "VPN", "topics": ["router"]},
+    {"fullName": "threat9/routersploit", "description": "Exploitation Framework for Embedded Devices", "topics": ["router", "security"]},
+    {"fullName": "istoreos/istoreos", "description": "router and NAS system", "topics": ["router"]},
+    {"fullName": "alibaba/ARouter", "description": "Android component navigation", "topics": ["router"]},
+    {"fullName": "honojs/hono", "description": "Web framework built on Web Standards", "topics": ["router", "web-framework"]},
+    {"fullName": "example/unknown", "description": "router utilities", "topics": ["router"]}
+  ]
+}

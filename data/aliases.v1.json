@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "aliases": [
+    {"alias": "ruby-on-rails", "target": "rails", "reason": "official product name"},
+    {"alias": "vuejs-core", "target": "vue", "reason": "canonical Vue 3 repository"},
+    {"alias": "vuejs-vue", "target": "vue-2", "reason": "Vue 2 repository is a separate release line"},
+    {"alias": "gorilla/mux", "target": "gorilla-mux", "reason": "repository spelling"},
+    {"alias": "dear-imgui", "target": "imgui", "reason": "reserved catalog alias", "status": "unresolved"}
+  ],
+  "policy": "alias targets never point to another alias; unresolved aliases cannot be used as canonical entity references"
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "release": "v0.1.0",
+  "requiredGates": [
+    "python3 scripts/validate.py",
+    "python3 -m unittest discover -s tests -v",
+    "python3 scripts/build_site.py --check",
+    "python3 scripts/build_zip.py --version v0.1.0 --check"
+  ],
+  "publicSurfaces": [
+    "https://github.com/hjosugi/framework-atlas",
+    "https://hjosugi.github.io/framework-atlas/",
+    "https://github.com/hjosugi/framework-atlas/releases/tag/v0.1.0"
+  ],
+  "policy": "A green gate proves only its named invariant; CI, Pages and release assets are read back independently."
+}

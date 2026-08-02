@@ -1,0 +1,53 @@
+{
+  "files": [
+    {
+      "path": "tests/fixtures/classifier.json",
+      "sha256": "7336a21f96f6a43123af038561c7e24071f9bc59606c41af7a10f1910720182a",
+      "source": "synthetic cases derived from public GitHub topic hits"
+    },
+    {
+      "path": "tests/fixtures/github-page-1.json",
+      "sha256": "a77676dc226645b4f0b23624282e803ccc325c21e5b79365f95a18ed2398b187",
+      "source": "synthetic GitHub Search API page contract"
+    },
+    {
+      "path": "tests/fixtures/github-page-2.json",
+      "sha256": "517f975bbb446bcf5b7f5cfb0a4d5ed9614c402ff6605fbff1320e60d6c7d414",
+      "source": "synthetic GitHub Search API rename/archive contract"
+    },
+    {
+      "path": "tests/fixtures/invalid/dangling-relation.json",
+      "sha256": "6c3ab35cd6b5f5145ff6cf50ca865c4769872f8d3dcdea77ef121736c56a8435",
+      "source": "synthetic validator destructive fixture"
+    },
+    {
+      "path": "tests/fixtures/invalid/missing-observed-at.json",
+      "sha256": "cfc8afbb778589f74451d30cc2dbdaa9c29ad10e57763f40272c51e3740a6ef6",
+      "source": "synthetic validator destructive fixture"
+    },
+    {
+      "path": "tests/fixtures/invalid/missing-source.json",
+      "sha256": "f90161d1b75027c6e8fe5e1598c08335e17031fb203d6a84722de27a347729be",
+      "source": "synthetic validator destructive fixture"
+    },
+    {
+      "path": "tests/fixtures/invalid/numeric-without-method.json",
+      "sha256": "847c802b13ce0544d7fb88435f368dc9059be0b6f7889d5bb99b5bd87f1ad298",
+      "source": "synthetic validator destructive fixture"
+    },
+    {
+      "path": "tests/fixtures/invalid/unknown-enum.json",
+      "sha256": "bee748308148347fd9d47aa97b6c788f0919c2fbc5d34b58920550ca00ca408d",
+      "source": "synthetic validator destructive fixture"
+    },
+    {
+      "path": "tests/fixtures/invalid/version-mismatch.json",
+      "sha256": "5722c1a77accb2e33f3bb1032353ffa58e0e7d41bd0aa6c3674fe9405bdd968f",
+      "source": "synthetic validator destructive fixture"
+    }
+  ],
+  "observedAt": "2026-08-02",
+  "privacy": "synthetic public repository records only; no token, authorization header, private owner or user data",
+  "refreshCommand": "python3 scripts/refresh_fixtures.py --explicit",
+  "version": 1
+}

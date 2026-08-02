@@ -1,0 +1,7 @@
+{
+  "total_count": 101,
+  "incomplete_results": false,
+  "items": [
+    {"node_id": "NODE-A", "id": 1, "name": "new-name", "full_name": "example/new-name", "html_url": "https://github.com/example/new-name", "fork": false, "archived": true, "topics": ["router", "framework"]}
+  ]
+}

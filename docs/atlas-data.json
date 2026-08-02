@@ -1,0 +1,3637 @@
+{
+  "asOf": "2026-08-02",
+  "caseStudy": {
+    "adoptionOrder": [
+      "module ownershipと禁止dependencyを先に宣言しarchitecture gateを置く",
+      "一つのuse caseをpure core + typed effect boundaryとして通す",
+      "transaction + outbox + idempotent inboxを故障注入で検証する",
+      "同期境界で十分でない箇所だけevent sourcingまたは非同期統合を導入する",
+      "unitからsystemまで各testが何を証明しないかを記録する"
+    ],
+    "domainModel": {
+      "aggregateInvariant": "An aggregate owns business invariants and is the transaction consistency boundary; public behavior changes state and emits domain events",
+      "cost": "More projects, mapping code, workers, eventual consistency and operational recovery. Simple CRUD contexts may use a thinner model rather than imitating every layer",
+      "databaseBoundary": "Modules may share one physical database deployment while owning separate schemas. Sharing a database server is not the same as sharing tables/schema",
+      "encapsulationInvariant": "Only the module contract is externally visible. OOP private/internal keywords are one mechanism; other languages must enforce the same ownership through module visibility and dependency gates",
+      "integrationDependency": "Other modules depend only on published integration-event contracts, not internal domain/data types",
+      "mappingInterface": [
+        "moduleBoundary",
+        "commandQuery",
+        "effects",
+        "outboxInbox",
+        "eventSourcing",
+        "testing",
+        "lifecycle",
+        "architectureGate",
+        "patternDecisions"
+      ],
+      "moduleInterface": [
+        "execute command with result",
+        "execute command without result",
+        "execute query"
+      ],
+      "persistence": "Domain types remain persistence ignorant; infrastructure maps them to a module-owned database schema",
+      "strategicScope": "Strategic DDD and domain discovery are explicitly out of scope; bounded modules shown here are implementation evidence, not proof that the contexts were optimally discovered"
+    },
+    "flows": {
+      "commandQuery": {
+        "commandResultTradeoff": "Returning a created identifier is practical but blurs strict command/query separation; the case records this as an ADR",
+        "cqrsBoundary": "Read and write models differ; separate databases are not required",
+        "failurePropagation": "Validation/handler exceptions abort commit in the reference case; functional mappings translate expected failures into closed result values while unexpected defects remain faults",
+        "mediatorTradeoff": "Loose invoker/handler coupling and uniform decorators versus runtime indirection and harder handler discovery",
+        "order": [
+          "logging",
+          "validation",
+          "handler",
+          "domain event dispatch",
+          "unit-of-work commit"
+        ],
+        "sequence": [
+          "HTTP adapter authenticates/authorizes and creates typed command/query",
+          "module facade resolves handler graph",
+          "logging decorator opens correlation context",
+          "validation decorator rejects boundary errors",
+          "handler runs write aggregate or read projection",
+          "unit-of-work decorator dispatches domain events and commits",
+          "adapter maps success or failure"
+        ]
+      },
+      "eventStore": {
+        "migration": {
+          "additive": "new readers accept old event versions",
+          "destructive": "forbidden without export, rehearsal, rollback/forward recovery and retained original stream",
+          "upcast": "pure adapters transform historical payloads without rewriting history"
+        },
+        "projection": [
+          "read from checkpoint",
+          "upcast/version event",
+          "idempotently update read model",
+          "commit projection and checkpoint together or make replay safe"
+        ],
+        "snapshot": "not implemented by the reference case; absence is recorded, not advertised as a feature",
+        "storagePolicy": "SQL Stream Store is case evidence only. Framework mappings depend on an event-store port, not that library",
+        "write": [
+          "load stream and expected revision",
+          "apply command to aggregate",
+          "append versioned events",
+          "publish through outbox"
+        ]
+      },
+      "outboxInbox": {
+        "consumerTransaction": [
+          "insert/check inbox idempotency key",
+          "invoke command",
+          "commit domain change and processed marker"
+        ],
+        "crashPoints": [
+          {
+            "point": "before producer commit",
+            "replay": "neither domain change nor outbox is visible"
+          },
+          {
+            "point": "after producer commit before publish",
+            "replay": "worker republishes pending outbox"
+          },
+          {
+            "point": "after publish before published marker",
+            "replay": "duplicate delivery is accepted and consumer idempotency suppresses duplicate effect"
+          },
+          {
+            "point": "after inbox insert before consumer commit",
+            "replay": "transaction rollback makes inbox and domain change both retryable"
+          },
+          {
+            "point": "after consumer commit before acknowledgement",
+            "replay": "duplicate is detected by processed inbox marker"
+          }
+        ],
+        "delivery": [
+          "worker claims due outbox records",
+          "publish event",
+          "record published/processed state with bounded retry"
+        ],
+        "directCallTradeoff": "Forbidding direct module calls lowers data/type coupling and permits extraction, but adds latency, eventual consistency and recovery operations",
+        "guarantee": "at-least-once delivery and at-least-once processing; never exactly-once",
+        "kofunLinks": [
+          "https://github.com/hjosugi/kofun-boot/issues/4",
+          "https://github.com/hjosugi/kofun-boot/issues/6"
+        ],
+        "ordering": "Define only the scope that needs order, such as one aggregate stream; do not claim global order",
+        "poisonPolicy": "Bound retries, preserve payload/failure, quarantine for operator review and allow explicit replay",
+        "producerTransaction": [
+          "apply aggregate change",
+          "append integration event to outbox",
+          "commit module database transaction"
+        ],
+        "requiredFields": [
+          "message id/idempotency key",
+          "producer/module",
+          "event type and schema version",
+          "occurred time",
+          "ordering scope/key",
+          "attempt count",
+          "next attempt",
+          "processed/published time",
+          "last failure"
+        ]
+      }
+    },
+    "id": "modular-monolith-ddd",
+    "mappings": [
+      {
+        "architectureGate": "src/test/java/.../ArchitectureTests.java でmodule package dependency、domainからSpring/adapterへの依存禁止、公開event contractだけの参照をArchUnitまたはSpring Modulithで検査",
+        "commandQuery": "Application serviceまたは明示的handler。AOP/ordered interceptorsはdecorator順序をtestで固定",
+        "effects": "transactional service + TransactionSynchronization。domain eventとexternal integration eventを分離",
+        "eventSourcing": "通常のJPA modelと混同せず、必要なaggregateだけevent store adapterへ",
+        "implementationIssues": [
+          "https://github.com/hjosugi/framework-atlas/issues/33"
+        ],
+        "lifecycle": "Spring transactionでdomain writeとoutboxをcommitし、external event publicationはcommit後。container beanをdomain objectへ注入しない",
+        "moduleBoundary": "Spring Modulith application modulesまたはJava package boundary。ArchUnit/Modulith verificationで依存を固定",
+        "outboxInbox": "同一RDB transactionのoutbox、scheduler/CDC publisher、consumer idempotency key",
+        "patternDecisions": [
+          {
+            "decision": "adapt",
+            "pattern": "bounded-modules",
+            "reason": "Spring Modulith verificationを利用できるがmodule ownershipはapplicationが宣言する"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "cqrs-pipeline",
+            "reason": "AOPだけに隠さずordered handler decoratorをtestする"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "outbox-inbox",
+            "reason": "RDB transactionとexternal publicationのdual writeを除く"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "event-sourcing",
+            "reason": "必要なaggregateだけに限定しJPA defaultにしない"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "architecture-tests",
+            "reason": "package/module ruleを実行可能にする"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "test-layers",
+            "reason": "Spring contextとreal dependency差を段階別に検出する"
+          }
+        ],
+        "target": "spring-boot",
+        "targetLabel": "Spring Boot",
+        "testing": "plain domain unit、ApplicationContext slice、Testcontainers integration、ArchUnit/Modulith structure",
+        "warning": "Spring Modulithは参照caseと同一物ではない。auto-configurationの暗黙性をmodule-owned configやdomain modelへ漏らさず、condition reportとstartup gateを証拠にする"
+      },
+      {
+        "architectureGate": "tests/architecture/test_import_boundaries.py でdomain→FastAPI/SQLAlchemy import、module間internal import、HTTP modelのapplication流入を拒否",
+        "commandQuery": "route dependencyは認証/transaction contextまで。use case handlerへHTTP objectを渡さない",
+        "effects": "async context managerでresource lifetime、Result/Either相当のdomain failureをHTTP adapterで変換",
+        "eventSourcing": "event schema/version/checkpointをapplication protocolとして明示",
+        "implementationIssues": [
+          "https://github.com/hjosugi/framework-atlas/issues/34"
+        ],
+        "lifecycle": "request-scoped AsyncSessionはyield dependency/async context managerでcloseし、detached taskへ渡さない。BackgroundTasksはresponse後実行でありdurable deliveryではない",
+        "moduleBoundary": "Python packageの公開portとcomposition moduleを分離。import graphを静的gateで検査",
+        "outboxInbox": "SQL transaction内outboxとbackground publisher。FastAPI BackgroundTasksをdurable queueとして扱わない",
+        "patternDecisions": [
+          {
+            "decision": "adapt",
+            "pattern": "bounded-modules",
+            "reason": "package公開portとimport gateで所有権を実装"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "cqrs-pipeline",
+            "reason": "Dependsをhandler locatorにせずplain callableを合成"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "outbox-inbox",
+            "reason": "BackgroundTasksではdurabilityを証明できない"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "event-sourcing",
+            "reason": "event protocolをPydantic/DB modelから独立version化"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "architecture-tests",
+            "reason": "Python import自由度をCI gateで補う"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "test-layers",
+            "reason": "dependency overrideだけでなくreal DB/ASGI境界を通す"
+          }
+        ],
+        "target": "fastapi",
+        "targetLabel": "FastAPI",
+        "testing": "pure domain test、dependency override boundary test、実DB integration、ASGI end-to-end",
+        "warning": "Pydantic request modelをdomain entity/ORM rowと同一化しない。DependsとOpenAPIは便利だがdomain/module boundaryの代替ではない"
+      },
+      {
+        "architectureGate": "internal/によるvisibility、go list -deps/import graph、import cycle compiler error、staticcheckでdomain→gin/sql adapter依存を拒否",
+        "commandQuery": "Gin ContextはHTTP adapter内で値へdecodeし、command/query handlerはcontext.Contextとtyped inputを受け取る",
+        "effects": "明示的function composition、deferによるresource cleanup、typed error mapping",
+        "eventSourcing": "append(expectedVersion, events)とload(stream)をportとして隔離",
+        "implementationIssues": [
+          "https://github.com/hjosugi/framework-atlas/issues/35"
+        ],
+        "lifecycle": "Gin Contextはrequest中だけHTTP adapterが所有する。goroutineには必要値とrequest.Context派生scopeだけを渡し、server shutdownでaccept停止→task cancel→bounded drainを行う",
+        "moduleBoundary": "Go internal packageと小さいport interface。main/composition rootだけがadapterを配線",
+        "outboxInbox": "sql.Txへaggregate writeとoutbox insertを同居させ、workerは別processでも再開可能にする",
+        "patternDecisions": [
+          {
+            "decision": "adopt",
+            "pattern": "bounded-modules",
+            "reason": "internal packageと小さいport interfaceでcompiler支援が得られる"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "cqrs-pipeline",
+            "reason": "mediator libraryよりconstructor wiringとfunction decoratorを第一案にする"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "outbox-inbox",
+            "reason": "sql.Tx内でdomain writeとoutbox insertをatomicにする"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "event-sourcing",
+            "reason": "storage libraryではなくexpected-version portだけをcoreへ"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "architecture-tests",
+            "reason": "internal/import/compiler/staticcheckを組み合わせる"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "test-layers",
+            "reason": "table test、real DB、httptest、fault injectionを分離"
+          }
+        ],
+        "target": "gin",
+        "targetLabel": "Gin",
+        "testing": "table-driven domain test、package dependency check、real database integration、httptest boundary",
+        "warning": "middlewareへbusiness ruleを積むと順序依存の隠れたapplication frameworkになる"
+      },
+      {
+        "architectureGate": "module declarationからowned core/shell/contract/testsを検証し、producer gateでevent schema driftと未付与capability参照を拒否",
+        "commandQuery": "ADT command/queryとpure handlerを中心に、logging/validation/unit-of-workを順序付きinterpreterで合成",
+        "effects": "Functional Core / Imperative Shell。Clock、Random、DB、HTTP、Spawnをcapabilityとして明示し、scopeで解放",
+        "eventSourcing": "Event<A>のversioned codec、NonEmpty history、expected revision、projection checkpointを標準port候補にする",
+        "implementationIssues": [
+          "https://github.com/hjosugi/kofun-boot/issues/1",
+          "https://github.com/hjosugi/kofun-boot/issues/3",
+          "https://github.com/hjosugi/kofun-boot/issues/4",
+          "https://github.com/hjosugi/kofun-boot/issues/6",
+          "https://github.com/hjosugi/kofun-boot/issues/16",
+          "https://github.com/hjosugi/kofun-boot/issues/18",
+          "https://github.com/hjosugi/kofun-boot/issues/19",
+          "https://github.com/hjosugi/kofun-boot/issues/23",
+          "https://github.com/hjosugi/kofun-boot/issues/36"
+        ],
+        "lifecycle": "Clock/Random/DB/HTTP/Log/Spawn capabilityをargumentにし、scoped task、cancel、backpressure、replayをruntime gateで証明する。現時点でlanguage/runtime capabilityが不足する部分はblockedとして分離",
+        "moduleBoundary": "moduleが公開port、owned data、effect capability、integration contractを一宣言する",
+        "outboxInbox": "transaction capabilityがdomain writeとoutboxを一commitし、delivery interpreterはat-least-onceとidempotencyを型・gateで要求",
+        "patternDecisions": [
+          {
+            "decision": "adopt",
+            "pattern": "bounded-modules",
+            "reason": "core/shell/contract/tests ownershipを一宣言し#36へ実装"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "cqrs-pipeline",
+            "reason": "class mediatorでなくADT command/queryとinterpreterへ"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "outbox-inbox",
+            "reason": "transaction/outboxは#23、concurrency/idempotencyは#6/#19の実行能力に依存"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "event-sourcing",
+            "reason": "optional durable workflowとして#23へ。core requirementにはしない"
+          },
+          {
+            "decision": "adopt",
+            "pattern": "architecture-tests",
+            "reason": "capabilityとmodule schema driftをproducer gateで拒否"
+          },
+          {
+            "decision": "adapt",
+            "pattern": "test-layers",
+            "reason": "pure law、byte replay #4、real adapter、fault injectionへ翻訳"
+          }
+        ],
+        "target": "kofun-boot",
+        "targetLabel": "Kofun Boot",
+        "testing": "pure law/property、architecture ownership、adapter contract、real dependency、fault injection、mutation相当のgate",
+        "warning": "reflection/container/class inheritanceを持ち込まず、Monadという語をAPI表面に露出すること自体を目的にしない。expected failureはexceptionでなくclosed ADTにする"
+      }
+    ],
+    "patterns": [
+      {
+        "failureMode": "共有model/databaseを直接参照すると境界が名目化する",
+        "id": "bounded-modules",
+        "invariant": "他moduleは公開integration event contract以外へ依存しない",
+        "mechanism": "moduleごとのApplication/Domain/Infrastructure/IntegrationEvents、private schema、composition root",
+        "name": "Bounded modules",
+        "problem": "単一deployableの内部でdomain ownershipと変更影響を局所化する"
+      },
+      {
+        "failureMode": "mediatorの間接層がhandler探索とtraceを難しくする",
+        "id": "cqrs-pipeline",
+        "invariant": "状態変更はcommand境界を通り、commitは一つのunit of workで行う",
+        "mechanism": "command/query handlerとlogging/validation/unit-of-work decorators",
+        "name": "CQRS handler pipeline",
+        "problem": "use caseとcross-cutting concernを分離する"
+      },
+      {
+        "failureMode": "exactly-onceと誤認すると再配送で副作用が重複する",
+        "id": "outbox-inbox",
+        "invariant": "at-least-onceを前提にhandlerをidempotentにする",
+        "mechanism": "producer transactionでoutboxへ記録し、consumerはinboxで重複を検出する",
+        "name": "Transactional Outbox/Inbox",
+        "problem": "database commitとmodule event配送のdual writeを避ける"
+      },
+      {
+        "failureMode": "event version/upcasting、projection replay、poison event、破壊的migrationを無設計にすると復旧不能になる。参照事例にsnapshot実装がないことを機能として誤記しない",
+        "id": "event-sourcing",
+        "invariant": "現在状態はevent historyから復元可能で、監査ログだけならEvent Sourcingと呼ばない。projectionはcheckpointと同じtransactionまたは冪等再実行で進む",
+        "mechanism": "expected version付きevent stream、aggregate replay、subscription checkpoint、projection",
+        "name": "Event Sourcing",
+        "problem": "aggregate stateを事実列から復元しprojectionを独立更新する"
+      },
+      {
+        "failureMode": "ファイル名だけを検査しsemantic dependencyを見なければ偽の安心になる",
+        "id": "architecture-tests",
+        "invariant": "compilerで守れないload-bearing ruleには失敗するgateを置く",
+        "mechanism": "architecture testsでlayer、visibility、naming、DDD conventionを検査する",
+        "name": "Executable architecture",
+        "problem": "文書化したdependency ruleが時間とともに腐る"
+      },
+      {
+        "failureMode": "sleep固定待機やin-memory代替だけでは競合とDB差を隠す。code coverageをadequacyと同一視せずmutation survivorを要求漏れとして調べる。共通build DSLにはtooling costもある",
+        "id": "test-layers",
+        "invariant": "非同期testはobservable effectとtimeoutを持つ。所有するDBはproduction相当を使い、元に戻せない外部APIだけをtest doubleにする",
+        "mechanism": "unit、architecture、integration、system integration、mutation testを分離し、localとCIで同じbuild logicを呼ぶ",
+        "name": "Layered evidence",
+        "problem": "純粋domain ruleから非同期module統合まで異なる失敗を検出する"
+      }
+    ],
+    "scope": "フレームワーク製品ではなく、フレームワーク上に本番級境界と検証を置くケーススタディ",
+    "source": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+    "sourceManifest": {
+      "authorScope": "The README presents a production-oriented implementation example while excluding requirements analysis, strategic DDD, infrastructure/deployment process and ongoing maintenance concerns; it explicitly warns that architecture must fit the problem context",
+      "committedAt": "2024-04-20T06:46:26Z",
+      "historicalCaveats": [
+        "IdentityServer Resource Owner Password flow shown by the case is historical and must not be copied as a current security default",
+        "Library versions and SQL Stream Store choices are evidence of this revision, not current product recommendations",
+        "The case contains no event-sourcing snapshot implementation"
+      ],
+      "lastPushedAt": "2024-06-04T17:51:26Z",
+      "maintenanceInterpretation": "GitHub repository is not archived, but recent repository activity is not inferred from stars or metadata updates",
+      "observedAt": "2026-08-02",
+      "pointers": [
+        {
+          "kind": "readme-claim",
+          "pattern": "bounded-modules",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/README.md#31-high-level-view"
+        },
+        {
+          "kind": "code",
+          "pattern": "cqrs-pipeline",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/BuildingBlocks/Infrastructure/DomainEventsDispatching/UnitOfWorkCommandHandlerDecorator.cs"
+        },
+        {
+          "kind": "code",
+          "pattern": "outbox-inbox",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/Modules/Meetings/Infrastructure/Configuration/Processing/Outbox"
+        },
+        {
+          "kind": "code",
+          "pattern": "event-sourcing",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/Modules/Payments/Infrastructure/AggregateStore/SqlStreamAggregateStore.cs"
+        },
+        {
+          "kind": "code",
+          "pattern": "architecture-tests",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/Modules/Meetings/Tests/ArchTests"
+        },
+        {
+          "kind": "code",
+          "pattern": "test-layers",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/blob/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/src/BuildingBlocks/Tests/IntegrationTests/Probing/Poller.cs"
+        },
+        {
+          "kind": "decision",
+          "pattern": "bounded-modules",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/docs/architecture-decision-log"
+        },
+        {
+          "kind": "diagram",
+          "pattern": "bounded-modules",
+          "url": "https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8/docs/C4"
+        }
+      ],
+      "repositoryArchived": false,
+      "revision": "91c8ef24b4cb6ef558c95d8267fa07d68c7059f8"
+    },
+    "testEvidence": [
+      {
+        "doesNotProve": "database mapping or asynchronous delivery",
+        "level": "domain unit",
+        "proves": "public aggregate behavior and business rules in isolation"
+      },
+      {
+        "doesNotProve": "runtime behavior; compiler rules are preferred when possible",
+        "level": "architecture",
+        "proves": "declared dependencies, visibility and naming conventions"
+      },
+      {
+        "doesNotProve": "multi-module eventual flow",
+        "level": "integration",
+        "proves": "one use case with controlled real database and module composition"
+      },
+      {
+        "doesNotProve": "all production failure schedules",
+        "level": "system integration",
+        "proves": "observable multi-module asynchronous result with polling timeout"
+      },
+      {
+        "doesNotProve": "complete requirements; coverage alone is not adequacy",
+        "level": "mutation",
+        "proves": "selected test assertions kill code mutations"
+      },
+      {
+        "doesNotProve": "the scenario assertions unless a test observes them",
+        "level": "SUT preparation",
+        "proves": "repeatable public-API setup for manual/system tests"
+      }
+    ],
+    "version": 1
+  },
+  "claims": [
+    {
+      "claim": "Creates stand-alone Spring applications with embedded server choices.",
+      "dimension": "delivery",
+      "entity": "spring-boot",
+      "evidenceKind": "official",
+      "id": "spring-standalone",
+      "source": "https://spring.io/projects/spring-boot",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Auto-configuration attempts configuration from classpath dependencies and user-defined beans can replace parts of it.",
+      "dimension": "configuration",
+      "entity": "spring-boot",
+      "evidenceKind": "official",
+      "id": "spring-auto",
+      "source": "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Production features include metrics, health checks and externalized configuration.",
+      "dimension": "operations",
+      "entity": "spring-boot",
+      "evidenceKind": "official",
+      "id": "spring-ops",
+      "source": "https://spring.io/projects/spring-boot",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "The project states that ordinary use requires no code generation or XML configuration.",
+      "dimension": "generation",
+      "entity": "spring-boot",
+      "evidenceKind": "official",
+      "id": "spring-codegen",
+      "source": "https://spring.io/projects/spring-boot",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "AOT processing is a separate build mode used to optimize deployment and native images; it is not the ordinary configuration mechanism described by the no-code-generation feature claim.",
+      "dimension": "generation",
+      "entity": "spring-boot",
+      "evidenceKind": "official",
+      "id": "spring-aot",
+      "source": "https://docs.spring.io/spring-boot/reference/packaging/aot.html",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Standard Python type declarations drive editor support, validation and schema generation.",
+      "dimension": "contract",
+      "entity": "fastapi",
+      "evidenceKind": "official",
+      "id": "fastapi-types",
+      "source": "https://fastapi.tiangolo.com/features/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "OpenAPI and JSON Schema are generated and used by interactive documentation and clients.",
+      "dimension": "contract",
+      "entity": "fastapi",
+      "evidenceKind": "official",
+      "id": "fastapi-openapi",
+      "source": "https://fastapi.tiangolo.com/features/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Dependency declarations form an integrated hierarchy reused by validation and OpenAPI.",
+      "dimension": "composition",
+      "entity": "fastapi",
+      "evidenceKind": "official",
+      "id": "fastapi-di",
+      "source": "https://fastapi.tiangolo.com/features/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Handlers and middleware share an explicit request context.",
+      "dimension": "composition",
+      "entity": "gin",
+      "evidenceKind": "official",
+      "id": "gin-middleware",
+      "source": "https://gin-gonic.com/en/docs/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Binding and validation are HTTP boundary helpers rather than a complete application contract generator.",
+      "dimension": "contract",
+      "entity": "gin",
+      "evidenceKind": "official",
+      "id": "gin-binding",
+      "source": "https://gin-gonic.com/en/docs/examples/binding-and-validation/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "The project description markets routing performance as up to 40 times faster; Framework Atlas has not reproduced this as a cross-framework measurement.",
+      "claimKind": "marketing",
+      "dimension": "performance",
+      "entity": "gin",
+      "evidenceKind": "official",
+      "id": "gin-marketing-performance",
+      "metricStatus": "unmeasured",
+      "source": "https://github.com/gin-gonic/gin",
+      "sourceKind": "repository-description",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Convention over configuration and integrated defaults reduce repeated decisions.",
+      "dimension": "configuration",
+      "entity": "rails",
+      "evidenceKind": "official",
+      "id": "rails-doctrine",
+      "source": "https://rubyonrails.org/doctrine",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "The service container manages class dependencies and dependency injection.",
+      "dimension": "composition",
+      "entity": "laravel",
+      "evidenceKind": "official",
+      "id": "laravel-container",
+      "source": "https://laravel.com/docs/container",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "ORM, URL routing, templates, forms, authentication and admin are documented as coordinated framework facilities.",
+      "dimension": "delivery",
+      "entity": "django",
+      "evidenceKind": "official",
+      "id": "django-batteries",
+      "source": "https://docs.djangoproject.com/en/stable/intro/overview/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "UI is expressed as components and rendered from data.",
+      "dimension": "ui",
+      "entity": "react",
+      "evidenceKind": "official",
+      "id": "react-components",
+      "source": "https://react.dev/learn/describing-the-ui",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Vue tracks reactive state dependencies and updates affected component rendering.",
+      "dimension": "ui",
+      "entity": "vue",
+      "evidenceKind": "official",
+      "id": "vue-reactivity",
+      "source": "https://vuejs.org/guide/essentials/reactivity-fundamentals.html",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Schemas validate requests and participate in type inference.",
+      "dimension": "contract",
+      "entity": "elysia",
+      "evidenceKind": "official",
+      "id": "elysia-schema",
+      "source": "https://elysiajs.com/essential/validation",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "The request/response surface is based on Web Standards and deploys to multiple runtimes.",
+      "dimension": "portability",
+      "entity": "hono",
+      "evidenceKind": "official",
+      "id": "hono-standards",
+      "source": "https://hono.dev/docs/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Extractors declare how handler arguments are produced and reject invalid requests.",
+      "dimension": "contract",
+      "entity": "axum",
+      "evidenceKind": "official",
+      "id": "axum-extractors",
+      "source": "https://docs.rs/axum/latest/axum/extract/index.html",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Core process and WebView processes communicate across an IPC boundary controlled by capabilities.",
+      "dimension": "security",
+      "entity": "tauri",
+      "evidenceKind": "official",
+      "id": "tauri-process",
+      "source": "https://v2.tauri.app/concept/architecture/",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Modules own separate schemas and integrate asynchronously through integration events.",
+      "dimension": "architecture",
+      "entity": "modular-monolith-ddd",
+      "evidenceKind": "primary-code",
+      "id": "ddd-modules",
+      "source": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+      "sourceKind": "repository-code",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Command handlers are decorated for logging, validation and unit-of-work concerns.",
+      "dimension": "composition",
+      "entity": "modular-monolith-ddd",
+      "evidenceKind": "primary-code",
+      "id": "ddd-cross-cutting",
+      "source": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+      "sourceKind": "repository-code",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "Outbox and Inbox records coordinate at-least-once event delivery and processing across module transactions.",
+      "dimension": "reliability",
+      "entity": "modular-monolith-ddd",
+      "evidenceKind": "primary-code",
+      "id": "ddd-reliability",
+      "source": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+      "sourceKind": "repository-code",
+      "verified": "2026-08-02"
+    },
+    {
+      "claim": "The repository demonstrates domain, architecture, integration, system integration and mutation testing.",
+      "dimension": "testing",
+      "entity": "modular-monolith-ddd",
+      "evidenceKind": "primary-code",
+      "id": "ddd-tests",
+      "source": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+      "sourceKind": "repository-code",
+      "verified": "2026-08-02"
+    }
+  ],
+  "entities": [
+    {
+      "cohort": "enterprise-boot",
+      "disposition": "included",
+      "homepage": "https://spring.io/projects/spring-boot",
+      "id": "spring-boot",
+      "kind": "application-framework",
+      "language": "Java",
+      "launchYear": 2014,
+      "name": "Spring Boot",
+      "observedVersion": "4.1.0",
+      "profile": "deep",
+      "profileDoc": "profiles/spring-boot.md",
+      "releaseSource": "https://github.com/spring-projects/spring-boot/releases/tag/v4.1.0",
+      "repository": "https://github.com/spring-projects/spring-boot",
+      "sources": [
+        "https://spring.io/projects/spring-boot",
+        "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html"
+      ],
+      "summary": "Opinionated starters, auto-configuration, embedded servers and production operations over the Spring ecosystem.",
+      "traits": [
+        "auto-configuration",
+        "dependency-injection",
+        "embedded-server",
+        "actuator",
+        "externalized-configuration"
+      ]
+    },
+    {
+      "cohort": "enterprise-boot",
+      "disposition": "included",
+      "homepage": "https://spring.io/projects/spring-framework",
+      "id": "spring-framework",
+      "kind": "application-framework",
+      "language": "Java",
+      "launchYear": 2003,
+      "name": "Spring Framework",
+      "profile": "standard",
+      "repository": "https://github.com/spring-projects/spring-framework",
+      "sources": [
+        "https://spring.io/projects/spring-framework",
+        "https://github.com/spring-projects/spring-framework"
+      ],
+      "summary": "Core Spring programming and configuration model, including dependency injection, Web stacks, data access and integration foundations.",
+      "traits": [
+        "dependency-injection",
+        "web-mvc",
+        "webflux",
+        "aop"
+      ]
+    },
+    {
+      "cohort": "typed-api",
+      "disposition": "included",
+      "homepage": "https://fastapi.tiangolo.com/",
+      "id": "fastapi",
+      "kind": "application-framework",
+      "language": "Python",
+      "launchYear": 2018,
+      "name": "FastAPI",
+      "observedVersion": "0.141.1",
+      "profile": "deep",
+      "profileDoc": "profiles/fastapi.md",
+      "releaseSource": "https://github.com/fastapi/fastapi/releases/tag/0.141.1",
+      "repository": "https://github.com/fastapi/fastapi",
+      "sources": [
+        "https://fastapi.tiangolo.com/features/",
+        "https://github.com/fastapi/fastapi"
+      ],
+      "summary": "Type-hint driven Python API framework deriving validation, OpenAPI, documentation and dependency graphs from declarations.",
+      "traits": [
+        "type-hints",
+        "openapi",
+        "validation",
+        "dependency-injection",
+        "async"
+      ]
+    },
+    {
+      "cohort": "typed-api",
+      "disposition": "included",
+      "homepage": "https://www.starlette.io/",
+      "id": "starlette",
+      "kind": "http-framework",
+      "language": "Python",
+      "launchYear": 2018,
+      "name": "Starlette",
+      "profile": "standard",
+      "repository": "https://github.com/Kludex/starlette",
+      "sources": [
+        "https://www.starlette.io/",
+        "https://github.com/Kludex/starlette"
+      ],
+      "summary": "Lightweight ASGI toolkit/framework providing Web primitives, middleware, routing, WebSockets and lifespan handling used by FastAPI.",
+      "traits": [
+        "asgi",
+        "routing",
+        "middleware",
+        "lifespan"
+      ]
+    },
+    {
+      "cohort": "typed-api",
+      "disposition": "included",
+      "homepage": "https://docs.pydantic.dev/",
+      "id": "pydantic",
+      "kind": "library",
+      "language": "Python/Rust",
+      "launchYear": 2017,
+      "name": "Pydantic",
+      "profile": "standard",
+      "repository": "https://github.com/pydantic/pydantic",
+      "sources": [
+        "https://docs.pydantic.dev/",
+        "https://github.com/pydantic/pydantic"
+      ],
+      "summary": "Runtime data validation and serialization library driven by Python type annotations.",
+      "traits": [
+        "validation",
+        "serialization",
+        "json-schema"
+      ]
+    },
+    {
+      "cohort": "typed-api",
+      "disposition": "included",
+      "homepage": "https://www.uvicorn.org/",
+      "id": "uvicorn",
+      "kind": "platform",
+      "language": "Python",
+      "launchYear": 2017,
+      "name": "Uvicorn",
+      "profile": "seed",
+      "repository": "https://github.com/Kludex/uvicorn",
+      "sources": [
+        "https://www.uvicorn.org/",
+        "https://github.com/Kludex/uvicorn"
+      ],
+      "summary": "ASGI server process commonly used to host FastAPI and Starlette applications.",
+      "traits": [
+        "asgi-server",
+        "event-loop",
+        "deployment"
+      ]
+    },
+    {
+      "cohort": "minimal-http",
+      "disposition": "included",
+      "homepage": "https://gin-gonic.com/",
+      "id": "gin",
+      "kind": "http-framework",
+      "language": "Go",
+      "launchYear": 2014,
+      "name": "Gin",
+      "observedVersion": "1.12.0",
+      "profile": "deep",
+      "profileDoc": "profiles/gin.md",
+      "releaseSource": "https://github.com/gin-gonic/gin/releases/tag/v1.12.0",
+      "repository": "https://github.com/gin-gonic/gin",
+      "sources": [
+        "https://gin-gonic.com/en/docs/",
+        "https://github.com/gin-gonic/gin"
+      ],
+      "summary": "Small Go HTTP framework centered on routing, middleware, binding and an explicit request context.",
+      "traits": [
+        "router",
+        "middleware",
+        "binding",
+        "explicit-composition"
+      ]
+    },
+    {
+      "cohort": "convention-fullstack",
+      "disposition": "included",
+      "homepage": "https://rubyonrails.org/",
+      "id": "rails",
+      "kind": "application-framework",
+      "language": "Ruby",
+      "launchYear": 2004,
+      "name": "Ruby on Rails",
+      "observedVersion": "8.1.3.1",
+      "profile": "deep",
+      "profileDoc": "profiles/fullstack-conventions.md",
+      "releaseSource": "https://github.com/rails/rails/releases/tag/v8.1.3.1",
+      "repository": "https://github.com/rails/rails",
+      "sources": [
+        "https://rubyonrails.org/doctrine",
+        "https://guides.rubyonrails.org/command_line.html"
+      ],
+      "summary": "Integrated full-stack framework built around convention over configuration and cohesive generators, ORM, routing and delivery layers.",
+      "traits": [
+        "convention-over-configuration",
+        "active-record",
+        "generators",
+        "full-stack"
+      ]
+    },
+    {
+      "cohort": "convention-fullstack",
+      "disposition": "included",
+      "homepage": "https://laravel.com/",
+      "id": "laravel",
+      "kind": "application-framework",
+      "language": "PHP",
+      "launchYear": 2011,
+      "name": "Laravel",
+      "observedVersion": "13.23.0",
+      "profile": "deep",
+      "profileDoc": "profiles/fullstack-conventions.md",
+      "releaseSource": "https://github.com/laravel/framework/releases/tag/v13.23.0",
+      "repository": "https://github.com/laravel/framework",
+      "sources": [
+        "https://laravel.com/docs",
+        "https://github.com/laravel/framework"
+      ],
+      "summary": "Integrated PHP application framework combining expressive conventions with a service container, ORM, queues and CLI tooling.",
+      "traits": [
+        "service-container",
+        "eloquent",
+        "artisan",
+        "queues",
+        "full-stack"
+      ]
+    },
+    {
+      "cohort": "convention-fullstack",
+      "disposition": "included",
+      "homepage": "https://www.djangoproject.com/",
+      "id": "django",
+      "kind": "application-framework",
+      "language": "Python",
+      "launchYear": 2005,
+      "name": "Django",
+      "observedVersion": "6.0.7",
+      "profile": "deep",
+      "profileDoc": "profiles/fullstack-conventions.md",
+      "releaseSource": "https://www.djangoproject.com/weblog/2026/jul/07/security-releases/",
+      "repository": "https://github.com/django/django",
+      "sources": [
+        "https://docs.djangoproject.com/en/stable/",
+        "https://github.com/django/django"
+      ],
+      "summary": "Batteries-included Python Web framework with ORM, admin, templates, forms, security defaults and explicit project conventions.",
+      "traits": [
+        "orm",
+        "admin",
+        "templates",
+        "security",
+        "full-stack"
+      ]
+    },
+    {
+      "cohort": "frontend-ui",
+      "disposition": "included",
+      "homepage": "https://react.dev/",
+      "id": "react",
+      "kind": "library",
+      "language": "JavaScript/TypeScript",
+      "launchYear": 2013,
+      "name": "React",
+      "observedVersion": "19.2.8",
+      "profile": "deep",
+      "profileDoc": "profiles/react-vue.md",
+      "releaseSource": "https://github.com/facebook/react/releases/tag/v19.2.8",
+      "repository": "https://github.com/facebook/react",
+      "sources": [
+        "https://react.dev/learn",
+        "https://github.com/facebook/react"
+      ],
+      "summary": "Component model and rendering library whose surrounding routing, data and build choices remain composable ecosystem decisions.",
+      "traits": [
+        "components",
+        "declarative-ui",
+        "one-way-data-flow",
+        "ecosystem"
+      ]
+    },
+    {
+      "cohort": "frontend-ui",
+      "disposition": "included",
+      "homepage": "https://vuejs.org/",
+      "id": "vue",
+      "kind": "ui-framework",
+      "language": "TypeScript",
+      "launchYear": 2020,
+      "name": "Vue 3",
+      "observedVersion": "3.5.40",
+      "profile": "deep",
+      "profileDoc": "profiles/react-vue.md",
+      "releaseSource": "https://github.com/vuejs/core/releases/tag/v3.5.40",
+      "repository": "https://github.com/vuejs/core",
+      "sources": [
+        "https://vuejs.org/guide/introduction.html",
+        "https://github.com/vuejs/core"
+      ],
+      "summary": "Progressive component framework with fine-grained reactivity, single-file components and an official routing/state ecosystem.",
+      "traits": [
+        "components",
+        "reactivity",
+        "single-file-components",
+        "progressive"
+      ]
+    },
+    {
+      "cohort": "frontend-ui",
+      "disposition": "included",
+      "homepage": "https://v2.vuejs.org/",
+      "id": "vue-2",
+      "kind": "ui-framework",
+      "language": "JavaScript/TypeScript",
+      "launchYear": 2014,
+      "name": "Vue 2",
+      "profile": "seed",
+      "repository": "https://github.com/vuejs/vue",
+      "sources": [
+        "https://github.com/vuejs/vue",
+        "https://v2.vuejs.org/"
+      ],
+      "summary": "The separately maintained Vue 2 code line; it is not used as the canonical Vue 3 entity.",
+      "traits": [
+        "components",
+        "reactivity",
+        "legacy-line"
+      ]
+    },
+    {
+      "cohort": "edge-runtime",
+      "disposition": "included",
+      "homepage": "https://elysiajs.com/",
+      "id": "elysia",
+      "kind": "http-framework",
+      "language": "TypeScript",
+      "launchYear": 2022,
+      "name": "Elysia",
+      "observedVersion": "1.4.29",
+      "profile": "standard",
+      "profileDoc": "profiles/modern-web.md",
+      "releaseSource": "https://github.com/elysiajs/elysia/releases/tag/1.4.29",
+      "repository": "https://github.com/elysiajs/elysia",
+      "sources": [
+        "https://elysiajs.com/",
+        "https://github.com/elysiajs/elysia"
+      ],
+      "summary": "Bun-oriented TypeScript framework emphasizing end-to-end type inference, schema-driven validation and concise lifecycle composition.",
+      "traits": [
+        "type-inference",
+        "schema",
+        "bun",
+        "lifecycle",
+        "ergonomics"
+      ]
+    },
+    {
+      "cohort": "edge-runtime",
+      "disposition": "included",
+      "homepage": "https://hono.dev/",
+      "id": "hono",
+      "kind": "http-framework",
+      "language": "TypeScript",
+      "launchYear": 2021,
+      "name": "Hono",
+      "observedVersion": "4.12.33",
+      "profile": "standard",
+      "profileDoc": "profiles/modern-web.md",
+      "releaseSource": "https://github.com/honojs/hono/releases/tag/v4.12.33",
+      "repository": "https://github.com/honojs/hono",
+      "sources": [
+        "https://hono.dev/docs/",
+        "https://github.com/honojs/hono"
+      ],
+      "summary": "Web Standards oriented framework targeting multiple edge and JavaScript runtimes through portable adapters.",
+      "traits": [
+        "web-standards",
+        "multi-runtime",
+        "middleware",
+        "typed-rpc"
+      ]
+    },
+    {
+      "cohort": "typed-api",
+      "disposition": "included",
+      "homepage": "https://docs.rs/axum/latest/axum/",
+      "id": "axum",
+      "kind": "http-framework",
+      "language": "Rust",
+      "launchYear": 2021,
+      "name": "axum",
+      "observedVersion": "0.8.9",
+      "profile": "standard",
+      "profileDoc": "profiles/modern-web.md",
+      "releaseSource": "https://github.com/tokio-rs/axum/releases/tag/axum-v0.8.9",
+      "repository": "https://github.com/tokio-rs/axum",
+      "sources": [
+        "https://docs.rs/axum/latest/axum/",
+        "https://github.com/tokio-rs/axum"
+      ],
+      "summary": "Rust Web framework composing handlers, extractors and Tower middleware on Tokio and Hyper.",
+      "traits": [
+        "extractors",
+        "tower",
+        "tokio",
+        "type-system",
+        "async"
+      ]
+    },
+    {
+      "cohort": "minimal-http",
+      "disposition": "included",
+      "homepage": "https://docs.gofiber.io/",
+      "id": "fiber",
+      "kind": "http-framework",
+      "language": "Go",
+      "launchYear": 2020,
+      "name": "Fiber",
+      "observedVersion": "3.4.0",
+      "profile": "standard",
+      "profileDoc": "profiles/modern-web.md",
+      "releaseSource": "https://github.com/gofiber/fiber/releases/tag/v3.4.0",
+      "repository": "https://github.com/gofiber/fiber",
+      "sources": [
+        "https://docs.gofiber.io/",
+        "https://github.com/gofiber/fiber"
+      ],
+      "summary": "Express-inspired Go framework built around fasthttp, routing and middleware ergonomics.",
+      "traits": [
+        "express-inspired",
+        "fasthttp",
+        "middleware",
+        "routing"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://go-chi.io/",
+      "id": "chi",
+      "kind": "router",
+      "language": "Go",
+      "launchYear": 2015,
+      "name": "chi",
+      "profile": "standard",
+      "repository": "https://github.com/go-chi/chi",
+      "sources": [
+        "https://github.com/go-chi/chi"
+      ],
+      "summary": "Composable net/http router preserving standard Go handler interfaces.",
+      "traits": [
+        "net-http",
+        "middleware",
+        "composable"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://github.com/gorilla/mux",
+      "id": "gorilla-mux",
+      "kind": "router",
+      "language": "Go",
+      "launchYear": 2012,
+      "name": "gorilla/mux",
+      "profile": "standard",
+      "repository": "https://github.com/gorilla/mux",
+      "sources": [
+        "https://github.com/gorilla/mux"
+      ],
+      "summary": "Go HTTP request router and matcher in the Gorilla toolkit.",
+      "traits": [
+        "net-http",
+        "matcher",
+        "middleware"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://github.com/julienschmidt/httprouter",
+      "id": "httprouter",
+      "kind": "router",
+      "language": "Go",
+      "launchYear": 2013,
+      "name": "httprouter",
+      "profile": "standard",
+      "repository": "https://github.com/julienschmidt/httprouter",
+      "sources": [
+        "https://github.com/julienschmidt/httprouter"
+      ],
+      "summary": "Radix-tree HTTP request router designed for predictable matching and low overhead.",
+      "traits": [
+        "radix-tree",
+        "routing",
+        "net-http"
+      ]
+    },
+    {
+      "cohort": "minimal-http",
+      "disposition": "included",
+      "homepage": "https://github.com/uNetworking/uWebSockets",
+      "id": "uwebsockets",
+      "kind": "http-framework",
+      "language": "C++",
+      "launchYear": 2016,
+      "name": "uWebSockets",
+      "profile": "seed",
+      "repository": "https://github.com/uNetworking/uWebSockets",
+      "sources": [
+        "https://github.com/uNetworking/uWebSockets"
+      ],
+      "summary": "Low-level HTTP/WebSocket server for demanding event-driven workloads.",
+      "traits": [
+        "websocket",
+        "event-loop",
+        "native"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://router.vuejs.org/",
+      "id": "vue-router",
+      "kind": "router",
+      "language": "TypeScript",
+      "launchYear": 2015,
+      "name": "Vue Router",
+      "profile": "standard",
+      "repository": "https://github.com/vuejs/router",
+      "sources": [
+        "https://router.vuejs.org/",
+        "https://github.com/vuejs/router"
+      ],
+      "summary": "Official client-side router for Vue.",
+      "traits": [
+        "client-router",
+        "nested-routes",
+        "vue"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://tanstack.com/router/latest",
+      "id": "tanstack-router",
+      "kind": "router",
+      "language": "TypeScript",
+      "launchYear": 2022,
+      "name": "TanStack Router",
+      "profile": "standard",
+      "repository": "https://github.com/TanStack/router",
+      "sources": [
+        "https://tanstack.com/router/latest",
+        "https://github.com/TanStack/router"
+      ],
+      "summary": "Type-safe client-first router with server functions and typed search parameters.",
+      "traits": [
+        "type-safe",
+        "client-router",
+        "server-capable"
+      ]
+    },
+    {
+      "cohort": "frontend-ui",
+      "disposition": "included",
+      "homepage": "https://mithril.js.org/",
+      "id": "mithril",
+      "kind": "ui-framework",
+      "language": "JavaScript",
+      "launchYear": 2014,
+      "name": "Mithril",
+      "profile": "seed",
+      "repository": "https://github.com/MithrilJS/mithril.js",
+      "sources": [
+        "https://mithril.js.org/",
+        "https://github.com/MithrilJS/mithril.js"
+      ],
+      "summary": "Compact client framework including VDOM, routing and XHR.",
+      "traits": [
+        "vdom",
+        "client-router",
+        "xhr"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://single-spa.js.org/",
+      "id": "single-spa",
+      "kind": "router",
+      "language": "JavaScript",
+      "launchYear": 2015,
+      "name": "single-spa",
+      "profile": "seed",
+      "repository": "https://github.com/single-spa/single-spa",
+      "sources": [
+        "https://single-spa.js.org/",
+        "https://github.com/single-spa/single-spa"
+      ],
+      "summary": "Route-driven orchestration for microfrontends using multiple UI frameworks.",
+      "traits": [
+        "microfrontend",
+        "orchestration",
+        "client-router"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://ui-router.github.io/",
+      "id": "ui-router",
+      "kind": "router",
+      "language": "TypeScript",
+      "launchYear": 2013,
+      "name": "UI-Router",
+      "profile": "seed",
+      "repository": "https://github.com/angular-ui/ui-router",
+      "sources": [
+        "https://ui-router.github.io/",
+        "https://github.com/angular-ui/ui-router"
+      ],
+      "summary": "State-machine router with nested views originating in AngularJS applications.",
+      "traits": [
+        "state-machine",
+        "nested-views",
+        "client-router"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://github.com/pillarjs/path-to-regexp",
+      "id": "path-to-regexp",
+      "kind": "router",
+      "language": "TypeScript",
+      "launchYear": 2014,
+      "name": "path-to-regexp",
+      "profile": "seed",
+      "repository": "https://github.com/pillarjs/path-to-regexp",
+      "sources": [
+        "https://github.com/pillarjs/path-to-regexp"
+      ],
+      "summary": "Path template parser used as a matching component by JavaScript routers.",
+      "traits": [
+        "path-parser",
+        "component"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://github.com/molefrog/wouter",
+      "id": "wouter",
+      "kind": "router",
+      "language": "TypeScript",
+      "launchYear": 2019,
+      "name": "wouter",
+      "profile": "seed",
+      "repository": "https://github.com/molefrog/wouter",
+      "sources": [
+        "https://github.com/molefrog/wouter"
+      ],
+      "summary": "Minimal client router for React and Preact.",
+      "traits": [
+        "minimal",
+        "react",
+        "preact"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "included",
+      "homepage": "https://symfony.com/doc/current/routing.html",
+      "id": "symfony-routing",
+      "kind": "router",
+      "language": "PHP",
+      "launchYear": 2007,
+      "name": "Symfony Routing",
+      "profile": "seed",
+      "repository": "https://github.com/symfony/routing",
+      "sources": [
+        "https://symfony.com/doc/current/routing.html",
+        "https://github.com/symfony/routing"
+      ],
+      "summary": "Standalone Symfony component mapping HTTP requests to configuration variables.",
+      "traits": [
+        "server-router",
+        "component",
+        "attributes"
+      ]
+    },
+    {
+      "cohort": "data-ai",
+      "disposition": "included",
+      "homepage": "https://orm.drizzle.team/",
+      "id": "drizzle",
+      "kind": "data-framework",
+      "language": "TypeScript",
+      "launchYear": 2022,
+      "name": "Drizzle ORM",
+      "profile": "standard",
+      "repository": "https://github.com/drizzle-team/drizzle-orm",
+      "sources": [
+        "https://orm.drizzle.team/docs/overview",
+        "https://github.com/drizzle-team/drizzle-orm"
+      ],
+      "summary": "TypeScript ORM emphasizing SQL-shaped, type-safe schemas and queries.",
+      "traits": [
+        "orm",
+        "type-safe",
+        "sql"
+      ]
+    },
+    {
+      "cohort": "data-ai",
+      "disposition": "included",
+      "homepage": "https://postgrest.org/",
+      "id": "postgrest",
+      "kind": "data-framework",
+      "language": "Haskell",
+      "launchYear": 2014,
+      "name": "PostgREST",
+      "profile": "standard",
+      "repository": "https://github.com/PostgREST/postgrest",
+      "sources": [
+        "https://postgrest.org/en/stable/",
+        "https://github.com/PostgREST/postgrest"
+      ],
+      "summary": "HTTP API server deriving a RESTful surface from PostgreSQL schema and policies.",
+      "traits": [
+        "database-first",
+        "postgresql",
+        "generated-api"
+      ]
+    },
+    {
+      "cohort": "typed-api",
+      "disposition": "included",
+      "homepage": "https://docs.servant.dev/",
+      "id": "servant",
+      "kind": "http-framework",
+      "language": "Haskell",
+      "launchYear": 2014,
+      "name": "Servant",
+      "profile": "standard",
+      "repository": "https://github.com/haskell-servant/servant",
+      "sources": [
+        "https://docs.servant.dev/",
+        "https://github.com/haskell-servant/servant"
+      ],
+      "summary": "Type-level Web API descriptions interpreted into servers, clients and documentation.",
+      "traits": [
+        "type-level-api",
+        "interpreters",
+        "functional"
+      ]
+    },
+    {
+      "cohort": "cross-platform",
+      "disposition": "included",
+      "homepage": "https://tauri.app/",
+      "id": "tauri",
+      "kind": "desktop-mobile",
+      "language": "Rust/TypeScript",
+      "launchYear": 2019,
+      "name": "Tauri",
+      "profile": "standard",
+      "repository": "https://github.com/tauri-apps/tauri",
+      "sources": [
+        "https://v2.tauri.app/concept/architecture/",
+        "https://github.com/tauri-apps/tauri"
+      ],
+      "summary": "Desktop/mobile application toolkit using the system WebView and a Rust command boundary.",
+      "traits": [
+        "system-webview",
+        "rust",
+        "capabilities",
+        "desktop"
+      ]
+    },
+    {
+      "cohort": "cross-platform",
+      "disposition": "included",
+      "homepage": "https://ionicframework.com/",
+      "id": "ionic",
+      "kind": "desktop-mobile",
+      "language": "TypeScript",
+      "launchYear": 2013,
+      "name": "Ionic Framework",
+      "profile": "seed",
+      "repository": "https://github.com/ionic-team/ionic-framework",
+      "sources": [
+        "https://ionicframework.com/docs",
+        "https://github.com/ionic-team/ionic-framework"
+      ],
+      "summary": "Cross-platform Web component UI toolkit for mobile and progressive Web applications.",
+      "traits": [
+        "web-components",
+        "mobile-ui",
+        "capacitor"
+      ]
+    },
+    {
+      "cohort": "cross-platform",
+      "disposition": "included",
+      "homepage": "https://expo.dev/",
+      "id": "expo",
+      "kind": "desktop-mobile",
+      "language": "TypeScript",
+      "launchYear": 2015,
+      "name": "Expo",
+      "profile": "seed",
+      "repository": "https://github.com/expo/expo",
+      "sources": [
+        "https://docs.expo.dev/",
+        "https://github.com/expo/expo"
+      ],
+      "summary": "React Native application framework and toolchain targeting Android, iOS and Web.",
+      "traits": [
+        "react-native",
+        "toolchain",
+        "universal-app"
+      ]
+    },
+    {
+      "cohort": "frontend-ui",
+      "disposition": "included",
+      "homepage": "https://github.com/charmbracelet/bubbletea",
+      "id": "bubble-tea",
+      "kind": "tui",
+      "language": "Go",
+      "launchYear": 2019,
+      "name": "Bubble Tea",
+      "profile": "standard",
+      "repository": "https://github.com/charmbracelet/bubbletea",
+      "sources": [
+        "https://github.com/charmbracelet/bubbletea"
+      ],
+      "summary": "Functional Go TUI framework based on the Elm Architecture.",
+      "traits": [
+        "elm-architecture",
+        "functional",
+        "terminal"
+      ]
+    },
+    {
+      "cohort": "frontend-ui",
+      "disposition": "included",
+      "homepage": "https://textual.textualize.io/",
+      "id": "textual",
+      "kind": "tui",
+      "language": "Python",
+      "launchYear": 2021,
+      "name": "Textual",
+      "profile": "seed",
+      "repository": "https://github.com/Textualize/textual",
+      "sources": [
+        "https://textual.textualize.io/",
+        "https://github.com/Textualize/textual"
+      ],
+      "summary": "Python application framework for terminal and Web-rendered user interfaces.",
+      "traits": [
+        "terminal",
+        "reactive",
+        "css"
+      ]
+    },
+    {
+      "cohort": "data-ai",
+      "disposition": "included",
+      "homepage": "https://docs.langchain.com/oss/python/langgraph/overview",
+      "id": "langgraph",
+      "kind": "data-framework",
+      "language": "Python/TypeScript",
+      "launchYear": 2023,
+      "name": "LangGraph",
+      "profile": "seed",
+      "repository": "https://github.com/langchain-ai/langgraph",
+      "sources": [
+        "https://docs.langchain.com/oss/python/langgraph/overview",
+        "https://github.com/langchain-ai/langgraph"
+      ],
+      "summary": "Stateful graph runtime for durable agent workflows.",
+      "traits": [
+        "agents",
+        "state-machine",
+        "durable-execution"
+      ]
+    },
+    {
+      "cohort": "data-ai",
+      "disposition": "included",
+      "homepage": "https://docs.llamaindex.ai/",
+      "id": "llamaindex",
+      "kind": "data-framework",
+      "language": "Python",
+      "launchYear": 2022,
+      "name": "LlamaIndex",
+      "profile": "seed",
+      "repository": "https://github.com/run-llama/llama_index",
+      "sources": [
+        "https://docs.llamaindex.ai/",
+        "https://github.com/run-llama/llama_index"
+      ],
+      "summary": "Data and agent framework for ingestion, indexing, retrieval and workflows.",
+      "traits": [
+        "rag",
+        "agents",
+        "workflows",
+        "data-connectors"
+      ]
+    },
+    {
+      "cohort": "enterprise-boot",
+      "disposition": "included",
+      "homepage": "https://github.com/hjosugi/kofun-boot",
+      "id": "kofun-boot",
+      "kind": "application-framework",
+      "language": "Kofun",
+      "launchYear": 2026,
+      "name": "Kofun Boot",
+      "profile": "standard",
+      "repository": "https://github.com/hjosugi/kofun-boot",
+      "sources": [
+        "https://github.com/hjosugi/kofun-boot",
+        "https://github.com/hjosugi/kofun-boot/issues/15"
+      ],
+      "summary": "Evidence-gated application framework research target using typed contracts, explicit capabilities and Functional Core / Imperative Shell.",
+      "traits": [
+        "typed-contract",
+        "capabilities",
+        "functional-core",
+        "evidence-gates"
+      ]
+    },
+    {
+      "cohort": "architecture",
+      "disposition": "included",
+      "homepage": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+      "id": "modular-monolith-ddd",
+      "kind": "architecture-case",
+      "language": "C#",
+      "launchYear": 2018,
+      "name": "Modular Monolith with DDD",
+      "profile": "deep",
+      "profileDoc": "profiles/modular-monolith-ddd.md",
+      "repository": "https://github.com/kgrzybek/modular-monolith-with-ddd",
+      "sources": [
+        "https://github.com/kgrzybek/modular-monolith-with-ddd"
+      ],
+      "summary": "Production-oriented reference application documenting modular monolith, tactical DDD, CQRS, integration reliability and layered tests.",
+      "traits": [
+        "ddd",
+        "modular-monolith",
+        "cqrs",
+        "outbox-inbox",
+        "event-sourcing",
+        "architecture-tests"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "quarantined",
+      "homepage": "https://lantern.io/",
+      "id": "lantern",
+      "kind": "other",
+      "language": "Dart",
+      "launchYear": 2010,
+      "name": "Lantern",
+      "profile": "seed",
+      "quarantineReason": "router topicの語義衝突: network routing/VPN",
+      "quarantineReasonCode": "network-router-vpn",
+      "repository": "https://github.com/getlantern/lantern",
+      "sources": [
+        "https://github.com/getlantern/lantern"
+      ],
+      "summary": "VPN/circumvention product matched by the router topic; not an application routing framework.",
+      "topicHits": [
+        "router"
+      ],
+      "traits": [
+        "vpn"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "quarantined",
+      "homepage": "https://github.com/threat9/routersploit",
+      "id": "routersploit",
+      "kind": "other",
+      "language": "Python",
+      "launchYear": 2015,
+      "name": "RouterSploit",
+      "profile": "seed",
+      "quarantineReason": "security exploitation用途で比較母集団外",
+      "quarantineReasonCode": "security-exploit",
+      "repository": "https://github.com/threat9/routersploit",
+      "sources": [
+        "https://github.com/threat9/routersploit"
+      ],
+      "summary": "Embedded-device exploitation framework, not an application router.",
+      "topicHits": [
+        "router"
+      ],
+      "traits": [
+        "security"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "quarantined",
+      "homepage": "https://github.com/istoreos/istoreos",
+      "id": "istoreos",
+      "kind": "other",
+      "language": "C",
+      "launchYear": 2022,
+      "name": "iStoreOS",
+      "profile": "seed",
+      "quarantineReason": "OS/distributionで成果物種別が異なる",
+      "quarantineReasonCode": "router-os",
+      "repository": "https://github.com/istoreos/istoreos",
+      "sources": [
+        "https://github.com/istoreos/istoreos"
+      ],
+      "summary": "Router/NAS operating system distribution, not a software framework API.",
+      "topicHits": [
+        "router"
+      ],
+      "traits": [
+        "operating-system",
+        "router"
+      ]
+    },
+    {
+      "cohort": "router-component",
+      "disposition": "quarantined",
+      "homepage": "https://github.com/alibaba/ARouter",
+      "id": "arouter",
+      "kind": "other",
+      "language": "Java",
+      "launchYear": 2017,
+      "name": "ARouter",
+      "profile": "seed",
+      "quarantineReason": "Web/router主比較とは境界が異なるため隔離",
+      "quarantineReasonCode": "android-navigation",
+      "repository": "https://github.com/alibaba/ARouter",
+      "sources": [
+        "https://github.com/alibaba/ARouter"
+      ],
+      "summary": "Android component navigation framework retained as a peripheral comparison candidate.",
+      "topicHits": [
+        "router"
+      ],
+      "traits": [
+        "android",
+        "navigation"
+      ]
+    }
+  ],
+  "generations": [
+    {
+      "entities": [
+        "rails",
+        "django",
+        "laravel",
+        "symfony-routing"
+      ],
+      "from": 2004,
+      "id": "g-integrated-web",
+      "label": "統合Webアプリケーション",
+      "shift": "ORM、routing、templates、CLIを一つの規約体系に統合",
+      "source": "https://rubyonrails.org/doctrine",
+      "to": 2013
+    },
+    {
+      "entities": [
+        "react",
+        "vue-2",
+        "vue-router",
+        "mithril",
+        "single-spa",
+        "ui-router"
+      ],
+      "from": 2013,
+      "id": "g-component-ui",
+      "label": "component UIとserver分離",
+      "shift": "UIを宣言的componentに分解し、router/state/dataを選択可能に",
+      "source": "https://react.dev/learn",
+      "to": 2018
+    },
+    {
+      "entities": [
+        "spring-boot",
+        "fastapi",
+        "gin",
+        "servant",
+        "postgrest",
+        "chi",
+        "httprouter"
+      ],
+      "from": 2014,
+      "id": "g-boot-typed",
+      "label": "Bootと型駆動API",
+      "shift": "運用既定値または型・schemaからartifactを派生",
+      "source": "https://spring.io/projects/spring-boot",
+      "to": 2021
+    },
+    {
+      "entities": [
+        "hono",
+        "elysia",
+        "axum",
+        "tanstack-router",
+        "drizzle"
+      ],
+      "from": 2021,
+      "id": "g-runtime-portable",
+      "label": "edge・multi-runtime・end-to-end型",
+      "shift": "Web Standards、複数runtime、型推論、portable adaptersが設計軸に",
+      "source": "https://hono.dev/docs/",
+      "to": 2026
+    },
+    {
+      "entities": [
+        "ionic",
+        "expo",
+        "tauri",
+        "bubble-tea",
+        "textual"
+      ],
+      "from": 2013,
+      "id": "g-cross-platform",
+      "label": "cross-platform application shells",
+      "shift": "UIとnative/terminal capabilityの境界を明示",
+      "source": "https://v2.tauri.app/concept/architecture/",
+      "to": 2026
+    },
+    {
+      "entities": [
+        "langgraph",
+        "llamaindex"
+      ],
+      "from": 2022,
+      "id": "g-agent-data",
+      "label": "stateful agent/data workflows",
+      "shift": "durable state、tool side effects、retrieval pipelineをframeworkが管理",
+      "source": "https://docs.langchain.com/oss/python/langgraph/overview",
+      "to": 2026
+    }
+  ],
+  "hostAdapters": [
+    {
+      "ambientStateRisk": "context decoration can become implicit dependency",
+      "entity": "elysia",
+      "otherHosts": [
+        "Cloudflare adapter via ecosystem"
+      ],
+      "portability": "runtime-centered",
+      "primaryRuntime": "Bun",
+      "requestLifetime": "framework lifecycle context scoped to request",
+      "source": "https://elysiajs.com/"
+    },
+    {
+      "ambientStateRisk": "context variables require typed ownership",
+      "entity": "hono",
+      "otherHosts": [
+        "Cloudflare Workers",
+        "Deno",
+        "Bun",
+        "Node.js",
+        "AWS Lambda"
+      ],
+      "portability": "multi-runtime adapters; host capabilities are not identical",
+      "primaryRuntime": "Web Standards host adapter",
+      "requestLifetime": "Hono Context scoped to dispatch",
+      "source": "https://hono.dev/docs/getting-started/basic"
+    },
+    {
+      "ambientStateRisk": "shared State is explicit extractor but interior mutability remains a design choice",
+      "entity": "axum",
+      "otherHosts": [
+        "Tower service ecosystem"
+      ],
+      "portability": "Rust native host",
+      "primaryRuntime": "Tokio + Hyper",
+      "requestLifetime": "extractors move or borrow request parts into handler values",
+      "source": "https://docs.rs/axum/latest/axum/"
+    },
+    {
+      "ambientStateRisk": "context values must not escape request lifetime",
+      "entity": "fiber",
+      "otherHosts": [],
+      "portability": "Go native host with fasthttp compatibility boundary",
+      "primaryRuntime": "fasthttp",
+      "requestLifetime": "Fiber Context follows fasthttp request reuse constraints",
+      "source": "https://docs.gofiber.io/"
+    }
+  ],
+  "issues": [
+    {
+      "bodyDigest": "e53b874ff4bbf560e31654816234411f3ac3b8551ac138f31a68b6fdaa3376d8",
+      "file": "issues/0001-a0-framework-atlas-evidence-backed-catalog-lineage-graph-pages-and-zip.md",
+      "fileDigest": "5e981a33d4001f1ea66640f7a550a0a6d96251e0a89cd9c344ececc3e8903a68",
+      "number": 1,
+      "parent": null,
+      "state": "open",
+      "title": "A0 framework atlas: evidence-backed catalog, lineage graph, Pages, and ZIP",
+      "titleDigest": "bf13b56d4f1bd9b44930cc45379feb0a4680785cc06d57104020878aaea042ae",
+      "updatedAt": "2026-08-02T05:45:03Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/1"
+    },
+    {
+      "bodyDigest": "3d1bce35b9323869d46b39103508a506087a980757cb5e3ef9dd74128e3d8b46",
+      "file": "issues/0002-e1-data-and-evidence-versioned-schema-taxonomy-claims-and-unresolved-poi.md",
+      "fileDigest": "d5ce59edee9913ed669441c56226863ef19b9f1bad9c7c7206a82d3f0f22fa74",
+      "number": 2,
+      "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
+      "state": "open",
+      "title": "E1 data and evidence: versioned schema, taxonomy, claims, and unresolved points",
+      "titleDigest": "273d0b829b9fc18a066499e088cc058c429b57ac064e9c83396bda1628f2d78a",
+      "updatedAt": "2026-08-02T05:45:05Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/2"
+    },
+    {
+      "bodyDigest": "0720b3b6dd22baf547d8d639f58175204164fe92123a665d92279723b333a5a2",
+      "file": "issues/0003-e2-collection-github-topic-ingestion-normalization-and-misclassification.md",
+      "fileDigest": "c165b2c142780dffcc127ac65d884490eebc2f4df7f0c38f5f4b5bedb1d7384c",
+      "number": 3,
+      "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
+      "state": "open",
+      "title": "E2 collection: GitHub Topic ingestion, normalization, and misclassification quarantine",
+      "titleDigest": "d5c24ed1a4204b13b1c7f45dd116b6e29a4c9bbdc2a7ab1e8a500bb217e42e2d",
+      "updatedAt": "2026-08-02T05:45:07Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/3"
+    },
+    {
+      "bodyDigest": "d974a64931e26b0998d23453629fce04582385f5d067b78463af53f01606294b",
+      "file": "issues/0004-e3-profiles-and-lineage-design-history-generations-comparisons-and-evide.md",
+      "fileDigest": "4a18716ca3bb747eee237c2de5a7a88506f4e64e6d1387efaba0ea74e175ae03",
+      "number": 4,
+      "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
+      "state": "open",
+      "title": "E3 profiles and lineage: design history, generations, comparisons, and evidence graph",
+      "titleDigest": "540c168c560b35c3635e6e3ec458196eb0b0a8130aa332e8734e4b30dffb6319",
+      "updatedAt": "2026-08-02T05:45:09Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/4"
+    },
+    {
+      "bodyDigest": "9072b05e9c7efe87025870b01f17c779370a8dcc1abe58fb462c792225a37f1e",
+      "file": "issues/0005-e4-production-architecture-modular-monolith-ddd-case-study-and-framework.md",
+      "fileDigest": "396ffd89fdfd35182da2d805e4a14cdd158c608ec5819fa6434195fd8578da40",
+      "number": 5,
+      "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
+      "state": "open",
+      "title": "E4 production architecture: modular monolith DDD case study and framework mappings",
+      "titleDigest": "8e0a19b8f229c592783f8a8712a1f74e1d052ace7b8b6e1eef03c17c790929d5",
+      "updatedAt": "2026-08-02T05:45:11Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/5"
+    },
+    {
+      "bodyDigest": "cd261910c716612107e085402fa6ce6879d5bd6e7d4f45c0f0d416b4c437e998",
+      "file": "issues/0006-e5-static-pages-search-cohort-filters-lineage-graph-timeline-and-case-st.md",
+      "fileDigest": "6a5c1e66f66252b2bfbbb39e4493f73569104d94de8a05ca4bcf35b51d4a69a3",
+      "number": 6,
+      "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
+      "state": "open",
+      "title": "E5 static Pages: search, cohort filters, lineage graph, timeline, and case-study UX",
+      "titleDigest": "0b885c4efb038ce3e29aad48d8ce6e3c26f26c8aaa0e46ae51a17d319797b66c",
+      "updatedAt": "2026-08-02T05:45:13Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/6"
+    },
+    {
+      "bodyDigest": "5f72ec1fcdfd92b7e3130a2c9c8c074871da9dfb3bcc850e9811c91453dfed1d",
+      "file": "issues/0007-e6-release-deterministic-zip-ci-pages-issues-export-and-public-verificat.md",
+      "fileDigest": "6e9e7acb431d8da2c7a40f3b8072ef3594f96f373bfe5fe80c6bff65ef4c2feb",
+      "number": 7,
+      "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
+      "state": "open",
+      "title": "E6 release: deterministic ZIP, CI, Pages, issues export, and public verification",
+      "titleDigest": "d61f85c4a470f81b13f91ae03ff056b187b775f9b6e33daf1251a5958cf9bc5f",
+      "updatedAt": "2026-08-02T05:45:15Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/7"
+    },
+    {
+      "bodyDigest": "ed43233c827b4487b7efda0aa223ec4212d497e254420a22001dcfcdb55ca1a2",
+      "file": "issues/0008-d1-implement-atlas-v1-json-schemas-and-offline-validator.md",
+      "fileDigest": "9e6094677683ff7777b5ca9afc4923d0b8056793cf8b74d054a9a49e3959d0f1",
+      "number": 8,
+      "parent": "[E1 #2](https://github.com/hjosugi/framework-atlas/issues/2)",
+      "state": "open",
+      "title": "D1 implement atlas-v1 JSON schemas and offline validator",
+      "titleDigest": "aadcc190d3d20b2bd7c375e169ae65b04719cd8c24c741ddc1e37df22f37aaab",
+      "updatedAt": "2026-08-02T05:38:53Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/8"
+    },
+    {
+      "bodyDigest": "d5acb7f4c1e447f84d831ed39cc6a2a4ddd341a2736a3c2ad3cd941265f8731d",
+      "file": "issues/0009-d2-implement-taxonomy-stable-ids-aliases-cohorts-and-topic-disposition.md",
+      "fileDigest": "081018cee76ceee0750496d8550a7c0e2801780c66ba0c3ef72b8e93a4161aab",
+      "number": 9,
+      "parent": "[E1 #2](https://github.com/hjosugi/framework-atlas/issues/2)",
+      "state": "open",
+      "title": "D2 implement taxonomy, stable IDs, aliases, cohorts, and topic disposition",
+      "titleDigest": "22233a2c43cee49cb04d24e8bdc688371c6c978cdf26cc0c46f58ddcaf71ade1",
+      "updatedAt": "2026-08-02T05:38:57Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/9"
+    },
+    {
+      "bodyDigest": "169c5d92e13296e3d225f6cd23e75c85819cb30929d5edb574cfc578f3658e25",
+      "file": "issues/0010-d3-implement-evidence-claims-metric-provenance-and-official-vs-inference.md",
+      "fileDigest": "8ecf4f2dd40cbaf29b2246102e777c746454c03d7b6827a9e8e154a9df85ab4b",
+      "number": 10,
+      "parent": "[E1 #2](https://github.com/hjosugi/framework-atlas/issues/2)",
+      "state": "open",
+      "title": "D3 implement evidence claims, metric provenance, and official-vs-inference rules",
+      "titleDigest": "0e6e563a5ee507bfcebf24d6960ea2deda98c0c24923534311aa49896a9c0abc",
+      "updatedAt": "2026-08-02T05:38:58Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/10"
+    },
+    {
+      "bodyDigest": "b493325173fd39d2fcc558256f578d7cbbbb2fac4f6f1a034a3ba199f6992863",
+      "file": "issues/0011-d4-implement-unresolved-design-point-records-and-resolution-links.md",
+      "fileDigest": "ec12f85b8449d533125fdb45f34e77918c21894b2027fc28a7159e7528aea5b0",
+      "number": 11,
+      "parent": "[E1 #2](https://github.com/hjosugi/framework-atlas/issues/2)",
+      "state": "open",
+      "title": "D4 implement unresolved-design-point records and resolution links",
+      "titleDigest": "29081521622321cd657590cbbf0d40740a1f7db12e0c6d6010e2f4d502cde324",
+      "updatedAt": "2026-08-02T05:38:59Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/11"
+    },
+    {
+      "bodyDigest": "507cd9fd3d906578d01af36af074bc125965518eaf851a41daf98ca53cab620a",
+      "file": "issues/0012-d5-seed-the-curated-catalog-and-quarantine-set-from-requested-github-top.md",
+      "fileDigest": "23fb0659b41708f3e7f485f68cab79aa8823077b5e2f94eea3fa1ad717e36509",
+      "number": 12,
+      "parent": "[E1 #2](https://github.com/hjosugi/framework-atlas/issues/2)",
+      "state": "open",
+      "title": "D5 seed the curated catalog and quarantine set from requested GitHub Topics",
+      "titleDigest": "fe5fab96895c7d6e57cf06a8184be4e3b952458d77d4e1653f80e442c8f79c06",
+      "updatedAt": "2026-08-02T05:39:00Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/12"
+    },
+    {
+      "bodyDigest": "18a62b14b87a822e219e2b52ceb6c0a0d4667070079d9573566728c87118c75e",
+      "file": "issues/0013-c1-implement-standard-library-github-topic-collector-with-recursive-date.md",
+      "fileDigest": "32e1f5756ca51cc28d4a1cb63e75aeaf6c1c9bbe59f95d5a047c6c89d673a9c8",
+      "number": 13,
+      "parent": "[E2 #3](https://github.com/hjosugi/framework-atlas/issues/3)",
+      "state": "open",
+      "title": "C1 implement standard-library GitHub Topic collector with recursive date splitting",
+      "titleDigest": "7b26e7cdf2621bfee361db5847f2e4ad61cc21ab0ae41714a37e63e573b4a6ff",
+      "updatedAt": "2026-08-02T05:39:01Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/13"
+    },
+    {
+      "bodyDigest": "4d43c46cc4f58358239a9d9f3b436eb53de46235f0971937ebf6feec5f595279",
+      "file": "issues/0014-c2-implement-pagination-rate-limit-handling-checkpoints-and-raw-snapshot.md",
+      "fileDigest": "d8d84222d25782aa30fd5e4a080fba43cf983c5c2d1e36b49deb356aace4dcbb",
+      "number": 14,
+      "parent": "[E2 #3](https://github.com/hjosugi/framework-atlas/issues/3)",
+      "state": "open",
+      "title": "C2 implement pagination, rate-limit handling, checkpoints, and raw snapshot manifests",
+      "titleDigest": "0ab680723df40bcd3362c04c35b2ef6305ab816777f6c3cebdde81ea9899745b",
+      "updatedAt": "2026-08-02T05:39:02Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/14"
+    },
+    {
+      "bodyDigest": "ecb3e3208716f4474f4ef9abd8001d4c0f4b3fd6fe60e58399f2abc688b0b37c",
+      "file": "issues/0015-c3-implement-deterministic-repository-normalization-aliases-forks-and-de.md",
+      "fileDigest": "8e375abe280ee11d826588adfa803a02790f436b2c3cdacf51c440e85612ede5",
+      "number": 15,
+      "parent": "[E2 #3](https://github.com/hjosugi/framework-atlas/issues/3)",
+      "state": "open",
+      "title": "C3 implement deterministic repository normalization, aliases, forks, and deduplication",
+      "titleDigest": "de43439889dab5acbb44807befd098f25ceaf12677c307383e8ca2ada532f96b",
+      "updatedAt": "2026-08-02T05:39:03Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/15"
+    },
+    {
+      "bodyDigest": "213c32e3284a29291ce9a351ad5e999dcb3f9fef575bd2058576d04908c2c22a",
+      "file": "issues/0016-c4-implement-topic-classifier-and-reason-coded-quarantine.md",
+      "fileDigest": "24b8636acab64d1e983c177eb093717dbbad738b11453b9a7940314f99b73f22",
+      "number": 16,
+      "parent": "[E2 #3](https://github.com/hjosugi/framework-atlas/issues/3)",
+      "state": "open",
+      "title": "C4 implement topic classifier and reason-coded quarantine",
+      "titleDigest": "4fec8539240271d4e2d4f3866e75f965303be76451155d4fd8baf8c3cffe7b41",
+      "updatedAt": "2026-08-02T05:39:04Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/16"
+    },
+    {
+      "bodyDigest": "65f8d6f1fb5761724ca9319668ebd9086bd2373ca2e8bd5ee0331c290b98934c",
+      "file": "issues/0017-c5-implement-offline-collector-contract-tests-and-fixture-refresh-protoc.md",
+      "fileDigest": "ffa1206eed8bfb21c0528d3e2298f71b3a926570100e7861753afc37f9444ffd",
+      "number": 17,
+      "parent": "[E2 #3](https://github.com/hjosugi/framework-atlas/issues/3)",
+      "state": "open",
+      "title": "C5 implement offline collector contract tests and fixture refresh protocol",
+      "titleDigest": "4070c5242941e8eb2a283f1b0a14f1c7686fc14570b0c6423841c4c9a646d02c",
+      "updatedAt": "2026-08-02T05:39:05Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/17"
+    },
+    {
+      "bodyDigest": "628d0d15065a66a615dc8d9852e7c1607374ec70b996fd52d396fd8addb192e3",
+      "file": "issues/0018-p1-implement-the-spring-boot-deep-profile-and-spring-ecosystem-map.md",
+      "fileDigest": "e9b7be1f38493809cfac89b009568aea1c061d284a8d4de011f45da7fab02367",
+      "number": 18,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P1 implement the Spring Boot deep profile and Spring ecosystem map",
+      "titleDigest": "4ab657db621f61331971b4cc0a23a39e147a543cc5331316b165dc89b02f0f49",
+      "updatedAt": "2026-08-02T05:40:24Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/18"
+    },
+    {
+      "bodyDigest": "0237621bf97bc45282f1c664f543e938f3ad26c2f7e250cc6e4a0474af800469",
+      "file": "issues/0019-p2-implement-the-fastapi-deep-profile-and-starlette-pydantic-lineage.md",
+      "fileDigest": "423348cd2be345c93cc4ea396574712ab1f5c42c6b38d21af7a1f2a84a0ab7fb",
+      "number": 19,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P2 implement the FastAPI deep profile and Starlette/Pydantic lineage",
+      "titleDigest": "09a079fb37b500fa13ff4ec38f34327a2c299b571844b550cfb97c416a3a538c",
+      "updatedAt": "2026-08-02T05:40:25Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/19"
+    },
+    {
+      "bodyDigest": "4efe9019acada2de8e39f5ab8465b96f6cdadb50218c01c3db891664d4d28c47",
+      "file": "issues/0020-p3-implement-the-gin-deep-profile-and-httprouter-go-runtime-lineage.md",
+      "fileDigest": "500375fef727051b2fc8ea037d11466bc5419f9e8e605af684d10b73f7ba58c8",
+      "number": 20,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P3 implement the Gin deep profile and httprouter/Go runtime lineage",
+      "titleDigest": "b731daf957038dd64faccec745fb07f2291b3b3a4118e91ebfce66bb6b142c75",
+      "updatedAt": "2026-08-02T05:40:26Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/20"
+    },
+    {
+      "bodyDigest": "f699eae0f868a9743c28fd6247ef3543cdc82adb944d399a5eb3c416a07dd510",
+      "file": "issues/0021-p4-implement-rails-laravel-and-django-deep-profiles-as-batteries-include.md",
+      "fileDigest": "5b9dcacce2f4d46d3c017c85d13962706bc82896a38fb69b8501d88bc10b0a3b",
+      "number": 21,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P4 implement Rails, Laravel, and Django deep profiles as batteries-included baselines",
+      "titleDigest": "26557c8c3d4f53684ad1980b7a6f4223eb850389962840b14dd72021d3574b60",
+      "updatedAt": "2026-08-02T05:40:27Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/21"
+    },
+    {
+      "bodyDigest": "71ae72f64b3003f1239b9ee0ac454f7837e7449ad636ed3e69a9873ddfc80cfb",
+      "file": "issues/0022-p5-implement-react-and-vue-deep-profiles-with-routing-state-full-stack-b.md",
+      "fileDigest": "b945e0aad574dc9aabc999907319f1010472c6425f747d22a949be1f93d64c17",
+      "number": 22,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P5 implement React and Vue deep profiles with routing/state/full-stack boundaries",
+      "titleDigest": "00cad6943945d1846531306f563853fe75908e6b4686ba5d34b360399b2f0744",
+      "updatedAt": "2026-08-02T05:40:28Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/22"
+    },
+    {
+      "bodyDigest": "1414176e30d69ad4a98f521c12b5a4927a0eb8eeca7ea91b44e0fb97d227a295",
+      "file": "issues/0023-p6-implement-modern-web-cohort-profiles-for-elysia-hono-axum-and-fiber-v.md",
+      "fileDigest": "9b5b606c405481676f3e7d53e931552f03e6d4614943db1b54f0241cdd7e4b98",
+      "number": 23,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P6 implement modern Web cohort profiles for Elysia, Hono, axum, and Fiber v3",
+      "titleDigest": "db71644e5e647e183d3e33ff5407e17d13cae6e2f387c8dfc202f3fc8efb8210",
+      "updatedAt": "2026-08-02T05:40:29Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/23"
+    },
+    {
+      "bodyDigest": "685750798766d40e881ce13309add6270ec5774d8dcddf43d93e235e63a9c552",
+      "file": "issues/0024-p7-implement-router-topic-lineage-and-http-vs-client-vs-system-router-cl.md",
+      "fileDigest": "d728362b38c9a2d4ba207d7f4599e412119725dbef3a8c79b13c88c8dbc79b5e",
+      "number": 24,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P7 implement router-topic lineage and HTTP-vs-client-vs-system-router classification",
+      "titleDigest": "c0655f6e71089248d1e79626a430753060eedd5fa28381029d225e06b40339a4",
+      "updatedAt": "2026-08-02T05:40:30Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/24"
+    },
+    {
+      "bodyDigest": "ed37d5d6bbf00e910e0b179481e2868c2b1e1cfa1c985b482b106404430d1932",
+      "file": "issues/0025-p8-implement-evidence-backed-lineage-graph-and-framework-generation-time.md",
+      "fileDigest": "af809466d47347b98558585e23fe5b3283aef69a4a5eb451dd32192e66e900f8",
+      "number": 25,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P8 implement evidence-backed lineage graph and framework generation timeline",
+      "titleDigest": "c7b9f097627b2844c09ae66a39321b228ade5f73921f2c45028dad429b4cbf71",
+      "updatedAt": "2026-08-02T05:40:31Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/25"
+    },
+    {
+      "bodyDigest": "53d63526f0af11b319f8dd476357ed6cec53c378f65bd5aab3074fc91b864d7d",
+      "file": "issues/0026-p9-implement-cross-cutting-matrices-for-data-model-routing-di-state-runt.md",
+      "fileDigest": "1f8cad5b22f5e6d867d986bea406d90ceaaeba75520df637939a9610f52fc4cb",
+      "number": 26,
+      "parent": "[E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)",
+      "state": "open",
+      "title": "P9 implement cross-cutting matrices for data model, routing, DI, state, runtime, and operations",
+      "titleDigest": "7757441387d8e05e987cfa81f617af508a901e2ec227ab9e3d4092232c6ccdb5",
+      "updatedAt": "2026-08-02T05:40:32Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/26"
+    },
+    {
+      "bodyDigest": "fe8ceb7c2517a3ef9202600d3cd4ee3c583af7c77f87de366a2bf31e6b78e409",
+      "file": "issues/0027-m1-pin-and-extract-the-modular-monolith-with-ddd-architecture-inventory.md",
+      "fileDigest": "6f6d5e66ba6c101075c5e647bf8a32ba53493207d081a3de46b1eb7b74f44114",
+      "number": 27,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M1 pin and extract the modular-monolith-with-ddd architecture inventory",
+      "titleDigest": "90a524a236f3450d3dfb5a0ee9b0e533702784be668acd728eb2b9543a5b9ad9",
+      "updatedAt": "2026-08-02T05:42:08Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/27"
+    },
+    {
+      "bodyDigest": "3055911cefe855d1430d5ff67642cff95a4daf5095108f16a02e5d1df3b4b2f8",
+      "file": "issues/0028-m2-implement-ddd-bounded-context-module-aggregate-and-schema-boundary-ma.md",
+      "fileDigest": "32445d4e6501237d03652b7355b560c12075b6f8d2c10204aec7f0fbc4f511e3",
+      "number": 28,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M2 implement DDD bounded-context, module, aggregate, and schema-boundary mappings",
+      "titleDigest": "d79f3a8709a285347cc1dccbfe57650e4739e9fd40f907dc46bf78a1ceeff5f5",
+      "updatedAt": "2026-08-02T05:42:09Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/28"
+    },
+    {
+      "bodyDigest": "7311438f0881c609852e28c289fcedefcb65ffe06a03895d15d1ff20002e811c",
+      "file": "issues/0029-m3-implement-cqrs-command-query-decorator-and-cross-cutting-concern-mapp.md",
+      "fileDigest": "82ce6ef18ef05dc32068428cd6d2a45de17e723631a4ee5e9aaafc25f9f227bb",
+      "number": 29,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M3 implement CQRS, command/query, decorator, and cross-cutting-concern mappings",
+      "titleDigest": "fdffe211b682bc80fe0b73c729a9d69b3164487a2463ed2b4214a478715ddeb6",
+      "updatedAt": "2026-08-02T05:42:10Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/29"
+    },
+    {
+      "bodyDigest": "9371c3cff54cf178b1b0224e7cde0385b8793887606e117dcf16909c445c4ea5",
+      "file": "issues/0030-m4-implement-outbox-inbox-idempotency-ordering-and-module-integration-ma.md",
+      "fileDigest": "b73267bc868b31d58eff640b9bc94d9c4a739c37fc7d0e6b946bad059615e450",
+      "number": 30,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M4 implement Outbox/Inbox, idempotency, ordering, and module-integration mappings",
+      "titleDigest": "fd0433ce64fc9be5f1a0f43cd20c974d86c600c4649a44c9c18e68bf478658d0",
+      "updatedAt": "2026-08-02T05:42:11Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/30"
+    },
+    {
+      "bodyDigest": "0c7236dc7709e8b6c3d484954975ca8aacaf0e949247115a0b175462743159e5",
+      "file": "issues/0031-m5-implement-event-sourcing-projection-migration-and-audit-log-distincti.md",
+      "fileDigest": "66fbdca49231f8c9f95b102b0d4f4c9104470b4e3f095c8a4786964cd2062aa0",
+      "number": 31,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M5 implement event-sourcing, projection, migration, and audit-log distinctions",
+      "titleDigest": "00b8529ae835b2461a24fd59a4ac3cb1bfc37aa6a4dfdeaa337e597c2208d6ea",
+      "updatedAt": "2026-08-02T05:42:12Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/31"
+    },
+    {
+      "bodyDigest": "41e5a3581ec748bcdf3fed9ca452606fd5daf0411a991fa12795c3149ea74208",
+      "file": "issues/0032-m6-implement-architecture-tests-integration-system-tests-mutation-tests-.md",
+      "fileDigest": "533d78439b1fb1be460aa9de54dea8228c6c0fcd3f2cd961ca910143634cae92",
+      "number": 32,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M6 implement architecture tests, integration/system tests, mutation tests, C4, and ADR mappings",
+      "titleDigest": "7ea88107837a1e4e1e7d2fc4484d93a088927c434dd2f7debeaece667069430b",
+      "updatedAt": "2026-08-02T05:42:13Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/32"
+    },
+    {
+      "bodyDigest": "52fe3502cc50ce47b4fb23845a345b0db969fe0cae50e8372a5494828ac00b2d",
+      "file": "issues/0033-m7-implement-the-modular-monolith-mapping-for-spring-boot-and-spring-mod.md",
+      "fileDigest": "0f78aadbbb359e22b1b7c678282edfc4e06be99ab5ad3f46735242da4f876abc",
+      "number": 33,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M7 implement the modular-monolith mapping for Spring Boot and Spring Modulith",
+      "titleDigest": "aa7ef871f697109fc3acb9d62f37b29f0138bdf6bb910c676d49758049fda9fa",
+      "updatedAt": "2026-08-02T05:42:14Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/33"
+    },
+    {
+      "bodyDigest": "4ddd12f0fd183d3ff7dcff6329b558f8b71732999d3b8878929d8b770ef670da",
+      "file": "issues/0034-m8-implement-the-modular-monolith-mapping-for-fastapi.md",
+      "fileDigest": "5e63a9b8de1911b969eab55f5abb6a27f4d0ab522e6218288e374df96cea38f1",
+      "number": 34,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M8 implement the modular-monolith mapping for FastAPI",
+      "titleDigest": "c485ed96a258ceb22d56bf36d37aba1db04bafef964f1970de0748f95a375a72",
+      "updatedAt": "2026-08-02T05:42:15Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/34"
+    },
+    {
+      "bodyDigest": "97711cfe3c3a17d56afdea729c0d0e56256f5b8d8425b641559f6da075eb3938",
+      "file": "issues/0035-m9-implement-the-modular-monolith-mapping-for-gin.md",
+      "fileDigest": "da26e38e9e13e5fa4ca9d920bc24312e1c57025279e8a6b1a5dc37bea7316ccb",
+      "number": 35,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M9 implement the modular-monolith mapping for Gin",
+      "titleDigest": "ba71ce77c87845503706f50adb09263d992479f45f6f17acb8139e85706b4e76",
+      "updatedAt": "2026-08-02T05:42:17Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/35"
+    },
+    {
+      "bodyDigest": "025fdca733a4d2774addbb83890ad0bb0f3ab5c0e4bdf77787f5e522f9522b4c",
+      "file": "issues/0036-m10-implement-the-modular-monolith-mapping-for-kofun-boot.md",
+      "fileDigest": "8d362b743730a141f375d03ae1a12135e17529844ce3a443da68ecc2170bfdc5",
+      "number": 36,
+      "parent": "[E4 #5](https://github.com/hjosugi/framework-atlas/issues/5)",
+      "state": "open",
+      "title": "M10 implement the modular-monolith mapping for kofun-boot",
+      "titleDigest": "a254eb98dcfb2e76fa1bebfc8f933f6afe7d5128decabb37c85690739afea513",
+      "updatedAt": "2026-08-02T05:42:18Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/36"
+    },
+    {
+      "bodyDigest": "d3bfeb2a3c827d76e607d0a0333a50067f1569d9e8b7e90b8933e7a52db30cdf",
+      "file": "issues/0037-s1-implement-deterministic-static-site-generation-and-generated-data-dri.md",
+      "fileDigest": "a8780cb7cdbc743eda80a22ecac89a60a8f6ac9275b747a1b3dc4f3ee924bc00",
+      "number": 37,
+      "parent": "[E5 #6](https://github.com/hjosugi/framework-atlas/issues/6)",
+      "state": "open",
+      "title": "S1 implement deterministic static-site generation and generated-data drift checks",
+      "titleDigest": "3186bbb89bec1205254be34854e21f025f10de5afcd9e052d24db2d3e0b24413",
+      "updatedAt": "2026-08-02T05:43:30Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/37"
+    },
+    {
+      "bodyDigest": "d1cd70c1f15eff4c60c22f74118c203d29498aadde8c8a85b4285f8329664996",
+      "file": "issues/0038-s2-implement-offline-search-cohort-filters-detail-profiles-and-shareable.md",
+      "fileDigest": "490ca0919d00c08c733ba97583e6956a1fdb493ebfcb236ab9315cc2ebcbd89d",
+      "number": 38,
+      "parent": "[E5 #6](https://github.com/hjosugi/framework-atlas/issues/6)",
+      "state": "open",
+      "title": "S2 implement offline search, cohort filters, detail profiles, and shareable URLs",
+      "titleDigest": "5f5ca98431fefb532b5343ef5397ad52910ee9b4a3144447a035116ff43b8177",
+      "updatedAt": "2026-08-02T05:43:31Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/38"
+    },
+    {
+      "bodyDigest": "389aafdb5b17663edb0cd40d5514c742abe94cfd63eb5dd59a7ef2b5c24d19c8",
+      "file": "issues/0039-s3-implement-the-interactive-directed-lineage-graph-with-evidence-inspec.md",
+      "fileDigest": "7a66cce4981e3d3b4dbf0aa947dfcaf7810460b716ea9f49f88280c9532cf953",
+      "number": 39,
+      "parent": "[E5 #6](https://github.com/hjosugi/framework-atlas/issues/6)",
+      "state": "open",
+      "title": "S3 implement the interactive directed lineage graph with evidence inspection",
+      "titleDigest": "1e86a6492c54fca56a830540b9f1634e76e0ef3ab7b44a5302d9c4b850c59a6a",
+      "updatedAt": "2026-08-02T05:43:32Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/39"
+    },
+    {
+      "bodyDigest": "cab13797323237e2ce53247451583a0287ca58f13c18a6481f62a614e0e2821c",
+      "file": "issues/0040-s4-implement-generation-timeline-comparison-matrices-unresolved-tracker-.md",
+      "fileDigest": "2c0dae47add070415fc068a3db6e104094e1ef8b0f11e8537d3f1f90cf44e350",
+      "number": 40,
+      "parent": "[E5 #6](https://github.com/hjosugi/framework-atlas/issues/6)",
+      "state": "open",
+      "title": "S4 implement generation timeline, comparison matrices, unresolved tracker, and DDD case view",
+      "titleDigest": "515ed18a971a24ff41eb5a25f7c12e8cd0bfc8e031c274ddaa617af27e76e780",
+      "updatedAt": "2026-08-02T05:43:33Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/40"
+    },
+    {
+      "bodyDigest": "7ca67b1e801ada0c8ed08f5b4a9f6cd4b073347aa91858455cde6079a34841dd",
+      "file": "issues/0041-s5-implement-accessibility-responsive-layout-content-security-and-browse.md",
+      "fileDigest": "b1b857d81095137d59f6129593a07a274fb654be8467091f8e34fe8d6dcb0081",
+      "number": 41,
+      "parent": "[E5 #6](https://github.com/hjosugi/framework-atlas/issues/6)",
+      "state": "open",
+      "title": "S5 implement accessibility, responsive layout, content security, and browser smoke gates",
+      "titleDigest": "b2d36faf18b8f70fae171dfbcd9f7046d39ac82fc7a3cb74c18d266017601f41",
+      "updatedAt": "2026-08-02T05:43:34Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/41"
+    },
+    {
+      "bodyDigest": "f3893e23fe7639a1603beae7192d77b9742580e624029ebf1058451815f36d3b",
+      "file": "issues/0042-r1-implement-issue-source-export-and-registered-issue-digest-verificatio.md",
+      "fileDigest": "3ed8f0b928168bac89f2508020d5bd7e7cb67b49b59fed1adbb8486a9b0243b6",
+      "number": 42,
+      "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
+      "state": "open",
+      "title": "R1 implement issue-source export and registered-issue digest verification",
+      "titleDigest": "83f8c511b2d6e3bb8f4d880e3325761990338751812b72a8f049895ed50231d2",
+      "updatedAt": "2026-08-02T05:43:35Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/42"
+    },
+    {
+      "bodyDigest": "8615b4d171572245f1bb2ec593beddd933a9e4bd3ee527457e76977024720d31",
+      "file": "issues/0043-r2-implement-reproducible-zip-assembly-and-sha-256-manifest.md",
+      "fileDigest": "9bfc78d37c14fd2a4da5773f75083965b52ce48a478c1f13c35bd11dc5597a23",
+      "number": 43,
+      "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
+      "state": "open",
+      "title": "R2 implement reproducible ZIP assembly and SHA-256 manifest",
+      "titleDigest": "e708b9293cfb92b2e778e9a61bcb25a79e26b7083bbbdb3d4690dcdf68f37c11",
+      "updatedAt": "2026-08-02T05:43:36Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/43"
+    },
+    {
+      "bodyDigest": "37f172d0a5932df38bbe4e672ed79216788fb578df2a1c80107dd9d8663e3f27",
+      "file": "issues/0044-r3-implement-ci-gates-for-validate-tests-generation-drift-and-zip-reprod.md",
+      "fileDigest": "4f2fbdb3cb03e1858a5f02d6cb77a141a357d0bc1fd6eb141d195bed748ccb6a",
+      "number": 44,
+      "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
+      "state": "open",
+      "title": "R3 implement CI gates for validate, tests, generation drift, and ZIP reproducibility",
+      "titleDigest": "3dbbb69826d9d5c53540beee4907fe6b0179d570de9b27adef034fff3ab808b0",
+      "updatedAt": "2026-08-02T05:43:37Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/44"
+    },
+    {
+      "bodyDigest": "17edd9e6aed3720aadad3a21cfc47ff11cbe98ea15a3787e8070a36e04cff866",
+      "file": "issues/0045-r4-publish-the-static-site-on-github-pages-with-no-external-services.md",
+      "fileDigest": "ceec3b15babcbd79e323d0f2655606ebf088fb61324fca2f2bbe4a972c106033",
+      "number": 45,
+      "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
+      "state": "open",
+      "title": "R4 publish the static site on GitHub Pages with no external services",
+      "titleDigest": "80d6a1cc68d7315cf5b72e3008e943f156d0c51ac8fe1978d70423ab04eb0227",
+      "updatedAt": "2026-08-02T05:43:38Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/45"
+    },
+    {
+      "bodyDigest": "62ff3fb8a25f84d004202fb3b6a75a68807345007011d8a334998c168dbcbe7b",
+      "file": "issues/0046-r5-publish-the-versioned-release-zip-and-verify-every-public-surface.md",
+      "fileDigest": "750f17c6e69d81b5fa3ceb4853ccded1071d8ab260c3ed2bc961a5b4e53ffe96",
+      "number": 46,
+      "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
+      "state": "open",
+      "title": "R5 publish the versioned release ZIP and verify every public surface",
+      "titleDigest": "49232b923369c29cc42a69dcfbd56a4a5e2b1ea1bab0aee3c075f5d077ea93e3",
+      "updatedAt": "2026-08-02T05:43:39Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/46"
+    },
+    {
+      "bodyDigest": "b94a466c55337b3360250130bb97ede06eb25c71c83a4b5aac099af060168b9e",
+      "file": "issues/0047-r6-implement-scheduled-freshness-snapshots-that-never-rewrite-research-d.md",
+      "fileDigest": "f21ede8eb8cecc4c39e7be09b5f19d179fe351475fa4e9c6e089455c0d26d9d4",
+      "number": 47,
+      "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
+      "state": "open",
+      "title": "R6 implement scheduled freshness snapshots that never rewrite research decisions",
+      "titleDigest": "698e6fdf53d085810c85bd4f5bcdea7d40085fadee14dfc6b847fc3bad0c96e3",
+      "updatedAt": "2026-08-02T05:43:40Z",
+      "url": "https://github.com/hjosugi/framework-atlas/issues/47"
+    }
+  ],
+  "matrices": [
+    {
+      "id": "backend-application",
+      "label": "Backend application framework",
+      "rows": [
+        {
+          "cells": {
+            "fastapi": {
+              "claimIds": [
+                "fastapi-types",
+                "fastapi-openapi"
+              ],
+              "cost": "runtime annotationとdomain型は同一でない",
+              "state": "claim",
+              "strength": "Python宣言から複数artifact"
+            },
+            "gin": {
+              "claimIds": [
+                "gin-binding"
+              ],
+              "cost": "OpenAPI/clientの権威は別途必要",
+              "state": "claim",
+              "strength": "HTTP境界が小さい"
+            },
+            "kofun-boot": {
+              "cost": "language capabilityが未完",
+              "state": "unknown",
+              "strength": "closed ADTを正準候補にできる",
+              "unresolvedId": "u-openapi-authority"
+            },
+            "spring-boot": {
+              "cost": "routeとschemaの単一権威は別設計",
+              "state": "unknown",
+              "strength": "Spring MVC/WebFluxの宣言を選べる"
+            }
+          },
+          "dimension": "contract source"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "claimIds": [
+                "fastapi-openapi"
+              ],
+              "cost": "route ordering/conflictは検証対象",
+              "state": "claim",
+              "strength": "handler signatureとAPI docが近い"
+            },
+            "gin": {
+              "claimIds": [
+                "gin-middleware"
+              ],
+              "cost": "mutable request contextへの依存",
+              "state": "claim",
+              "strength": "明示的登録とmiddleware"
+            },
+            "kofun-boot": {
+              "cost": "compiler/HTTP adapterの実装待ち",
+              "state": "unknown",
+              "strength": "static dispatchと到達不能検査",
+              "unresolvedId": "u-openapi-authority"
+            },
+            "spring-boot": {
+              "cost": "auto-config conditionの可視化が必要",
+              "state": "unknown",
+              "strength": "MVC/reactiveをecosystemで統合"
+            }
+          },
+          "dimension": "routing"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "claimIds": [
+                "fastapi-types"
+              ],
+              "cost": "Pydantic modelとdomain modelのcoupling risk",
+              "state": "claim",
+              "strength": "parse/validation/schemaを接続"
+            },
+            "gin": {
+              "claimIds": [
+                "gin-binding"
+              ],
+              "cost": "schema派生は標準外",
+              "state": "claim",
+              "strength": "boundary helperが単純"
+            },
+            "kofun-boot": {
+              "cost": "validator interpreter未実装",
+              "state": "unknown",
+              "strength": "parse failureをclosed resultへ",
+              "unresolvedId": "u-openapi-authority"
+            },
+            "spring-boot": {
+              "cost": "domain invariantとの二重化を避ける",
+              "state": "unknown",
+              "strength": "Bean Validation等を統合可能"
+            }
+          },
+          "dimension": "validation"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "claimIds": [
+                "fastapi-di"
+              ],
+              "cost": "ambient framework dependency化を防ぐ",
+              "state": "claim",
+              "strength": "function signatureのdependency graph"
+            },
+            "gin": {
+              "claimIds": [
+                "gin-middleware"
+              ],
+              "cost": "production bundleは利用者所有",
+              "state": "claim",
+              "strength": "constructor/function wiringを選べる"
+            },
+            "kofun-boot": {
+              "cost": "type/compile complexity",
+              "state": "unknown",
+              "strength": "capability argumentsを静的表示",
+              "unresolvedId": "u-effect-system"
+            },
+            "spring-boot": {
+              "claimIds": [
+                "spring-auto"
+              ],
+              "cost": "暗黙conditionとlifecycleの理解",
+              "state": "claim",
+              "strength": "containerとauto-configの大きなecosystem"
+            }
+          },
+          "dimension": "DI / effects"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "transaction/session patternがprojectごとに割れる",
+              "state": "unknown",
+              "strength": "ORMを強制しない"
+            },
+            "gin": {
+              "cost": "baselineを自前で定義",
+              "state": "not-applicable",
+              "strength": "HTTP coreへdata choiceを持ち込まない"
+            },
+            "kofun-boot": {
+              "cost": "Kofun Boot R5の実装待ち",
+              "state": "unknown",
+              "strength": "schema-to-query portを独立可能"
+            },
+            "spring-boot": {
+              "cost": "Boot本体とdata projectを分離して評価",
+              "state": "unknown",
+              "strength": "Spring Data等を選択可能"
+            }
+          },
+          "dimension": "ORM / data model"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "blocking IOとdetached taskを管理",
+              "state": "unknown",
+              "strength": "ASGI async lifecycle"
+            },
+            "gin": {
+              "cost": "request終了後のlifetimeとleak",
+              "state": "unknown",
+              "strength": "Go context/goroutine/tooling"
+            },
+            "kofun-boot": {
+              "cost": "Kofun Boot R4/L6の実装待ち",
+              "state": "unknown",
+              "strength": "scoped taskを標準化する候補",
+              "unresolvedId": "u-effect-system"
+            },
+            "spring-boot": {
+              "cost": "model間のcontext伝播差",
+              "state": "unknown",
+              "strength": "servlet/reactive/task abstractionを選べる"
+            }
+          },
+          "dimension": "concurrency / cancellation"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "deployment configは別面",
+              "state": "unknown",
+              "strength": "Python compositionが直接見える"
+            },
+            "gin": {
+              "cost": "統一したconfig provenanceは標準外",
+              "state": "unknown",
+              "strength": "explicit wiring"
+            },
+            "kofun-boot": {
+              "cost": "Kofun Boot R2/L3の実装待ち",
+              "state": "unknown",
+              "strength": "granted capability/config reportを生成可能"
+            },
+            "spring-boot": {
+              "claimIds": [
+                "spring-auto"
+              ],
+              "cost": "condition reportがないと不可視",
+              "state": "claim",
+              "strength": "override可能なopinion"
+            }
+          },
+          "dimension": "configuration visibility"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "標準production baselineは限定的",
+              "state": "unknown",
+              "strength": "ASGI middleware ecosystem"
+            },
+            "gin": {
+              "cost": "metrics/health/shutdownをprojectが統合",
+              "state": "unknown",
+              "strength": "libraryを選べる"
+            },
+            "kofun-boot": {
+              "cost": "replay/operations実装待ち",
+              "state": "unknown",
+              "strength": "effect traceとhealth contractを統合候補"
+            },
+            "spring-boot": {
+              "claimIds": [
+                "spring-ops"
+              ],
+              "cost": "exposure/security policyが必要",
+              "state": "claim",
+              "strength": "health/metricsをboot面に含む"
+            }
+          },
+          "dimension": "observability / operations"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "policy/RBACはapplication責務",
+              "state": "unknown",
+              "strength": "OpenAPI security scheme/dependency"
+            },
+            "gin": {
+              "cost": "secure default bundleは標準外",
+              "state": "unknown",
+              "strength": "middlewareで明示"
+            },
+            "kofun-boot": {
+              "cost": "security module未実装",
+              "state": "unknown",
+              "strength": "capability denialをclosed resultへ"
+            },
+            "spring-boot": {
+              "cost": "別projectの責務をBoot claimにしない",
+              "state": "unknown",
+              "strength": "Spring Securityとの統合"
+            }
+          },
+          "dimension": "security defaults"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "background task durabilityとは別",
+              "state": "unknown",
+              "strength": "ASGI lifespan/context manager"
+            },
+            "gin": {
+              "cost": "worker/goroutine ownershipを自前で固定",
+              "state": "unknown",
+              "strength": "http.Server shutdownとcontext cancellation"
+            },
+            "kofun-boot": {
+              "cost": "language/runtime blocker",
+              "state": "unknown",
+              "strength": "structured scopeを型とruntimeで検証候補",
+              "unresolvedId": "u-effect-system"
+            },
+            "spring-boot": {
+              "cost": "bean/task lifecycle全体の調整",
+              "state": "unknown",
+              "strength": "application context lifecycle"
+            }
+          },
+          "dimension": "shutdown / resource scope"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "frameworkとserver/process managerを別評価",
+              "state": "unknown",
+              "strength": "ASGI server/process choices"
+            },
+            "gin": {
+              "cost": "migration/assets/config provenanceは別",
+              "state": "unknown",
+              "strength": "single binaryにしやすい"
+            },
+            "kofun-boot": {
+              "cost": "runtime portability実装待ち",
+              "state": "unknown",
+              "strength": "native/WASM adapter候補"
+            },
+            "spring-boot": {
+              "claimIds": [
+                "spring-standalone"
+              ],
+              "cost": "JVM/native条件差",
+              "state": "claim",
+              "strength": "stand-alone artifactとembedded server"
+            }
+          },
+          "dimension": "deployment"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "Python/runtime native dependencies",
+              "state": "unknown",
+              "strength": "ASGI portability"
+            },
+            "gin": {
+              "cost": "CGO/dependency条件",
+              "state": "unknown",
+              "strength": "Go cross compilation"
+            },
+            "kofun-boot": {
+              "cost": "Kofun Boot R6実装待ち",
+              "state": "unknown",
+              "strength": "protocol core + Linux/WASM/edge adapter"
+            },
+            "spring-boot": {
+              "cost": "platform artifactごとの制約",
+              "state": "unknown",
+              "strength": "JVM ecosystemとcontainer/native options"
+            }
+          },
+          "dimension": "portability"
+        },
+        {
+          "cells": {
+            "fastapi": {
+              "cost": "公式引用をAtlas測定にしない",
+              "state": "unmeasured",
+              "strength": "async ASGI",
+              "unresolvedId": "u-performance"
+            },
+            "gin": {
+              "cost": "marketing 40xを比較値にしない",
+              "state": "unmeasured",
+              "strength": "small HTTP path",
+              "unresolvedId": "u-performance"
+            },
+            "kofun-boot": {
+              "cost": "実行可能同等harness未完",
+              "state": "unmeasured",
+              "strength": "static dispatch候補",
+              "unresolvedId": "u-performance"
+            },
+            "spring-boot": {
+              "cost": "同一条件測定なし",
+              "state": "unmeasured",
+              "strength": "複数execution model",
+              "unresolvedId": "u-performance"
+            }
+          },
+          "dimension": "performance"
+        }
+      ],
+      "targets": [
+        "spring-boot",
+        "fastapi",
+        "gin",
+        "kofun-boot"
+      ]
+    },
+    {
+      "id": "frontend-ui",
+      "label": "Frontend UI",
+      "rows": [
+        {
+          "cells": {
+            "react": {
+              "claimIds": [
+                "react-components"
+              ],
+              "cost": "ecosystem選択",
+              "state": "claim",
+              "strength": "explicit component state"
+            },
+            "vue": {
+              "claimIds": [
+                "vue-reactivity"
+              ],
+              "cost": "proxy/ref semanticsの理解",
+              "state": "claim",
+              "strength": "reactive dependency tracking"
+            }
+          },
+          "dimension": "state update"
+        },
+        {
+          "cells": {
+            "react": {
+              "cost": "framework/routerが必要",
+              "state": "not-applicable",
+              "strength": "UI library境界を保つ"
+            },
+            "vue": {
+              "cost": "full-stack機能はNuxt等の責務",
+              "state": "not-applicable",
+              "strength": "coreとrouterを別entity化"
+            }
+          },
+          "dimension": "server routing"
+        }
+      ],
+      "targets": [
+        "react",
+        "vue"
+      ]
+    },
+    {
+      "id": "router-components",
+      "label": "Router components",
+      "rows": [
+        {
+          "cells": {
+            "chi": {
+              "cost": "client stateは対象外",
+              "state": "unknown",
+              "strength": "net/http composition"
+            },
+            "httprouter": {
+              "cost": "application contractは別",
+              "state": "unknown",
+              "strength": "server matcher"
+            },
+            "tanstack-router": {
+              "cost": "host integration条件",
+              "state": "unknown",
+              "strength": "typed client/search params"
+            },
+            "vue-router": {
+              "cost": "HTTP server dispatchは対象外",
+              "state": "unknown",
+              "strength": "Vue client navigation"
+            }
+          },
+          "dimension": "host boundary"
+        },
+        {
+          "cells": {
+            "chi": {
+              "cost": "Atlas測定なし",
+              "state": "unmeasured",
+              "strength": "composable",
+              "unresolvedId": "u-performance"
+            },
+            "httprouter": {
+              "cost": "Atlas測定なし",
+              "state": "unmeasured",
+              "strength": "radix design",
+              "unresolvedId": "u-performance"
+            },
+            "tanstack-router": {
+              "cost": "server matcherと非比較",
+              "state": "not-applicable",
+              "strength": "type safety"
+            },
+            "vue-router": {
+              "cost": "server benchmarkと非比較",
+              "state": "not-applicable",
+              "strength": "navigation semantics"
+            }
+          },
+          "dimension": "dispatch performance"
+        }
+      ],
+      "targets": [
+        "httprouter",
+        "chi",
+        "vue-router",
+        "tanstack-router"
+      ]
+    },
+    {
+      "id": "architecture-case",
+      "label": "Architecture case",
+      "rows": [
+        {
+          "cells": {
+            "modular-monolith-ddd": {
+              "claimIds": [
+                "ddd-modules"
+              ],
+              "cost": "eventual consistencyとoperational workers",
+              "state": "claim",
+              "strength": "separate schema/composition root"
+            }
+          },
+          "dimension": "module ownership"
+        },
+        {
+          "cells": {
+            "modular-monolith-ddd": {
+              "claimIds": [
+                "ddd-tests"
+              ],
+              "cost": "real dependency/tooling runtime",
+              "state": "claim",
+              "strength": "複数test層"
+            }
+          },
+          "dimension": "test evidence"
+        }
+      ],
+      "targets": [
+        "modular-monolith-ddd"
+      ]
+    }
+  ],
+  "profiles": {
+    "profiles/fastapi.md": "# FastAPI — 一つのtyped declarationを複数artifactへ\n\n確認日: 2026-08-02。観測version: 0.141.1（GitHub release, 2026-07-29）。\n\n## 核心\n\nFastAPIはPythonの標準type annotation、Pydantic、Starletteを接続し、handler signatureからrequest parsing、validation、editor support、OpenAPI/JSON Schema、interactive documentationを派生する。dependency declarationも階層として解決され、同じschema/contractに統合される。\n\n重要なのはsyntaxの短さではなく、情報を重複させずruntime artifactへ変換する経路である。annotationは静的hintだが、Pydantic validationはruntimeで入力をparse/検査するため、その境界を同一視しない。失敗はvalidation errorとしてHTTP境界で構造化される。一方で、Python annotationはdomain ownershipやtransaction boundaryを自動的には作らない。Pydantic request modelをORM row/domain entityへそのまま渡すと短いが、transport/data/domainの変更が結合する。route dependencyへbusiness ruleを積み過ぎると、便利な宣言面が暗黙のapplication layerになる。\n\ndependency overrideはtest seamとして有効だが、実DB transactionやqueue semanticsを証明しない。yield dependencyとASGI lifespanはresource scopeを可視化する。response後のBackgroundTasksはprocess crashを越えるdurable queueではない。detached async taskへrequest-scoped sessionを渡さない。\n\n## 強みと代償\n\n| 軸 | 強み | 代償 |\n|---|---|---|\n| contract | type、validation、OpenAPI、docsが近い | Python runtime semanticsとschema表現の差を理解する必要 |\n| async | ASGI/Starlette ecosystemを利用 | blocking libraryを混ぜるとevent loopを阻害 |\n| DI | function signatureで小さく宣言 | lifecycle、cache scope、overrideの追跡が必要 |\n| testing | dependency overrideとTestClient/ASGI transport | overrideだけではreal DB/queue差を証明しない |\n| domain | plain Python objectへ分離しやすい | framework自体はmodule architectureを強制しない |\n\n## kofun-bootへの抽出\n\nroute、validator、OpenAPI、typed clientを一つのADTから派生し、それぞれを別generatorの権威にしない。dependency graphはeffect capability graphとして静的に可視化し、resource scopeを型と実行時の両方で検証する。HTTP errorはclosed sum typeからadapterで変換する。FastAPIの「宣言情報を捨てず複数artifactに使う」点を採用し、Python固有のreflectionには依存しない。\n\n## Sources\n\n- https://fastapi.tiangolo.com/features/\n- https://fastapi.tiangolo.com/tutorial/dependencies/\n- https://fastapi.tiangolo.com/async/\n- https://github.com/fastapi/fastapi\n- https://github.com/fastapi/fastapi/releases/tag/0.141.1\n",
+    "profiles/fullstack-conventions.md": "# Rails・Laravel・Django — cohesive full-stack conventions\n\n確認日: 2026-08-02。観測version: Rails 8.1.3.1、Laravel Framework 13.23.0、Django 6.0.7。Rails/Laravelではframework本体repositoryとapplication skeleton repositoryを別artifactとして扱う。\n\n## 共通する設計\n\n三者は言語もcontainer modelも異なるが、routing、data access、templates、validation、security、CLI、migrationなどを一つのapplication workflowとして提供する。個々の部品の最小性ではなく、チームが同じ場所に同じ責務を置けることが速度を生む。\n\n| 軸 | Rails | Laravel | Django |\n|---|---|---|---|\n| primary opinion | Convention over Configuration | expressive API + service container | batteries included + explicit app/project |\n| data | Active Record | Eloquent | Django ORM |\n| CLI | `bin/rails` generators/tasks | Artisan | `manage.py` commands |\n| composition | initializer/framework conventions | container/providers/facades | settings/apps/middleware |\n| notable standard surface | Hotwire/Active Job/Action Cable等 | queue/events/scheduler等 | admin/forms/auth/security等 |\n\n## 長所と限界\n\n規約はonboarding、生成、upgrade、横断機能を揃える。ただしdomainが複雑になるとORM model、request model、domain modelを同一視しない工夫が必要である。ORMはquery/migration/relationshipのproductivityを高める一方、lazy I/O、N+1、persistence lifecycle、Active Record methodがdomainへ結合する。generatorはstartを速めるが、生成後の所有権とupgrade pathが無ければ複製されたboilerplateになる。frameworkの規約にdomain boundaryを合わせるのではなく、bounded contextの内部でframework adapterを使う。\n\nSpring Bootはfull-stack UI/ORMを一つに固定せずstarter/auto-config/operationsを統合する。FastAPIはtyped API surfaceを強くするがORM/admin/queueを内包しない。Ginはさらに小さいHTTP coreである。このproduction completeness差は優劣ではなく、frameworkが所有する範囲の差として記録する。frontend routingなど非適用の軸は `not-applicable`、未調査は `unknown` にする。\n\n## kofun-bootへの抽出\n\ndirectory、naming、test、configuration、migrationのgolden pathをCLIで生成し、生成物を一回限りの雛形にせずupgrade可能な宣言へ寄せる。defaultはproduction-readyで、外す方法と外した影響を診断する。Active Record型の便利さをdomain ruleへ直結せず、data mappingを選べるportにする。\n\n## Sources\n\n- https://rubyonrails.org/doctrine\n- https://guides.rubyonrails.org/command_line.html\n- https://laravel.com/docs\n- https://docs.djangoproject.com/en/stable/intro/overview/\n- https://github.com/rails/rails/releases/tag/v8.1.3.1\n- https://github.com/laravel/framework/releases/tag/v13.23.0\n- https://www.djangoproject.com/weblog/2026/jul/07/security-releases/\n",
+    "profiles/gin.md": "# Gin — 小さいHTTP coreと明示的composition\n\n確認日: 2026-08-02。観測version: 1.12.0（GitHub release, 2026-02-28）。\n\n## 核心\n\nGinはGoのHTTP applicationにrouting、middleware chain、binding/validation、rendering、request contextを提供する。Spring Bootのようなapplication platformではないため、database transaction、configuration、observability、queue、module boundaryは利用者が組み立てる。\n\nこれは欠落ではなく境界の選択である。handlerとmiddlewareを明示的に配線し、Goのtoolchain、interface、`context.Context`と組み合わせやすい。一方、`gin.Context`はmutableなrequest scopeであり、domain/use-case層へ渡すとHTTP lifetime、key/value bag、response mutationが内部へ侵入する。request外のgoroutineで利用する場合は公式のcopy規則に従ってread-only copyを使い、より安全には必要値と標準`context.Context`だけを渡す。\n\nmiddlewareはregistration orderでbefore/after処理とerror propagationが決まる。`request → recovery → trace → auth → binding → HTTP adapter → typed handler → response` をAtlasの推奨data flowとし、server shutdownはaccept停止、request cancellation、owned goroutineのbounded drainを別gateにする。公式README由来の「40 times faster」はmarketing/source claimであり、Atlas measurementには採用しない。\n\n## 強みと代償\n\n| 軸 | 強み | 代償 |\n|---|---|---|\n| routing | compactで理解しやすいhandler登録 | application contract生成は別設計 |\n| concurrency | goroutine/contextと標準tooling | request終了後のcontext利用、cancel、leakを利用者が管理 |\n| middleware | 順序をコードで構成 | business ruleが混ざると隠れたpipelineになる |\n| operations | logging/metrics libraryを選択可能 | production baselineがprojectごとに割れる |\n| deployment | 単一binaryにしやすい | migration、assets、config provenanceは別途必要 |\n\n## kofun-bootへの抽出\n\nGoに学ぶ点はgoroutineの表面的syntaxではなく、cancel伝播、structured lifetime、channel backpressure、race検査を標準の開発体験に含めることだ。HTTP adapterはtyped requestへdecodeした後にpure handlerを呼び、expected failureをclosed resultにし、effect capabilityを明示的に渡す。routerのstatic dispatchはadaptするがmutable ambient contextはrejectする。middleware/interceptor順序は宣言から決定し、順序の破壊試験を置く。\n\n## Sources\n\n- https://gin-gonic.com/en/docs/\n- https://gin-gonic.com/en/docs/examples/using-middleware/\n- https://gin-gonic.com/en/docs/examples/binding-and-validation/\n- https://github.com/gin-gonic/gin\n- https://github.com/gin-gonic/gin/releases/tag/v1.12.0\n",
+    "profiles/modern-web.md": "# Elysia・Hono・axum・Fiber — 現代Web frameworkの異なる最適化\n\n確認日: 2026-08-02。観測release: Elysia 1.4.29、Hono 4.12.33、axum 0.8.9、Fiber 3.4.0。いずれもstable release tagとして観測し、beta扱いを推定しない。\n\n| 対象 | 主たる設計単位 | 得意な境界 | 注意点 |\n|---|---|---|---|\n| Elysia | schema + lifecycle + TypeScript inference | Bunで短い型付きAPIとend-to-end contract | runtime portabilityとcompile/runtime schema差を測る |\n| Hono | Web Standards Request/Response + adapter | edgeを含むmulti-runtime portability | runtimeごとのcapability差はadapter外へ漏らさない |\n| axum | handler + extractor + Tower service | Rust type system、async ecosystem、middleware reuse | compile-time複雑性とerror型の設計がDXを左右 |\n| Fiber | Express風routing/middleware on fasthttp | Goで親しみやすいHTTP API | net/http互換性とfasthttp前提を選択として扱う |\n\n四者を「速い新世代」と一括りにしない。Elysiaは推論、Honoはstandards portability、axumはtyped extraction/service composition、FiberはAPI ergonomicsという異なる軸を強くする。Bun、Cloudflare/Deno/Node、Tokio/Hyper、fasthttpのruntime寄与をframework自身の寄与から分ける。request value lifetimeは、Elysia lifecycle context、Hono Context、axum extractor ownership、Fiber Contextの再利用/ambient stateという別条件で比較する。middleware stateをrequest外へ保持しない。性能主張は機能同等の公開測定なしにAtlasの順位へ変換しない。\n\nhost adapter matrixではHonoをWeb Standards中心の複数runtime、ElysiaをBun中心、axumをTokio/Hyper、Fiberをfasthttpとして記録する。portableという語は全capability同等を意味しない。`kofun-boot` R1（typed Web contract）へschema/extractor設計を、R6（runtime portability）へprotocol core + explicit adapterをmappingする。\n\n`kofun-boot` はtyped route declaration、portable runtime adapter、extractor errorのclosed type、middleware/service compositionを組み合わせられる。ただし一つの巨大generic型や暗黙contextへ集約せず、compile diagnosticsとincremental buildを受入条件に含める。\n\n## Sources\n\n- https://elysiajs.com/\n- https://hono.dev/docs/\n- https://docs.rs/axum/latest/axum/\n- https://docs.gofiber.io/\n- https://github.com/elysiajs/elysia/releases/tag/1.4.29\n- https://github.com/honojs/hono/releases/tag/v4.12.33\n- https://github.com/tokio-rs/axum/releases/tag/axum-v0.8.9\n- https://github.com/gofiber/fiber/releases/tag/v3.4.0\n",
+    "profiles/modular-monolith-ddd.md": "# Modular Monolith with DDD — framework上の本番architecture\n\n確認日: 2026-08-02\n\nこのリポジトリはframework製品ではない。ASP.NET/.NET上に、module ownership、tactical DDD、CQRS、cross-cutting decorators、非同期integration、Outbox/Inbox、Event Sourcing、architecture tests、real dependency integration testsをどう積むかを説明する実装事例である。\n\n## load-bearing decisions\n\n1. APIは薄く、command/queryをmoduleへ委譲する。\n2. moduleは別schemaとcomposition rootを持ち、他moduleの内部dataへ直接依存しない。\n3. command handlerをlogging、validation、unit-of-workでdecorateする。\n4. module間はintegration eventで非同期連携し、Outbox/Inboxでat-least-onceを成立させる。\n5. Event Sourcingはeventから状態を復元する箇所だけに用い、audit logと区別する。\n6. compilerで守れないarchitecture ruleをarchitecture testで固定する。\n7. unit、integration、system integration、mutation testが異なる主張を証明する。\n\n## 採用時の注意\n\nこの形を全applicationへ機械的に複製しない。module数、eventual consistency、CQRS、Event Sourcingはdomain complexityとquality attributeに対する費用である。最初にmodule ownershipとtransaction boundaryを決め、同期呼出しで十分な箇所までevent busにしない。Outbox/Inboxはexactly-onceを提供しないので、idempotencyと再処理運用が必須である。\n\n具体的なSpring Boot、FastAPI、Gin、Kofun対応は `data/case-studies/modular-monolith-ddd.v1.json` にmachine-readableに収録する。\n\n## Sources\n\n- https://github.com/kgrzybek/modular-monolith-with-ddd\n- https://github.com/kgrzybek/modular-monolith-with-ddd/tree/master/docs\n",
+    "profiles/react-vue.md": "# React・Vue — component UIとframework境界\n\n確認日: 2026-08-02\n\nReactとVueはいずれも状態からUIを宣言するcomponent modelを提供するが、更新追跡と公式ecosystemの境界が異なる。ReactはUI libraryとしてcomponent/functionとone-way data flowを核に周辺選択をecosystemへ委ねる。Vueはprogressive frameworkとしてreactivity system、template/SFC、公式Router/Piniaとの段階的採用を一つの導線にする。GitHub Topicsの `vuejs/vue` はVue 2のrelease lineであり、Vue 3の正準repository `vuejs/core` と別entityにしている。\n\n| 軸 | React | Vue |\n|---|---|---|\n| update model | render時のstate snapshotと明示的state update | reactive dependency tracking |\n| component form | JavaScript/JSX中心 | templateまたはrender function、SFC |\n| routing/state | ecosystem/framework選択 | official router/state options |\n| adoption | UI libraryとしてhostへ組込み可能 | progressive adoptionを明示 |\n\nSPA、SSR、React Server Components、Vue server renderingはどこでstate/effectを所有するかが異なり、単一の「frontend性能」欄に潰せない未解決境界として扱う。`kofun-boot` に直接持ち込むのはVDOMの実装ではなく、typed client/app-shell接点で状態遷移をdataとして観測し、effect commandを分離し、同じmodelをTUI/Web/desktop adapterへ解釈できる構造である。Elm Architecture/Bubble Teaの`model -> update -> command`も合わせて検証する。UI libraryとserver Web frameworkを同じ比較軸で順位付けしない。\n\n## Sources\n\n- https://react.dev/learn\n- https://vuejs.org/guide/introduction.html\n- https://router.vuejs.org/\n- https://github.com/charmbracelet/bubbletea\n",
+    "profiles/spring-boot.md": "# Spring Boot — production opinionを配布するframework\n\n確認日: 2026-08-02。観測version: 4.1.0（GitHub release `v4.1.0`, 2026-06-10）。\n\n## 核心\n\nSpring Bootの価値はHTTP routing単体ではなく、Spring ecosystemとthird-party libraryの選択・設定・運用を「starter、auto-configuration、embedded server、externalized configuration、Actuator」という一続きの体験にすることにある。公式ページはstand-alone application、Tomcat/Jetty/Undertowの組込み、starter依存、auto-configuration、metrics/health、外部設定を主要機能として挙げる。\n\nauto-configurationは魔法ではなく条件付き構成である。classpath、既存bean、propertyなどを条件に候補を適用し、利用者のbeanで置換できる。condition evaluation reportが採否を説明する。したがって再利用すべき設計は「暗黙化」ではなく、(1) opinionの発火条件、(2) user override、(3)適用理由の診断、(4)本番観測を一つのcontractにすることだ。\n\n公式の「通常利用でcode generation不要」という方針と、AOT/native buildが閉世界解析のために生成するartifactは別の局面であり、矛盾として混同しない。Spring FrameworkはDI/Web/data access等の基盤、Bootはその上のapplication opinionである。Spring Data/Security/Cloud/Modulith、Reactor、Micrometerも別project boundaryであり、Boot単独の機能claimへ吸収しない。\n\n## 強みと代償\n\n| 軸 | 強み | 代償 |\n|---|---|---|\n| start | Initializr/starterと既定値で縦に通る | conditionとclasspathの組合せは大規模化すると追跡が必要 |\n| composition | DI containerとextension ecosystem | container lifecycleへの理解が必要 |\n| operations | health、metrics、configurationを標準面に含む | endpoint exposureとsecurity policyを別途固定する必要 |\n| delivery | executable artifact、embedded server、AOT/native選択 | JVM/nativeで性能・diagnosticの条件が変わる |\n| evolution | version mapping、release note、upgrade support | ecosystem-wide compatibility matrixが設計制約になる |\n\n## kofun-bootへの抽出\n\n`starter` は依存の別名ではなく、互換性を検証したcapability bundleとしてadaptする。auto-configuration相当は「必要capabilityが存在し、利用者がoverrideしていないときだけ適用」とし、採用・不採用理由をmachine-readable reportにする。health/metrics/configは後付けpluginではなくboot contractの一部へadaptする。一方、class scanning、reflection container、class inheritanceはrejectし、Kofunの型とmodule宣言から決定的に構成する。\n\n## Sources\n\n- https://spring.io/projects/spring-boot\n- https://docs.spring.io/spring-boot/reference/using/auto-configuration.html\n- https://docs.spring.io/spring-boot/reference/actuator/index.html\n- https://github.com/spring-projects/spring-boot\n- https://github.com/spring-projects/spring-boot/releases/tag/v4.1.0\n"
+  },
+  "relations": [
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "fastapi",
+      "id": "rel-fastapi-starlette",
+      "source": "https://fastapi.tiangolo.com/features/",
+      "summary": "FastAPI is based on and compatible with Starlette.",
+      "to": "starlette",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "fastapi",
+      "id": "rel-fastapi-pydantic",
+      "source": "https://fastapi.tiangolo.com/features/",
+      "summary": "Validation and schema handling use Pydantic.",
+      "to": "pydantic",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "fastapi",
+      "id": "rel-fastapi-uvicorn",
+      "source": "https://fastapi.tiangolo.com/deployment/manually/",
+      "summary": "FastAPI deployment documentation uses an ASGI server such as Uvicorn to run an application.",
+      "to": "uvicorn",
+      "type": "commonly-hosted-by"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "gin",
+      "id": "rel-gin-httprouter",
+      "source": "https://github.com/gin-gonic/gin",
+      "summary": "Gin documentation credits httprouter for routing performance.",
+      "to": "httprouter",
+      "type": "officially-inspired-by"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "fiber",
+      "id": "rel-fiber-express",
+      "source": "https://github.com/gofiber/fiber",
+      "summary": "Fiber describes its API as Express-inspired.",
+      "toExternal": "Express",
+      "type": "officially-inspired-by"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "axum",
+      "id": "rel-axum-tokio",
+      "source": "https://docs.rs/axum/latest/axum/",
+      "summary": "axum uses the Tokio runtime.",
+      "toExternal": "Tokio",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "axum",
+      "id": "rel-axum-tower",
+      "source": "https://docs.rs/axum/latest/axum/",
+      "summary": "axum middleware integrates through Tower services.",
+      "toExternal": "Tower",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "axum",
+      "id": "rel-axum-hyper",
+      "source": "https://docs.rs/axum/latest/axum/",
+      "summary": "axum is designed for the Tokio and Hyper ecosystem.",
+      "toExternal": "Hyper",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "tauri",
+      "id": "rel-tauri-webview",
+      "source": "https://v2.tauri.app/concept/architecture/",
+      "summary": "Tauri renders Web content in the operating system WebView.",
+      "toExternal": "System WebView",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "vue-router",
+      "id": "rel-vue-router-vue",
+      "source": "https://router.vuejs.org/",
+      "summary": "Vue Router is the official router for Vue.",
+      "to": "vue",
+      "type": "component-of"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "wouter",
+      "id": "rel-wouter-react",
+      "source": "https://github.com/molefrog/wouter",
+      "summary": "wouter supplies routing for React and Preact applications.",
+      "to": "react",
+      "type": "component-of"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "ionic",
+      "id": "rel-ionic-capacitor",
+      "source": "https://ionicframework.com/docs",
+      "summary": "Ionic uses Capacitor for native platform access.",
+      "toExternal": "Capacitor",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "expo",
+      "id": "rel-expo-react-native",
+      "source": "https://docs.expo.dev/",
+      "summary": "Expo is a framework and toolchain for React Native apps.",
+      "toExternal": "React Native",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "bubble-tea",
+      "id": "rel-bubbletea-elm",
+      "source": "https://github.com/charmbracelet/bubbletea",
+      "summary": "Bubble Tea explicitly follows the Elm Architecture.",
+      "toExternal": "The Elm Architecture",
+      "type": "officially-inspired-by"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "postgrest",
+      "id": "rel-postgrest-postgresql",
+      "source": "https://postgrest.org/en/stable/",
+      "summary": "PostgREST exposes PostgreSQL schema through HTTP.",
+      "toExternal": "PostgreSQL",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "spring-boot",
+      "id": "rel-spring-spring",
+      "source": "https://spring.io/projects/spring-boot",
+      "summary": "Spring Boot provides an opinionated application layer over Spring.",
+      "to": "spring-framework",
+      "type": "built-on"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "vue",
+      "id": "rel-vue3-vue2",
+      "source": "https://github.com/vuejs/vue",
+      "summary": "Vue 3 is maintained in vuejs/core while the vuejs/vue repository is the Vue 2 line.",
+      "to": "vue-2",
+      "type": "successor-of"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "vue",
+      "id": "rel-react-vue",
+      "source": "https://vuejs.org/guide/extras/composition-api-faq.html",
+      "summary": "Both address declarative component UI, but with different reactivity and ecosystem boundaries.",
+      "to": "react",
+      "type": "competes-with"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "elysia",
+      "id": "rel-elysia-fastapi",
+      "source": "https://elysiajs.com/essential/validation",
+      "summary": "Both derive validation and API contracts from typed declarations; runtime and type semantics differ.",
+      "to": "fastapi",
+      "type": "resembles"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "servant",
+      "id": "rel-servant-fastapi",
+      "source": "https://docs.servant.dev/en/stable/tutorial/ApiType.html",
+      "summary": "Both interpret an API declaration into multiple artifacts, with type-level versus Python annotation mechanisms.",
+      "to": "fastapi",
+      "type": "resembles"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "gin",
+      "id": "rel-gin-chi",
+      "source": "https://github.com/go-chi/chi",
+      "summary": "Both compose Go HTTP handlers and middleware; chi stays closer to net/http while Gin owns a context abstraction.",
+      "to": "chi",
+      "type": "competes-with"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "hono",
+      "id": "rel-hono-elysia",
+      "source": "https://hono.dev/docs/",
+      "summary": "Both target modern TypeScript server applications, emphasizing different runtime portability and inference trade-offs.",
+      "to": "elysia",
+      "type": "competes-with"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "django",
+      "id": "rel-rails-django",
+      "source": "https://docs.djangoproject.com/en/stable/intro/overview/",
+      "summary": "Both integrate ORM, templates, routing and conventions into a full-stack application framework.",
+      "to": "rails",
+      "type": "resembles"
+    },
+    {
+      "confidence": "medium",
+      "evidenceKind": "inference",
+      "from": "laravel",
+      "id": "rel-laravel-rails",
+      "source": "https://laravel.com/docs",
+      "summary": "Both optimize cohesive full-stack delivery through conventions and generators; this is design similarity, not an asserted historical dependency.",
+      "to": "rails",
+      "type": "resembles"
+    },
+    {
+      "confidence": "high",
+      "evidenceKind": "official",
+      "from": "tanstack-router",
+      "id": "rel-tanstack-router-react",
+      "source": "https://tanstack.com/router/latest",
+      "summary": "TanStack Router supplies typed routing integrations including React.",
+      "to": "react",
+      "type": "component-of"
+    },
+    {
+      "confidence": "low",
+      "evidenceKind": "inference",
+      "from": "single-spa",
+      "id": "rel-single-spa-react",
+      "source": "https://single-spa.js.org/docs/ecosystem-react/",
+      "summary": "single-spa orchestrates rather than replaces React; edge is retained only to show overlapping application composition concerns.",
+      "to": "react",
+      "type": "competes-with"
+    }
+  ],
+  "routerMatrix": {
+    "kofunDecision": {
+      "decision": "adapt",
+      "implementationIssue": "https://github.com/hjosugi/kofun-boot/issues/16",
+      "reason": "static dispatch and conflict rejection are adopted; framework-specific mutable context and unverified performance claims are rejected"
+    },
+    "observedAt": "2026-08-02",
+    "routers": [
+      {
+        "dispatchCost": "unmeasured; radix-tree design is not an Atlas benchmark",
+        "entity": "httprouter",
+        "matchingAmbiguity": "one named parameter per path segment; conflicts rejected by tree insertion",
+        "registrationCost": "unmeasured",
+        "repositoryState": "not-archived",
+        "scope": "server",
+        "source": "https://github.com/julienschmidt/httprouter",
+        "typeSafety": "handler parameters remain strings"
+      },
+      {
+        "dispatchCost": "unmeasured",
+        "entity": "chi",
+        "matchingAmbiguity": "ordered route/middleware composition; conflicts require application tests",
+        "registrationCost": "unmeasured",
+        "repositoryState": "not-archived",
+        "scope": "server",
+        "source": "https://github.com/go-chi/chi",
+        "typeSafety": "standard net/http plus string URL params"
+      },
+      {
+        "dispatchCost": "unmeasured",
+        "entity": "gorilla-mux",
+        "matchingAmbiguity": "matcher order and predicates are application-visible",
+        "registrationCost": "unmeasured",
+        "repositoryState": "not-archived",
+        "scope": "server",
+        "source": "https://github.com/gorilla/mux",
+        "typeSafety": "string variables and net/http"
+      },
+      {
+        "dispatchCost": "not-applicable to server benchmark",
+        "entity": "vue-router",
+        "matchingAmbiguity": "nested client route ranking and navigation semantics",
+        "registrationCost": "not-applicable to server dispatch",
+        "repositoryState": "not-archived",
+        "scope": "client",
+        "source": "https://router.vuejs.org/",
+        "typeSafety": "route typing depends on declarations/tooling"
+      },
+      {
+        "dispatchCost": "unmeasured",
+        "entity": "tanstack-router",
+        "matchingAmbiguity": "typed route tree and search parameter declarations",
+        "registrationCost": "unmeasured",
+        "repositoryState": "not-archived",
+        "scope": "client/server-capable",
+        "source": "https://tanstack.com/router/latest",
+        "typeSafety": "typed paths, params and search state"
+      }
+    ],
+    "version": 1
+  },
+  "sourceDigests": {
+    "data/aliases.v1.json": "3300481dc6ce49feee9977736ac1884018586a37ecd11a8b17a3f63e6eb40919",
+    "data/case-studies/modular-monolith-ddd.v1.json": "a7b2fb1b7d5bda679c3ae27a3c1c03f8a5c1fc2b0b73a785fb59bdac928a8b95",
+    "data/claims.v1.json": "4afe8ce505fc97cc7426e99bcdc9dd0185a7e235c660a989565c5c342a55e1e4",
+    "data/entities.v1.json": "a4e3a5e09654662649805d3633ed78c119fcb900199d74d418eed89b677a1147",
+    "data/generations.v1.json": "31af3aea857a64144d930f696c2f3e6ed8567dc60fc1cbecd58efb12102b2baa",
+    "data/host-adapters.v1.json": "0639e69b026e2133aaaea74a54ee53626ab6dc01562c648c943aeece7d8761bb",
+    "data/matrices.v1.json": "c99f8b4a4f2860be0cbf66740ed881af23d74b9f384c56b9686b7e2208521879",
+    "data/relations.v1.json": "af7230084e822facae109fb6f9d49982c64b4970c9e629a797307ac1fddb79f3",
+    "data/router-matrix.v1.json": "61e72e0f7aa94c06d7f5321aa1caa8a3667d5932c1bc4ca40b61a482e858a693",
+    "data/rules/classification.v1.json": "be2cbe5071209eda1e45dedacadc04fe6c1305ec3198d6fc29e22326062c88cd",
+    "data/taxonomy.v1.json": "1a6c70966028188e12c12f8b984f640560a89de847980d9171dc21bc5f0e9620",
+    "data/unresolved.v1.json": "56446196911ea6e17dd9679a19a3817fa0ecadaa864a0549e9c61372bf74c6a0",
+    "profiles/fastapi.md": "ffd7a0870b388556ce58a7cc2e059e0584abeb5dc3b25dc1a7a82c42bdb7ba7b",
+    "profiles/fullstack-conventions.md": "ecdce540092b73153109a266316a1db948d81922ad26f695671e7e0e2c9aaf62",
+    "profiles/gin.md": "79bc3c7d1bb0bbc0881adc92cdee4e2fece0599c55a653adefcd6396e57edc6c",
+    "profiles/modern-web.md": "d3b15df9b5f6be18c45ec6330f5dc9824559535e13cc9eb0910bb52e41957182",
+    "profiles/modular-monolith-ddd.md": "c2b40093933d228a70deeeeb08040707987644f899c386b0a57251b659cf7354",
+    "profiles/react-vue.md": "e3aaeaead944aaa9d00b9bc564fa3ebe77ec51cab3d612431ec431c2df287c29",
+    "profiles/router-lineage.md": "4ba83bbe1c64635a48c85dbcd2330634e6239a45d30c525995e35a72eef32947",
+    "profiles/spring-boot.md": "9edadd589ba86fae16e438834094d825e3efff4e9ce032547e9dc8e399f7e944",
+    "schema/atlas-v1.schema.json": "a4b61d6932a579999b62cf49a166d3bb9ba4a55e8bebf7430ae3a4aaad0e81b5",
+    "schema/claim-v1.schema.json": "40212c27d9641a8fceba46a3591c981ad80e20eb5e6733f85d309deb8c5935b6",
+    "schema/freshness-report-v1.schema.json": "32c71c5528b806ab71afed8f8297e166e9d9cd87ef2ce735ba573dd6f39abb3d",
+    "schema/relation-v1.schema.json": "726fdeef0c8d8abaaab73d80251f39f40a4103d7813964d113c62732d7e6c603",
+    "schema/snapshot-manifest-v1.schema.json": "3641a4f2be24bfe8021f0f439d22061621bf09fa4524418332ce025925f25490",
+    "schema/unresolved-v1.schema.json": "1e302105c57e1a5122667f45445703d557b03d8432e72a3175f71987c8fdcb4a"
+  },
+  "taxonomy": {
+    "confidence": [
+      "high",
+      "medium",
+      "low"
+    ],
+    "dispositions": [
+      "included",
+      "adjacent",
+      "quarantined"
+    ],
+    "evidenceKinds": [
+      "official",
+      "primary-code",
+      "inference"
+    ],
+    "genericKinds": [
+      "framework",
+      "router",
+      "library",
+      "platform",
+      "case-study",
+      "other"
+    ],
+    "kinds": {
+      "application-framework": "実行、設定、統合、運用面まで含むアプリケーション基盤",
+      "architecture-case": "フレームワーク上の本番アーキテクチャ事例",
+      "data-framework": "データ、AI、ORM、API生成を主責務とする基盤",
+      "desktop-mobile": "desktop/mobile配布とネイティブ連携を扱う基盤",
+      "http-framework": "HTTPサーバ、ルーティング、middlewareを主責務とする基盤",
+      "library": "単独でapplication lifecycleを所有しない再利用部品",
+      "other": "収集語に一致するが比較母集団外",
+      "platform": "framework applicationをhostまたは配布するruntime/tooling基盤",
+      "router": "URLまたは画面遷移の照合を主責務とする部品",
+      "tui": "terminal UIを構築する基盤",
+      "ui-framework": "画面・コンポーネント・状態更新を主責務とする基盤"
+    },
+    "profiles": [
+      "deep",
+      "standard",
+      "seed"
+    ],
+    "relationCyclePolicy": {
+      "acyclic": [
+        "built-on",
+        "successor-of",
+        "component-of"
+      ],
+      "cyclesAllowed": [
+        "competes-with",
+        "resembles"
+      ]
+    },
+    "relations": [
+      "built-on",
+      "officially-inspired-by",
+      "successor-of",
+      "component-of",
+      "commonly-hosted-by",
+      "competes-with",
+      "resembles"
+    ],
+    "rule": "分類はリポジトリtopicだけで決めず、公式description、README、公開APIの主責務を順に確認する",
+    "version": 1
+  },
+  "unresolved": [
+    {
+      "cohort": "enterprise-boot",
+      "dimension": "performance",
+      "id": "u-performance",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "公開ハーネス、環境記録、p50/p95/p99、資源量、機能同等性",
+      "options": [
+        "共通harness",
+        "対象別official measurementのみ"
+      ],
+      "ownerEntity": "kofun-boot",
+      "profileDoc": "profiles/modern-web.md",
+      "question": "同一ハードウェア・同一プロトコル・同一機能集合での性能差は何か",
+      "reason": "公式ベンチマークは条件と実装範囲が異なり、横断順位に変換できない",
+      "resolutionIssue": "https://github.com/hjosugi/kofun-boot/issues/5",
+      "status": "unmeasured",
+      "tradeoff": "比較可能性を上げるほど各framework固有最適化を捨てる"
+    },
+    {
+      "cohort": "enterprise-boot",
+      "dimension": "deployment",
+      "id": "u-cold-start",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "同じAPI、同じ観測機能、同じ制限下の再現測定",
+      "options": [
+        "JVM",
+        "AOT/native",
+        "Kofun native"
+      ],
+      "ownerEntity": "spring-boot",
+      "profileDoc": "profiles/spring-boot.md",
+      "question": "JVM/AOT/nativeの起動・メモリ差をKofunの配布モデルとどう比較するか",
+      "reason": "artifact形式と運用条件を固定していない",
+      "resolutionIssue": "https://github.com/hjosugi/kofun-boot/issues/5",
+      "status": "open",
+      "tradeoff": "build time、reflection制約、diagnosticsと起動資源が交換関係になる"
+    },
+    {
+      "cohort": "enterprise-boot",
+      "dimension": "effects",
+      "id": "u-effect-system",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "Kofun compiler capability matrixと失敗を含む実行seed",
+      "options": [
+        "capability arguments",
+        "free algebra/interpreter",
+        "ambient runtime"
+      ],
+      "ownerEntity": "kofun-boot",
+      "profileDoc": "profiles/modular-monolith-ddd.md",
+      "question": "副作用能力を型でどこまで表し、実行時resource scopeとどう接続するか",
+      "reason": "言語側のeffect/ADT能力とframework APIを同時に決める必要がある",
+      "resolutionIssue": "https://github.com/hjosugi/kofun-boot/issues/18",
+      "status": "design-needed",
+      "tradeoff": "静的可視性とAPI/compile complexityが交換関係になる"
+    },
+    {
+      "cohort": "typed-api",
+      "dimension": "contract",
+      "id": "u-openapi-authority",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "一宣言四成果物の双方向破壊試験",
+      "options": [
+        "route ADT",
+        "OpenAPI first",
+        "external schema first"
+      ],
+      "ownerEntity": "kofun-boot",
+      "profileDoc": "profiles/fastapi.md",
+      "question": "route、validator、OpenAPI、clientの正準宣言をどこに置くか",
+      "reason": "生成物の循環と二重権威を避ける必要がある",
+      "resolutionIssue": "https://github.com/hjosugi/kofun-boot/issues/1",
+      "status": "design-needed",
+      "tradeoff": "host language type fidelityとlanguage-neutral interoperabilityが交換関係になる"
+    },
+    {
+      "cohort": "cross-platform",
+      "dimension": "desktop",
+      "id": "u-desktop-boundary",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "配布サイズ、常駐メモリ、cold start、権限境界、更新方式",
+      "options": [
+        "system WebView",
+        "native widgets",
+        "shared scene ADT"
+      ],
+      "ownerEntity": "kofun-boot",
+      "profileDoc": "profiles/react-vue.md",
+      "question": "Tauriより軽いという目標をどの資源・脅威モデルで定義するか",
+      "reason": "system WebView、IPC、更新、署名を含む比較条件が未定",
+      "resolutionIssue": "https://github.com/hjosugi/kofun-boot/issues/9",
+      "status": "unmeasured",
+      "tradeoff": "portability、binary size、accessibility、native fidelityが交換関係になる"
+    },
+    {
+      "cohort": "frontend-ui",
+      "dimension": "lineage",
+      "id": "u-influence-history",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "作者の公式文書、talk、release note、一次インタビュー",
+      "options": [
+        "official edgeへ昇格",
+        "inferenceのまま保持",
+        "edgeをreject"
+      ],
+      "ownerEntity": "vue",
+      "profileDoc": "profiles/react-vue.md",
+      "question": "推定類似のうち作者が明示した歴史的影響はどれか",
+      "reason": "類似設計から歴史的因果を推論しない",
+      "resolutionIssue": "https://github.com/hjosugi/framework-atlas/issues/25",
+      "status": "research-needed",
+      "tradeoff": "系譜の読みやすさと因果の厳密性が交換関係になる"
+    },
+    {
+      "cohort": "architecture",
+      "dimension": "catalog",
+      "id": "u-topic-completeness",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "公式ecosystem indexと依存グラフを別入力として照合",
+      "options": [
+        "topic search",
+        "official ecosystem index",
+        "dependency graph"
+      ],
+      "ownerEntity": "kofun-boot",
+      "profileDoc": "profiles/router-lineage.md",
+      "question": "GitHub topicに付与されない重要プロジェクトをどう検出するか",
+      "reason": "topicは自己申告で完全な索引ではない",
+      "resolutionIssue": "https://github.com/hjosugi/framework-atlas/issues/47",
+      "status": "open",
+      "tradeoff": "breadth、rate limit、classification review costが交換関係になる"
+    },
+    {
+      "cohort": "router-component",
+      "dimension": "routing",
+      "id": "u-router-ambiguity",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "同じroute corpusでconflict diagnosticsとregistration/dispatchを別測定",
+      "options": [
+        "registration-time reject",
+        "ordered runtime match",
+        "type-level route tree"
+      ],
+      "ownerEntity": "httprouter",
+      "profileDoc": "profiles/router-lineage.md",
+      "question": "static route registrationでconflict、priority、到達不能pathをどこまでbuild時に拒否するか",
+      "reason": "server matcherとclient state routerではambiguity semanticsが異なる",
+      "resolutionIssue": "https://github.com/hjosugi/framework-atlas/issues/24",
+      "status": "design-needed",
+      "tradeoff": "表現力、compile time、診断品質、runtime costが交換関係になる"
+    },
+    {
+      "cohort": "convention-fullstack",
+      "dimension": "data-model",
+      "id": "u-orm-boundary",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "同一use caseのquery count、transaction lifetime、domain test coupling",
+      "options": [
+        "Active Record domain",
+        "data mapper",
+        "bounded-context別hybrid"
+      ],
+      "ownerEntity": "django",
+      "profileDoc": "profiles/fullstack-conventions.md",
+      "question": "ORM modelのproductivityを保ちながらdomain invariantとlazy I/Oをどう分離するか",
+      "reason": "単純CRUDとrich domainで適切な境界が違う",
+      "resolutionIssue": "https://github.com/hjosugi/framework-atlas/issues/21",
+      "status": "open",
+      "tradeoff": "短いCRUD、N+1可視性、persistence ignorance、mapping codeが交換関係になる"
+    },
+    {
+      "cohort": "frontend-ui",
+      "dimension": "rendering",
+      "id": "u-frontend-render-boundary",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "official host framework contractとfailure/replay boundary",
+      "options": [
+        "client-owned",
+        "server-owned",
+        "shared typed protocol"
+      ],
+      "ownerEntity": "react",
+      "profileDoc": "profiles/react-vue.md",
+      "question": "SPA、SSR、server componentsでstate、data fetch、effect ownershipをどこに置くか",
+      "reason": "React/Vue coreとfull-stack hostの責務を同一視できない",
+      "resolutionIssue": "https://github.com/hjosugi/framework-atlas/issues/22",
+      "status": "research-needed",
+      "tradeoff": "interactivity、streaming、cache、hydration、portabilityが交換関係になる"
+    },
+    {
+      "cohort": "minimal-http",
+      "dimension": "concurrency",
+      "id": "u-request-cancellation",
+      "lastReviewed": "2026-08-02",
+      "nextEvidence": "cancel/backpressure/shutdown fault-injection trace",
+      "options": [
+        "request scope only",
+        "structured task scope",
+        "durable workflow handoff"
+      ],
+      "ownerEntity": "gin",
+      "profileDoc": "profiles/gin.md",
+      "question": "request cancellationとdetached workのlifetimeをframework標準でどこまで強制するか",
+      "reason": "goroutineを起動できることと安全に所有・停止できることは別",
+      "resolutionIssue": "https://github.com/hjosugi/framework-atlas/issues/20",
+      "status": "design-needed",
+      "tradeoff": "ergonomics、leak防止、durability、runtime complexityが交換関係になる"
+    }
+  ],
+  "version": 1
+}

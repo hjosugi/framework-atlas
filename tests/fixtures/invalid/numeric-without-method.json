@@ -1,0 +1,1 @@
+{"version": 1, "kind": "measurement", "record": {"value": 100, "source": "https://example.com", "observedAt": "2026-08-02"}, "expectedPointer": "/record/method"}

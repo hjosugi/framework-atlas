@@ -1,0 +1,258 @@
+{
+  "version": 1,
+  "asOf": "2026-08-02",
+  "defaults": {"observedAt": "2026-08-02", "evidenceKind": "official", "metrics": {"performance": "unmeasured"}},
+  "entities": [
+    {
+      "id": "spring-boot", "name": "Spring Boot", "kind": "application-framework", "cohort": "enterprise-boot", "language": "Java", "launchYear": 2014, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/spring-projects/spring-boot", "homepage": "https://spring.io/projects/spring-boot", "profileDoc": "profiles/spring-boot.md", "observedVersion": "4.1.0", "releaseSource": "https://github.com/spring-projects/spring-boot/releases/tag/v4.1.0",
+      "summary": "Opinionated starters, auto-configuration, embedded servers and production operations over the Spring ecosystem.",
+      "traits": ["auto-configuration", "dependency-injection", "embedded-server", "actuator", "externalized-configuration"],
+      "sources": ["https://spring.io/projects/spring-boot", "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html"]
+    },
+    {
+      "id": "spring-framework", "name": "Spring Framework", "kind": "application-framework", "cohort": "enterprise-boot", "language": "Java", "launchYear": 2003, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/spring-projects/spring-framework", "homepage": "https://spring.io/projects/spring-framework", "summary": "Core Spring programming and configuration model, including dependency injection, Web stacks, data access and integration foundations.",
+      "traits": ["dependency-injection", "web-mvc", "webflux", "aop"], "sources": ["https://spring.io/projects/spring-framework", "https://github.com/spring-projects/spring-framework"]
+    },
+    {
+      "id": "fastapi", "name": "FastAPI", "kind": "application-framework", "cohort": "typed-api", "language": "Python", "launchYear": 2018, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/fastapi/fastapi", "homepage": "https://fastapi.tiangolo.com/", "profileDoc": "profiles/fastapi.md", "observedVersion": "0.141.1", "releaseSource": "https://github.com/fastapi/fastapi/releases/tag/0.141.1",
+      "summary": "Type-hint driven Python API framework deriving validation, OpenAPI, documentation and dependency graphs from declarations.",
+      "traits": ["type-hints", "openapi", "validation", "dependency-injection", "async"],
+      "sources": ["https://fastapi.tiangolo.com/features/", "https://github.com/fastapi/fastapi"]
+    },
+    {
+      "id": "starlette", "name": "Starlette", "kind": "http-framework", "cohort": "typed-api", "language": "Python", "launchYear": 2018, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/Kludex/starlette", "homepage": "https://www.starlette.io/", "summary": "Lightweight ASGI toolkit/framework providing Web primitives, middleware, routing, WebSockets and lifespan handling used by FastAPI.",
+      "traits": ["asgi", "routing", "middleware", "lifespan"], "sources": ["https://www.starlette.io/", "https://github.com/Kludex/starlette"]
+    },
+    {
+      "id": "pydantic", "name": "Pydantic", "kind": "library", "cohort": "typed-api", "language": "Python/Rust", "launchYear": 2017, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/pydantic/pydantic", "homepage": "https://docs.pydantic.dev/", "summary": "Runtime data validation and serialization library driven by Python type annotations.",
+      "traits": ["validation", "serialization", "json-schema"], "sources": ["https://docs.pydantic.dev/", "https://github.com/pydantic/pydantic"]
+    },
+    {
+      "id": "uvicorn", "name": "Uvicorn", "kind": "platform", "cohort": "typed-api", "language": "Python", "launchYear": 2017, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/Kludex/uvicorn", "homepage": "https://www.uvicorn.org/", "summary": "ASGI server process commonly used to host FastAPI and Starlette applications.",
+      "traits": ["asgi-server", "event-loop", "deployment"], "sources": ["https://www.uvicorn.org/", "https://github.com/Kludex/uvicorn"]
+    },
+    {
+      "id": "gin", "name": "Gin", "kind": "http-framework", "cohort": "minimal-http", "language": "Go", "launchYear": 2014, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/gin-gonic/gin", "homepage": "https://gin-gonic.com/", "profileDoc": "profiles/gin.md", "observedVersion": "1.12.0", "releaseSource": "https://github.com/gin-gonic/gin/releases/tag/v1.12.0",
+      "summary": "Small Go HTTP framework centered on routing, middleware, binding and an explicit request context.",
+      "traits": ["router", "middleware", "binding", "explicit-composition"],
+      "sources": ["https://gin-gonic.com/en/docs/", "https://github.com/gin-gonic/gin"]
+    },
+    {
+      "id": "rails", "name": "Ruby on Rails", "kind": "application-framework", "cohort": "convention-fullstack", "language": "Ruby", "launchYear": 2004, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/rails/rails", "homepage": "https://rubyonrails.org/", "profileDoc": "profiles/fullstack-conventions.md", "observedVersion": "8.1.3.1", "releaseSource": "https://github.com/rails/rails/releases/tag/v8.1.3.1",
+      "summary": "Integrated full-stack framework built around convention over configuration and cohesive generators, ORM, routing and delivery layers.",
+      "traits": ["convention-over-configuration", "active-record", "generators", "full-stack"],
+      "sources": ["https://rubyonrails.org/doctrine", "https://guides.rubyonrails.org/command_line.html"]
+    },
+    {
+      "id": "laravel", "name": "Laravel", "kind": "application-framework", "cohort": "convention-fullstack", "language": "PHP", "launchYear": 2011, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/laravel/framework", "homepage": "https://laravel.com/", "profileDoc": "profiles/fullstack-conventions.md", "observedVersion": "13.23.0", "releaseSource": "https://github.com/laravel/framework/releases/tag/v13.23.0",
+      "summary": "Integrated PHP application framework combining expressive conventions with a service container, ORM, queues and CLI tooling.",
+      "traits": ["service-container", "eloquent", "artisan", "queues", "full-stack"],
+      "sources": ["https://laravel.com/docs", "https://github.com/laravel/framework"]
+    },
+    {
+      "id": "django", "name": "Django", "kind": "application-framework", "cohort": "convention-fullstack", "language": "Python", "launchYear": 2005, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/django/django", "homepage": "https://www.djangoproject.com/", "profileDoc": "profiles/fullstack-conventions.md", "observedVersion": "6.0.7", "releaseSource": "https://www.djangoproject.com/weblog/2026/jul/07/security-releases/",
+      "summary": "Batteries-included Python Web framework with ORM, admin, templates, forms, security defaults and explicit project conventions.",
+      "traits": ["orm", "admin", "templates", "security", "full-stack"],
+      "sources": ["https://docs.djangoproject.com/en/stable/", "https://github.com/django/django"]
+    },
+    {
+      "id": "react", "name": "React", "kind": "library", "cohort": "frontend-ui", "language": "JavaScript/TypeScript", "launchYear": 2013, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/facebook/react", "homepage": "https://react.dev/", "profileDoc": "profiles/react-vue.md", "observedVersion": "19.2.8", "releaseSource": "https://github.com/facebook/react/releases/tag/v19.2.8",
+      "summary": "Component model and rendering library whose surrounding routing, data and build choices remain composable ecosystem decisions.",
+      "traits": ["components", "declarative-ui", "one-way-data-flow", "ecosystem"],
+      "sources": ["https://react.dev/learn", "https://github.com/facebook/react"]
+    },
+    {
+      "id": "vue", "name": "Vue 3", "kind": "ui-framework", "cohort": "frontend-ui", "language": "TypeScript", "launchYear": 2020, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/vuejs/core", "homepage": "https://vuejs.org/", "profileDoc": "profiles/react-vue.md", "observedVersion": "3.5.40", "releaseSource": "https://github.com/vuejs/core/releases/tag/v3.5.40",
+      "summary": "Progressive component framework with fine-grained reactivity, single-file components and an official routing/state ecosystem.",
+      "traits": ["components", "reactivity", "single-file-components", "progressive"],
+      "sources": ["https://vuejs.org/guide/introduction.html", "https://github.com/vuejs/core"]
+    },
+    {
+      "id": "vue-2", "name": "Vue 2", "kind": "ui-framework", "cohort": "frontend-ui", "language": "JavaScript/TypeScript", "launchYear": 2014, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/vuejs/vue", "homepage": "https://v2.vuejs.org/", "summary": "The separately maintained Vue 2 code line; it is not used as the canonical Vue 3 entity.",
+      "traits": ["components", "reactivity", "legacy-line"], "sources": ["https://github.com/vuejs/vue", "https://v2.vuejs.org/"]
+    },
+    {
+      "id": "elysia", "name": "Elysia", "kind": "http-framework", "cohort": "edge-runtime", "language": "TypeScript", "launchYear": 2022, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/elysiajs/elysia", "homepage": "https://elysiajs.com/", "profileDoc": "profiles/modern-web.md", "observedVersion": "1.4.29", "releaseSource": "https://github.com/elysiajs/elysia/releases/tag/1.4.29",
+      "summary": "Bun-oriented TypeScript framework emphasizing end-to-end type inference, schema-driven validation and concise lifecycle composition.",
+      "traits": ["type-inference", "schema", "bun", "lifecycle", "ergonomics"],
+      "sources": ["https://elysiajs.com/", "https://github.com/elysiajs/elysia"]
+    },
+    {
+      "id": "hono", "name": "Hono", "kind": "http-framework", "cohort": "edge-runtime", "language": "TypeScript", "launchYear": 2021, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/honojs/hono", "homepage": "https://hono.dev/", "profileDoc": "profiles/modern-web.md", "observedVersion": "4.12.33", "releaseSource": "https://github.com/honojs/hono/releases/tag/v4.12.33",
+      "summary": "Web Standards oriented framework targeting multiple edge and JavaScript runtimes through portable adapters.",
+      "traits": ["web-standards", "multi-runtime", "middleware", "typed-rpc"],
+      "sources": ["https://hono.dev/docs/", "https://github.com/honojs/hono"]
+    },
+    {
+      "id": "axum", "name": "axum", "kind": "http-framework", "cohort": "typed-api", "language": "Rust", "launchYear": 2021, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/tokio-rs/axum", "homepage": "https://docs.rs/axum/latest/axum/", "profileDoc": "profiles/modern-web.md", "observedVersion": "0.8.9", "releaseSource": "https://github.com/tokio-rs/axum/releases/tag/axum-v0.8.9",
+      "summary": "Rust Web framework composing handlers, extractors and Tower middleware on Tokio and Hyper.",
+      "traits": ["extractors", "tower", "tokio", "type-system", "async"],
+      "sources": ["https://docs.rs/axum/latest/axum/", "https://github.com/tokio-rs/axum"]
+    },
+    {
+      "id": "fiber", "name": "Fiber", "kind": "http-framework", "cohort": "minimal-http", "language": "Go", "launchYear": 2020, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/gofiber/fiber", "homepage": "https://docs.gofiber.io/", "profileDoc": "profiles/modern-web.md", "observedVersion": "3.4.0", "releaseSource": "https://github.com/gofiber/fiber/releases/tag/v3.4.0",
+      "summary": "Express-inspired Go framework built around fasthttp, routing and middleware ergonomics.",
+      "traits": ["express-inspired", "fasthttp", "middleware", "routing"],
+      "sources": ["https://docs.gofiber.io/", "https://github.com/gofiber/fiber"]
+    },
+    {
+      "id": "chi", "name": "chi", "kind": "router", "cohort": "router-component", "language": "Go", "launchYear": 2015, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/go-chi/chi", "homepage": "https://go-chi.io/", "summary": "Composable net/http router preserving standard Go handler interfaces.",
+      "traits": ["net-http", "middleware", "composable"], "sources": ["https://github.com/go-chi/chi"]
+    },
+    {
+      "id": "gorilla-mux", "name": "gorilla/mux", "kind": "router", "cohort": "router-component", "language": "Go", "launchYear": 2012, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/gorilla/mux", "homepage": "https://github.com/gorilla/mux", "summary": "Go HTTP request router and matcher in the Gorilla toolkit.",
+      "traits": ["net-http", "matcher", "middleware"], "sources": ["https://github.com/gorilla/mux"]
+    },
+    {
+      "id": "httprouter", "name": "httprouter", "kind": "router", "cohort": "router-component", "language": "Go", "launchYear": 2013, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/julienschmidt/httprouter", "homepage": "https://github.com/julienschmidt/httprouter", "summary": "Radix-tree HTTP request router designed for predictable matching and low overhead.",
+      "traits": ["radix-tree", "routing", "net-http"], "sources": ["https://github.com/julienschmidt/httprouter"]
+    },
+    {
+      "id": "uwebsockets", "name": "uWebSockets", "kind": "http-framework", "cohort": "minimal-http", "language": "C++", "launchYear": 2016, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/uNetworking/uWebSockets", "homepage": "https://github.com/uNetworking/uWebSockets", "summary": "Low-level HTTP/WebSocket server for demanding event-driven workloads.",
+      "traits": ["websocket", "event-loop", "native"], "sources": ["https://github.com/uNetworking/uWebSockets"]
+    },
+    {
+      "id": "vue-router", "name": "Vue Router", "kind": "router", "cohort": "router-component", "language": "TypeScript", "launchYear": 2015, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/vuejs/router", "homepage": "https://router.vuejs.org/", "summary": "Official client-side router for Vue.",
+      "traits": ["client-router", "nested-routes", "vue"], "sources": ["https://router.vuejs.org/", "https://github.com/vuejs/router"]
+    },
+    {
+      "id": "tanstack-router", "name": "TanStack Router", "kind": "router", "cohort": "router-component", "language": "TypeScript", "launchYear": 2022, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/TanStack/router", "homepage": "https://tanstack.com/router/latest", "summary": "Type-safe client-first router with server functions and typed search parameters.",
+      "traits": ["type-safe", "client-router", "server-capable"], "sources": ["https://tanstack.com/router/latest", "https://github.com/TanStack/router"]
+    },
+    {
+      "id": "mithril", "name": "Mithril", "kind": "ui-framework", "cohort": "frontend-ui", "language": "JavaScript", "launchYear": 2014, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/MithrilJS/mithril.js", "homepage": "https://mithril.js.org/", "summary": "Compact client framework including VDOM, routing and XHR.",
+      "traits": ["vdom", "client-router", "xhr"], "sources": ["https://mithril.js.org/", "https://github.com/MithrilJS/mithril.js"]
+    },
+    {
+      "id": "single-spa", "name": "single-spa", "kind": "router", "cohort": "router-component", "language": "JavaScript", "launchYear": 2015, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/single-spa/single-spa", "homepage": "https://single-spa.js.org/", "summary": "Route-driven orchestration for microfrontends using multiple UI frameworks.",
+      "traits": ["microfrontend", "orchestration", "client-router"], "sources": ["https://single-spa.js.org/", "https://github.com/single-spa/single-spa"]
+    },
+    {
+      "id": "ui-router", "name": "UI-Router", "kind": "router", "cohort": "router-component", "language": "TypeScript", "launchYear": 2013, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/angular-ui/ui-router", "homepage": "https://ui-router.github.io/", "summary": "State-machine router with nested views originating in AngularJS applications.",
+      "traits": ["state-machine", "nested-views", "client-router"], "sources": ["https://ui-router.github.io/", "https://github.com/angular-ui/ui-router"]
+    },
+    {
+      "id": "path-to-regexp", "name": "path-to-regexp", "kind": "router", "cohort": "router-component", "language": "TypeScript", "launchYear": 2014, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/pillarjs/path-to-regexp", "homepage": "https://github.com/pillarjs/path-to-regexp", "summary": "Path template parser used as a matching component by JavaScript routers.",
+      "traits": ["path-parser", "component"], "sources": ["https://github.com/pillarjs/path-to-regexp"]
+    },
+    {
+      "id": "wouter", "name": "wouter", "kind": "router", "cohort": "router-component", "language": "TypeScript", "launchYear": 2019, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/molefrog/wouter", "homepage": "https://github.com/molefrog/wouter", "summary": "Minimal client router for React and Preact.",
+      "traits": ["minimal", "react", "preact"], "sources": ["https://github.com/molefrog/wouter"]
+    },
+    {
+      "id": "symfony-routing", "name": "Symfony Routing", "kind": "router", "cohort": "router-component", "language": "PHP", "launchYear": 2007, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/symfony/routing", "homepage": "https://symfony.com/doc/current/routing.html", "summary": "Standalone Symfony component mapping HTTP requests to configuration variables.",
+      "traits": ["server-router", "component", "attributes"], "sources": ["https://symfony.com/doc/current/routing.html", "https://github.com/symfony/routing"]
+    },
+    {
+      "id": "drizzle", "name": "Drizzle ORM", "kind": "data-framework", "cohort": "data-ai", "language": "TypeScript", "launchYear": 2022, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/drizzle-team/drizzle-orm", "homepage": "https://orm.drizzle.team/", "summary": "TypeScript ORM emphasizing SQL-shaped, type-safe schemas and queries.",
+      "traits": ["orm", "type-safe", "sql"], "sources": ["https://orm.drizzle.team/docs/overview", "https://github.com/drizzle-team/drizzle-orm"]
+    },
+    {
+      "id": "postgrest", "name": "PostgREST", "kind": "data-framework", "cohort": "data-ai", "language": "Haskell", "launchYear": 2014, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/PostgREST/postgrest", "homepage": "https://postgrest.org/", "summary": "HTTP API server deriving a RESTful surface from PostgreSQL schema and policies.",
+      "traits": ["database-first", "postgresql", "generated-api"], "sources": ["https://postgrest.org/en/stable/", "https://github.com/PostgREST/postgrest"]
+    },
+    {
+      "id": "servant", "name": "Servant", "kind": "http-framework", "cohort": "typed-api", "language": "Haskell", "launchYear": 2014, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/haskell-servant/servant", "homepage": "https://docs.servant.dev/", "summary": "Type-level Web API descriptions interpreted into servers, clients and documentation.",
+      "traits": ["type-level-api", "interpreters", "functional"], "sources": ["https://docs.servant.dev/", "https://github.com/haskell-servant/servant"]
+    },
+    {
+      "id": "tauri", "name": "Tauri", "kind": "desktop-mobile", "cohort": "cross-platform", "language": "Rust/TypeScript", "launchYear": 2019, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/tauri-apps/tauri", "homepage": "https://tauri.app/", "summary": "Desktop/mobile application toolkit using the system WebView and a Rust command boundary.",
+      "traits": ["system-webview", "rust", "capabilities", "desktop"], "sources": ["https://v2.tauri.app/concept/architecture/", "https://github.com/tauri-apps/tauri"]
+    },
+    {
+      "id": "ionic", "name": "Ionic Framework", "kind": "desktop-mobile", "cohort": "cross-platform", "language": "TypeScript", "launchYear": 2013, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/ionic-team/ionic-framework", "homepage": "https://ionicframework.com/", "summary": "Cross-platform Web component UI toolkit for mobile and progressive Web applications.",
+      "traits": ["web-components", "mobile-ui", "capacitor"], "sources": ["https://ionicframework.com/docs", "https://github.com/ionic-team/ionic-framework"]
+    },
+    {
+      "id": "expo", "name": "Expo", "kind": "desktop-mobile", "cohort": "cross-platform", "language": "TypeScript", "launchYear": 2015, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/expo/expo", "homepage": "https://expo.dev/", "summary": "React Native application framework and toolchain targeting Android, iOS and Web.",
+      "traits": ["react-native", "toolchain", "universal-app"], "sources": ["https://docs.expo.dev/", "https://github.com/expo/expo"]
+    },
+    {
+      "id": "bubble-tea", "name": "Bubble Tea", "kind": "tui", "cohort": "frontend-ui", "language": "Go", "launchYear": 2019, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/charmbracelet/bubbletea", "homepage": "https://github.com/charmbracelet/bubbletea", "summary": "Functional Go TUI framework based on the Elm Architecture.",
+      "traits": ["elm-architecture", "functional", "terminal"], "sources": ["https://github.com/charmbracelet/bubbletea"]
+    },
+    {
+      "id": "textual", "name": "Textual", "kind": "tui", "cohort": "frontend-ui", "language": "Python", "launchYear": 2021, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/Textualize/textual", "homepage": "https://textual.textualize.io/", "summary": "Python application framework for terminal and Web-rendered user interfaces.",
+      "traits": ["terminal", "reactive", "css"], "sources": ["https://textual.textualize.io/", "https://github.com/Textualize/textual"]
+    },
+    {
+      "id": "langgraph", "name": "LangGraph", "kind": "data-framework", "cohort": "data-ai", "language": "Python/TypeScript", "launchYear": 2023, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/langchain-ai/langgraph", "homepage": "https://docs.langchain.com/oss/python/langgraph/overview", "summary": "Stateful graph runtime for durable agent workflows.",
+      "traits": ["agents", "state-machine", "durable-execution"], "sources": ["https://docs.langchain.com/oss/python/langgraph/overview", "https://github.com/langchain-ai/langgraph"]
+    },
+    {
+      "id": "llamaindex", "name": "LlamaIndex", "kind": "data-framework", "cohort": "data-ai", "language": "Python", "launchYear": 2022, "profile": "seed", "disposition": "included",
+      "repository": "https://github.com/run-llama/llama_index", "homepage": "https://docs.llamaindex.ai/", "summary": "Data and agent framework for ingestion, indexing, retrieval and workflows.",
+      "traits": ["rag", "agents", "workflows", "data-connectors"], "sources": ["https://docs.llamaindex.ai/", "https://github.com/run-llama/llama_index"]
+    },
+    {
+      "id": "kofun-boot", "name": "Kofun Boot", "kind": "application-framework", "cohort": "enterprise-boot", "language": "Kofun", "launchYear": 2026, "profile": "standard", "disposition": "included",
+      "repository": "https://github.com/hjosugi/kofun-boot", "homepage": "https://github.com/hjosugi/kofun-boot", "summary": "Evidence-gated application framework research target using typed contracts, explicit capabilities and Functional Core / Imperative Shell.",
+      "traits": ["typed-contract", "capabilities", "functional-core", "evidence-gates"], "sources": ["https://github.com/hjosugi/kofun-boot", "https://github.com/hjosugi/kofun-boot/issues/15"]
+    },
+    {
+      "id": "modular-monolith-ddd", "name": "Modular Monolith with DDD", "kind": "architecture-case", "cohort": "architecture", "language": "C#", "launchYear": 2018, "profile": "deep", "disposition": "included",
+      "repository": "https://github.com/kgrzybek/modular-monolith-with-ddd", "homepage": "https://github.com/kgrzybek/modular-monolith-with-ddd", "profileDoc": "profiles/modular-monolith-ddd.md",
+      "summary": "Production-oriented reference application documenting modular monolith, tactical DDD, CQRS, integration reliability and layered tests.",
+      "traits": ["ddd", "modular-monolith", "cqrs", "outbox-inbox", "event-sourcing", "architecture-tests"],
+      "sources": ["https://github.com/kgrzybek/modular-monolith-with-ddd"]
+    },
+    {
+      "id": "lantern", "name": "Lantern", "kind": "other", "cohort": "router-component", "language": "Dart", "launchYear": 2010, "profile": "seed", "disposition": "quarantined",
+      "repository": "https://github.com/getlantern/lantern", "homepage": "https://lantern.io/", "summary": "VPN/circumvention product matched by the router topic; not an application routing framework.",
+      "quarantineReason": "router topicの語義衝突: network routing/VPN", "quarantineReasonCode": "network-router-vpn", "topicHits": ["router"], "traits": ["vpn"], "sources": ["https://github.com/getlantern/lantern"]
+    },
+    {
+      "id": "routersploit", "name": "RouterSploit", "kind": "other", "cohort": "router-component", "language": "Python", "launchYear": 2015, "profile": "seed", "disposition": "quarantined",
+      "repository": "https://github.com/threat9/routersploit", "homepage": "https://github.com/threat9/routersploit", "summary": "Embedded-device exploitation framework, not an application router.",
+      "quarantineReason": "security exploitation用途で比較母集団外", "quarantineReasonCode": "security-exploit", "topicHits": ["router"], "traits": ["security"], "sources": ["https://github.com/threat9/routersploit"]
+    },
+    {
+      "id": "istoreos", "name": "iStoreOS", "kind": "other", "cohort": "router-component", "language": "C", "launchYear": 2022, "profile": "seed", "disposition": "quarantined",
+      "repository": "https://github.com/istoreos/istoreos", "homepage": "https://github.com/istoreos/istoreos", "summary": "Router/NAS operating system distribution, not a software framework API.",
+      "quarantineReason": "OS/distributionで成果物種別が異なる", "quarantineReasonCode": "router-os", "topicHits": ["router"], "traits": ["operating-system", "router"], "sources": ["https://github.com/istoreos/istoreos"]
+    },
+    {
+      "id": "arouter", "name": "ARouter", "kind": "other", "cohort": "router-component", "language": "Java", "launchYear": 2017, "profile": "seed", "disposition": "quarantined",
+      "repository": "https://github.com/alibaba/ARouter", "homepage": "https://github.com/alibaba/ARouter", "summary": "Android component navigation framework retained as a peripheral comparison candidate.",
+      "quarantineReason": "Web/router主比較とは境界が異なるため隔離", "quarantineReasonCode": "android-navigation", "topicHits": ["router"], "traits": ["android", "navigation"], "sources": ["https://github.com/alibaba/ARouter"]
+    }
+  ]
+}

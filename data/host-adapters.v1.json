@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "observedAt": "2026-08-02",
+  "adapters": [
+    {"entity": "elysia", "primaryRuntime": "Bun", "otherHosts": ["Cloudflare adapter via ecosystem"], "requestLifetime": "framework lifecycle context scoped to request", "ambientStateRisk": "context decoration can become implicit dependency", "portability": "runtime-centered", "source": "https://elysiajs.com/"},
+    {"entity": "hono", "primaryRuntime": "Web Standards host adapter", "otherHosts": ["Cloudflare Workers", "Deno", "Bun", "Node.js", "AWS Lambda"], "requestLifetime": "Hono Context scoped to dispatch", "ambientStateRisk": "context variables require typed ownership", "portability": "multi-runtime adapters; host capabilities are not identical", "source": "https://hono.dev/docs/getting-started/basic"},
+    {"entity": "axum", "primaryRuntime": "Tokio + Hyper", "otherHosts": ["Tower service ecosystem"], "requestLifetime": "extractors move or borrow request parts into handler values", "ambientStateRisk": "shared State is explicit extractor but interior mutability remains a design choice", "portability": "Rust native host", "source": "https://docs.rs/axum/latest/axum/"},
+    {"entity": "fiber", "primaryRuntime": "fasthttp", "otherHosts": [], "requestLifetime": "Fiber Context follows fasthttp request reuse constraints", "ambientStateRisk": "context values must not escape request lifetime", "portability": "Go native host with fasthttp compatibility boundary", "source": "https://docs.gofiber.io/"}
+  ]
+}

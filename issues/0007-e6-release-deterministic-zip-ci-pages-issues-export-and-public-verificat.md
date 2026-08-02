@@ -1,9 +1,9 @@
 # #7 E6 release: deterministic ZIP, CI, Pages, issues export, and public verification
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/7
-- Updated: 2026-08-02T06:58:45Z
+- Updated: 2026-08-02T07:04:14Z
 
 ## Metadata
 - State: complete

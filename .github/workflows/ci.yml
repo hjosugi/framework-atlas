@@ -20,11 +20,11 @@ jobs:
       - name: Validate data, tests, generated site and reproducibility
         run: make check
       - name: Build release archive
-        run: make zip VERSION=v0.1.0
+        run: make zip VERSION=v0.1.1
       - name: Extract archive and verify manifest
         run: |
           mkdir -p /tmp/framework-atlas-extract
-          unzip -q dist/framework-atlas-v0.1.0.zip -d /tmp/framework-atlas-extract
+          unzip -q dist/framework-atlas-v0.1.1.zip -d /tmp/framework-atlas-extract
           test -s /tmp/framework-atlas-extract/MANIFEST.json
           test -s /tmp/framework-atlas-extract/docs/index.html
           (cd dist && sha256sum -c SHA256SUMS)
@@ -33,7 +33,7 @@ jobs:
           (cd /tmp/framework-atlas-extract && python3 -m unittest discover -s tests -v)
       - uses: actions/upload-artifact@v4
         with:
-          name: framework-atlas-v0.1.0
+          name: framework-atlas-v0.1.1
           path: |
-            dist/framework-atlas-v0.1.0.zip
+            dist/framework-atlas-v0.1.1.zip
             dist/SHA256SUMS

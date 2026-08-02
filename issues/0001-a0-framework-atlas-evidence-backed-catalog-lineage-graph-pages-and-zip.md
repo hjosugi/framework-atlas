@@ -1,9 +1,9 @@
 # #1 A0 framework atlas: evidence-backed catalog, lineage graph, Pages, and ZIP
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/1
-- Updated: 2026-08-02T06:58:37Z
+- Updated: 2026-08-02T07:04:16Z
 
 ## Metadata
 - State: complete

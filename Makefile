@@ -1,5 +1,5 @@
 PYTHON ?= python3
-VERSION ?= v0.1.0
+VERSION ?= v0.1.1
 
 .PHONY: check validate test site zip issues clean
 

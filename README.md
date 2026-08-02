@@ -3,7 +3,7 @@
 Framework Atlas は、Webフレームワークと周辺技術の設計史・系譜・トレードオフを、根拠と確度を失わず比較する公開データセット兼静的サイトです。目的は人気順位を作ることではなく、`kofun-boot` の実装判断に再利用できる設計材料を作ることです。
 
 - 公開サイト: https://hjosugi.github.io/framework-atlas/
-- versioned ZIP: https://github.com/hjosugi/framework-atlas/releases/tag/v0.1.0
+- versioned ZIP: https://github.com/hjosugi/framework-atlas/releases/tag/v0.1.1
 - methodology: [データの読み方](#データの読み方) / [`schema/`](schema/) / [`data/`](data/)
 
 ## 収録するもの

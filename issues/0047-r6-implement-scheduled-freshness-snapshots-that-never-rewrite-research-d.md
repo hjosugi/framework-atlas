@@ -1,9 +1,9 @@
 # #47 R6 implement scheduled freshness snapshots that never rewrite research decisions
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/47
-- Updated: 2026-08-02T06:59:38Z
+- Updated: 2026-08-02T07:04:12Z
 
 ## Metadata
 - State: complete

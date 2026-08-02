@@ -1905,13 +1905,13 @@
     {
       "bodyDigest": "45aacb199a81394bb15c0f0a9a6ee54dd07db6d23e5745ee6caafa00841f8704",
       "file": "issues/0001-a0-framework-atlas-evidence-backed-catalog-lineage-graph-pages-and-zip.md",
-      "fileDigest": "0957ae2607c3b0b7d6701e9e2da17e6424b4d68ba0bcb896396f710185f49188",
+      "fileDigest": "672cec6074e38aa169492897be7005de7d50c24851bf721592465698e78d7860",
       "number": 1,
       "parent": null,
-      "state": "open",
+      "state": "closed",
       "title": "A0 framework atlas: evidence-backed catalog, lineage graph, Pages, and ZIP",
       "titleDigest": "bf13b56d4f1bd9b44930cc45379feb0a4680785cc06d57104020878aaea042ae",
-      "updatedAt": "2026-08-02T06:58:37Z",
+      "updatedAt": "2026-08-02T07:04:16Z",
       "url": "https://github.com/hjosugi/framework-atlas/issues/1"
     },
     {
@@ -1977,13 +1977,13 @@
     {
       "bodyDigest": "76e24e8b21b2a54732aa40ac2700befdd9f643f68cdd691131e53b229f839754",
       "file": "issues/0007-e6-release-deterministic-zip-ci-pages-issues-export-and-public-verificat.md",
-      "fileDigest": "63de3e60b40dff782c53ccfffcb48acd0dd45f7796d1c601fb1020575659a574",
+      "fileDigest": "a4664152cf1b023d99d4ac0b23b0eab33c68dcd1b8be3efa322ed48b9fd40b90",
       "number": 7,
       "parent": "[A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)",
-      "state": "open",
+      "state": "closed",
       "title": "E6 release: deterministic ZIP, CI, Pages, issues export, and public verification",
       "titleDigest": "d61f85c4a470f81b13f91ae03ff056b187b775f9b6e33daf1251a5958cf9bc5f",
-      "updatedAt": "2026-08-02T06:58:45Z",
+      "updatedAt": "2026-08-02T07:04:14Z",
       "url": "https://github.com/hjosugi/framework-atlas/issues/7"
     },
     {
@@ -2457,13 +2457,13 @@
     {
       "bodyDigest": "434558fddc26d88f55835b2a9de2c6fbd2b32559dbd31a2d764dc09913208218",
       "file": "issues/0047-r6-implement-scheduled-freshness-snapshots-that-never-rewrite-research-d.md",
-      "fileDigest": "40b28d2ea513ba6ea3f67d199a8553268e5bb810144a373490b9dfa60ebce34e",
+      "fileDigest": "2d2c153b7b33f94ca54f488a760072c56e9f43276ebaeb36d25a83a35acec14e",
       "number": 47,
       "parent": "[E6 #7](https://github.com/hjosugi/framework-atlas/issues/7)",
-      "state": "open",
+      "state": "closed",
       "title": "R6 implement scheduled freshness snapshots that never rewrite research decisions",
       "titleDigest": "698e6fdf53d085810c85bd4f5bcdea7d40085fadee14dfc6b847fc3bad0c96e3",
-      "updatedAt": "2026-08-02T06:59:38Z",
+      "updatedAt": "2026-08-02T07:04:12Z",
       "url": "https://github.com/hjosugi/framework-atlas/issues/47"
     }
   ],

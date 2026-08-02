@@ -24,7 +24,7 @@ jobs:
         run: python3 scripts/freshness_report.py --output freshness-report.json
       - name: Upload report even when partial or rate-limited
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: freshness-report-${{ github.run_id }}
           path: freshness-report.json

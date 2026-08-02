@@ -1,12 +1,12 @@
 # #2 E1 data and evidence: versioned schema, taxonomy, claims, and unresolved points
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/2
-- Updated: 2026-08-02T05:45:05Z
+- Updated: 2026-08-02T07:01:54Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: execution lane
 - Parent: [A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)
 - Blocked on: nothing
@@ -31,12 +31,12 @@ entity は stable id、kind、cohort、profile level、language、first release 
 
 ## Gates
 
-- [ ] 不明 field、欠落 source/date、dangling relation、重複 alias を拒否。
-- [ ] official と inference を同一 enum に潰さない。
-- [ ] framework/router/library/platform/case-study を区別。
-- [ ] deep/standard/seed の必須 field が段階別に検証される。
-- [ ] 未解決点は owner entity、status、last reviewed、resolution issue を持つ。
-- [ ] 同じ入力の normalized JSON が byte-identical。
+- [x] 不明 field、欠落 source/date、dangling relation、重複 alias を拒否。
+- [x] official と inference を同一 enum に潰さない。
+- [x] framework/router/library/platform/case-study を区別。
+- [x] deep/standard/seed の必須 field が段階別に検証される。
+- [x] 未解決点は owner entity、status、last reviewed、resolution issue を持つ。
+- [x] 同じ入力の normalized JSON が byte-identical。
 
 ## Non-goals
 
@@ -44,8 +44,8 @@ UI、network collection、人気 score、framework固有 profile本文。
 
 ## Children
 
-- [ ] [#8](https://github.com/hjosugi/framework-atlas/issues/8) D1 schema/validator
-- [ ] [#9](https://github.com/hjosugi/framework-atlas/issues/9) D2 taxonomy/aliases
-- [ ] [#10](https://github.com/hjosugi/framework-atlas/issues/10) D3 claims/metrics evidence
-- [ ] [#11](https://github.com/hjosugi/framework-atlas/issues/11) D4 unresolved points
-- [ ] [#12](https://github.com/hjosugi/framework-atlas/issues/12) D5 initial catalog/quarantine
+- [x] [#8](https://github.com/hjosugi/framework-atlas/issues/8) D1 schema/validator
+- [x] [#9](https://github.com/hjosugi/framework-atlas/issues/9) D2 taxonomy/aliases
+- [x] [#10](https://github.com/hjosugi/framework-atlas/issues/10) D3 claims/metrics evidence
+- [x] [#11](https://github.com/hjosugi/framework-atlas/issues/11) D4 unresolved points
+- [x] [#12](https://github.com/hjosugi/framework-atlas/issues/12) D5 initial catalog/quarantine

@@ -1,12 +1,12 @@
 # #21 P4 implement Rails, Laravel, and Django deep profiles as batteries-included baselines
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/21
-- Updated: 2026-08-02T05:40:27Z
+- Updated: 2026-08-02T07:00:53Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: bounded implementation
 - Parent: [E3 #4](https://github.com/hjosugi/framework-atlas/issues/4)
 - Blocked on: D1-D3
@@ -21,12 +21,12 @@ Rails Guides、Laravel documentation、Django documentation/repositories。
 MVC/MTV、routing、ORM、migration、DI/service container、generator/CLI、template、job/realtime、security/opsを同じdimensionで比較する。Active Record、Eloquent、Django ORMを別entity/relationshipで扱う。
 
 ## Acceptance
-- [ ] convention-over-configurationの具体的artifactを列挙。
-- [ ] framework本体とapplication skeleton repositoryを区別。
-- [ ] ORMのproductivityとdomain coupling/N+1/lazy IOを比較。
-- [ ] release/historyはofficial evidenceにjoin。
-- [ ] comparableでない欄はnot-applicable。
-- [ ] Spring Boot/FastAPI/Ginとのproduction completeness差を事実として表す。
+- [x] convention-over-configurationの具体的artifactを列挙。
+- [x] framework本体とapplication skeleton repositoryを区別。
+- [x] ORMのproductivityとdomain coupling/N+1/lazy IOを比較。
+- [x] release/historyはofficial evidenceにjoin。
+- [x] comparableでない欄はnot-applicable。
+- [x] Spring Boot/FastAPI/Ginとのproduction completeness差を事実として表す。
 
 ## Non-goals
 言語優劣、サンプルコード量産。

@@ -1,12 +1,12 @@
 # #4 E3 profiles and lineage: design history, generations, comparisons, and evidence graph
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/4
-- Updated: 2026-08-02T05:45:09Z
+- Updated: 2026-08-02T07:01:58Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: execution lane
 - Parent: [A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)
 - Blocked on: E1 schema
@@ -33,12 +33,12 @@ Spring Boot、FastAPI、Gin、Rails、Laravel、Django、React、Vue。Web新世
 
 ## Gates
 
-- [ ] 各deep profileが history、philosophy、execution model、extension model、data model、strengths、trade-offs、unresolved、sourcesを持つ。
-- [ ] first-release/current-version を観測 source に結ぶ。
-- [ ] 世代分類は評価語でなく設計変化として説明。
-- [ ] graph の全 node/edge が schema validationを通る。
-- [ ] framework と ecosystem component を混同しない。
-- [ ] 比較不能な欄は `not-applicable`。
+- [x] 各deep profileが history、philosophy、execution model、extension model、data model、strengths、trade-offs、unresolved、sourcesを持つ。
+- [x] first-release/current-version を観測 source に結ぶ。
+- [x] 世代分類は評価語でなく設計変化として説明。
+- [x] graph の全 node/edge が schema validationを通る。
+- [x] framework と ecosystem component を混同しない。
+- [x] 比較不能な欄は `not-applicable`。
 
 ## Non-goals
 
@@ -46,12 +46,12 @@ Spring Boot、FastAPI、Gin、Rails、Laravel、Django、React、Vue。Web新世
 
 ## Children
 
-- [ ] [#18](https://github.com/hjosugi/framework-atlas/issues/18) P1 Spring Boot
-- [ ] [#19](https://github.com/hjosugi/framework-atlas/issues/19) P2 FastAPI
-- [ ] [#20](https://github.com/hjosugi/framework-atlas/issues/20) P3 Gin
-- [ ] [#21](https://github.com/hjosugi/framework-atlas/issues/21) P4 Rails/Laravel/Django
-- [ ] [#22](https://github.com/hjosugi/framework-atlas/issues/22) P5 React/Vue
-- [ ] [#23](https://github.com/hjosugi/framework-atlas/issues/23) P6 modern Web cohort
-- [ ] [#24](https://github.com/hjosugi/framework-atlas/issues/24) P7 router lineage
-- [ ] [#25](https://github.com/hjosugi/framework-atlas/issues/25) P8 graph/timeline
-- [ ] [#26](https://github.com/hjosugi/framework-atlas/issues/26) P9 comparison matrices
+- [x] [#18](https://github.com/hjosugi/framework-atlas/issues/18) P1 Spring Boot
+- [x] [#19](https://github.com/hjosugi/framework-atlas/issues/19) P2 FastAPI
+- [x] [#20](https://github.com/hjosugi/framework-atlas/issues/20) P3 Gin
+- [x] [#21](https://github.com/hjosugi/framework-atlas/issues/21) P4 Rails/Laravel/Django
+- [x] [#22](https://github.com/hjosugi/framework-atlas/issues/22) P5 React/Vue
+- [x] [#23](https://github.com/hjosugi/framework-atlas/issues/23) P6 modern Web cohort
+- [x] [#24](https://github.com/hjosugi/framework-atlas/issues/24) P7 router lineage
+- [x] [#25](https://github.com/hjosugi/framework-atlas/issues/25) P8 graph/timeline
+- [x] [#26](https://github.com/hjosugi/framework-atlas/issues/26) P9 comparison matrices

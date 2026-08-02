@@ -29,7 +29,7 @@ directory縲］aming縲》est縲…onfiguration縲［igration縺ｮgolden path繧辰LI縺ｧ逕滓
 - https://rubyonrails.org/doctrine
 - https://guides.rubyonrails.org/command_line.html
 - https://laravel.com/docs
-- https://docs.djangoproject.com/en/stable/intro/overview/
+- https://docs.djangoproject.com/en/6.0/intro/overview/
 - https://github.com/rails/rails/releases/tag/v8.1.3.1
 - https://github.com/laravel/framework/releases/tag/v13.23.0
 - https://www.djangoproject.com/weblog/2026/jul/07/security-releases/

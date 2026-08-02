@@ -63,14 +63,14 @@
       "repository": "https://github.com/django/django", "homepage": "https://www.djangoproject.com/", "profileDoc": "profiles/fullstack-conventions.md", "observedVersion": "6.0.7", "releaseSource": "https://www.djangoproject.com/weblog/2026/jul/07/security-releases/",
       "summary": "Batteries-included Python Web framework with ORM, admin, templates, forms, security defaults and explicit project conventions.",
       "traits": ["orm", "admin", "templates", "security", "full-stack"],
-      "sources": ["https://docs.djangoproject.com/en/stable/", "https://github.com/django/django"]
+      "sources": ["https://docs.djangoproject.com/en/6.0/", "https://github.com/django/django"]
     },
     {
       "id": "react", "name": "React", "kind": "library", "cohort": "frontend-ui", "language": "JavaScript/TypeScript", "launchYear": 2013, "profile": "deep", "disposition": "included",
-      "repository": "https://github.com/facebook/react", "homepage": "https://react.dev/", "profileDoc": "profiles/react-vue.md", "observedVersion": "19.2.8", "releaseSource": "https://github.com/facebook/react/releases/tag/v19.2.8",
+      "repository": "https://github.com/react/react", "homepage": "https://react.dev/", "profileDoc": "profiles/react-vue.md", "observedVersion": "19.2.8", "releaseSource": "https://github.com/react/react/releases/tag/v19.2.8",
       "summary": "Component model and rendering library whose surrounding routing, data and build choices remain composable ecosystem decisions.",
       "traits": ["components", "declarative-ui", "one-way-data-flow", "ecosystem"],
-      "sources": ["https://react.dev/learn", "https://github.com/facebook/react"]
+      "sources": ["https://react.dev/learn", "https://github.com/react/react"]
     },
     {
       "id": "vue", "name": "Vue 3", "kind": "ui-framework", "cohort": "frontend-ui", "language": "TypeScript", "launchYear": 2020, "profile": "deep", "disposition": "included",

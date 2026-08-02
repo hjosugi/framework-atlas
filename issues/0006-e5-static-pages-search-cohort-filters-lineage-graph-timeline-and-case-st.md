@@ -1,12 +1,12 @@
 # #6 E5 static Pages: search, cohort filters, lineage graph, timeline, and case-study UX
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/6
-- Updated: 2026-08-02T05:45:13Z
+- Updated: 2026-08-02T07:02:03Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: execution lane
 - Parent: [A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)
 - Blocked on: E1 data contract; UI shell can start with fixtures
@@ -41,13 +41,13 @@ relation type、confidence、official/inference filterを持つ。arrow方向を
 
 ## Gates
 
-- [ ] static file serverと `file://` 相当fixtureで主要機能を確認。
-- [ ] keyboard操作、focus、semantic landmarks、reduced-motion、contrastを検証。
-- [ ] mobile幅で検索、graph、tableが使用可能。
-- [ ] JS無効時にも方法論とデータdownload linkが見える。
-- [ ] user inputを `innerHTML` に入れない。
-- [ ] URL queryで検索/filters/profileを再現可能。
-- [ ] generated data driftをCIが拒否。
+- [x] static file serverと `file://` 相当fixtureで主要機能を確認。
+- [x] keyboard操作、focus、semantic landmarks、reduced-motion、contrastを検証。
+- [x] mobile幅で検索、graph、tableが使用可能。
+- [x] JS無効時にも方法論とデータdownload linkが見える。
+- [x] user inputを `innerHTML` に入れない。
+- [x] URL queryで検索/filters/profileを再現可能。
+- [x] generated data driftをCIが拒否。
 
 ## Non-goals
 
@@ -55,8 +55,8 @@ relation type、confidence、official/inference filterを持つ。arrow方向を
 
 ## Children
 
-- [ ] [#37](https://github.com/hjosugi/framework-atlas/issues/37) S1 site generation
-- [ ] [#38](https://github.com/hjosugi/framework-atlas/issues/38) S2 search/filter/detail
-- [ ] [#39](https://github.com/hjosugi/framework-atlas/issues/39) S3 lineage graph
-- [ ] [#40](https://github.com/hjosugi/framework-atlas/issues/40) S4 timeline/matrices/case
-- [ ] [#41](https://github.com/hjosugi/framework-atlas/issues/41) S5 accessibility/security/smoke
+- [x] [#37](https://github.com/hjosugi/framework-atlas/issues/37) S1 site generation
+- [x] [#38](https://github.com/hjosugi/framework-atlas/issues/38) S2 search/filter/detail
+- [x] [#39](https://github.com/hjosugi/framework-atlas/issues/39) S3 lineage graph
+- [x] [#40](https://github.com/hjosugi/framework-atlas/issues/40) S4 timeline/matrices/case
+- [x] [#41](https://github.com/hjosugi/framework-atlas/issues/41) S5 accessibility/security/smoke

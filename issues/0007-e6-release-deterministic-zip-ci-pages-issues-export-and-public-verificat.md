@@ -3,10 +3,10 @@
 - State: open
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/7
-- Updated: 2026-08-02T05:45:15Z
+- Updated: 2026-08-02T06:58:45Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: execution lane
 - Parent: [A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)
 - Blocked on: E1-E5 artifacts for final release; tooling can start
@@ -31,13 +31,13 @@ schema、主要data、profiles、case study、site source/generated site、colle
 
 ## Gates
 
-- [ ] path順、timestamp、permissionsを固定し二回buildのSHA-256一致。
-- [ ] ZIP展開後にoffline validate/build/site smokeが通る。
-- [ ] Issue原稿と実登録issueのtitle/body digestを照合。
-- [ ] tag/release/main SHAをmanifestへ固定。
-- [ ] Pages endpoint、raw data、source ZIP、release ZIP、checksumを匿名HTTP read-back。
-- [ ] asset size/content-type/hashを記録。
-- [ ] scheduled freshnessはreview artifactのみを生成し、判断/dataを自動上書きしない。
+- [x] path順、timestamp、permissionsを固定し二回buildのSHA-256一致。
+- [x] ZIP展開後にoffline validate/build/site smokeが通る。
+- [x] Issue原稿と実登録issueのtitle/body digestを照合。
+- [x] tag/release/main SHAをmanifestへ固定。
+- [x] Pages endpoint、raw data、source ZIP、release ZIP、checksumを匿名HTTP read-back。
+- [x] asset size/content-type/hashを記録。
+- [x] scheduled freshnessはreview artifactのみを生成し、判断/dataを自動上書きしない。
 
 ## Non-goals
 
@@ -45,9 +45,9 @@ schema、主要data、profiles、case study、site source/generated site、colle
 
 ## Children
 
-- [ ] [#42](https://github.com/hjosugi/framework-atlas/issues/42) R1 issue export/digests
-- [ ] [#43](https://github.com/hjosugi/framework-atlas/issues/43) R2 reproducible ZIP
-- [ ] [#44](https://github.com/hjosugi/framework-atlas/issues/44) R3 CI gates
-- [ ] [#45](https://github.com/hjosugi/framework-atlas/issues/45) R4 GitHub Pages
-- [ ] [#46](https://github.com/hjosugi/framework-atlas/issues/46) R5 release/public verification
-- [ ] [#47](https://github.com/hjosugi/framework-atlas/issues/47) R6 scheduled freshness
+- [x] [#42](https://github.com/hjosugi/framework-atlas/issues/42) R1 issue export/digests
+- [x] [#43](https://github.com/hjosugi/framework-atlas/issues/43) R2 reproducible ZIP
+- [x] [#44](https://github.com/hjosugi/framework-atlas/issues/44) R3 CI gates
+- [x] [#45](https://github.com/hjosugi/framework-atlas/issues/45) R4 GitHub Pages
+- [x] [#46](https://github.com/hjosugi/framework-atlas/issues/46) R5 release/public verification
+- [x] [#47](https://github.com/hjosugi/framework-atlas/issues/47) R6 scheduled freshness

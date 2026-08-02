@@ -3,10 +3,10 @@
 - State: open
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/1
-- Updated: 2026-08-02T05:45:03Z
+- Updated: 2026-08-02T06:58:37Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: program
 - Repository outcome: public GitHub Pages + reproducible ZIP
 - Consumer: https://github.com/hjosugi/kofun-boot/issues/15
@@ -32,23 +32,23 @@ GitHub Topics と公式資料を、検索可能な framework atlas に変換す�
 
 ## Execution lanes
 
-- [ ] [E1 #2](https://github.com/hjosugi/framework-atlas/issues/2) data model and evidence
-- [ ] [E2 #3](https://github.com/hjosugi/framework-atlas/issues/3) topic collection and classification
-- [ ] [E3 #4](https://github.com/hjosugi/framework-atlas/issues/4) deep profiles, history, and lineage
-- [ ] [E4 #5](https://github.com/hjosugi/framework-atlas/issues/5) production architecture case study and framework mappings
-- [ ] [E5 #6](https://github.com/hjosugi/framework-atlas/issues/6) static site and graph UX
-- [ ] [E6 #7](https://github.com/hjosugi/framework-atlas/issues/7) packaging, CI, publication, and freshness
+- [x] [E1 #2](https://github.com/hjosugi/framework-atlas/issues/2) data model and evidence
+- [x] [E2 #3](https://github.com/hjosugi/framework-atlas/issues/3) topic collection and classification
+- [x] [E3 #4](https://github.com/hjosugi/framework-atlas/issues/4) deep profiles, history, and lineage
+- [x] [E4 #5](https://github.com/hjosugi/framework-atlas/issues/5) production architecture case study and framework mappings
+- [x] [E5 #6](https://github.com/hjosugi/framework-atlas/issues/6) static site and graph UX
+- [x] [E6 #7](https://github.com/hjosugi/framework-atlas/issues/7) packaging, CI, publication, and freshness
 
 ## Global gates
 
-- [ ] すべての fact/edge/metric に source URL、観測日、evidence kind がある。
-- [ ] official influence と research inference が UI と data の両方で区別される。
-- [ ] 数値は raw evidence に join するか `unmeasured`。
-- [ ] topic 誤分類候補は消さず、判定理由付き quarantine に入る。
-- [ ] generator は同じ入力から byte-identical output を生成する。
-- [ ] site は JavaScript/CSS/JSON の静的ファイルだけで動作する。
-- [ ] ZIP は同じ commit から同じ SHA-256 になる。
-- [ ] Pages、Release asset、ZIP checksum を匿名 read-back する。
+- [x] すべての fact/edge/metric に source URL、観測日、evidence kind がある。
+- [x] official influence と research inference が UI と data の両方で区別される。
+- [x] 数値は raw evidence に join するか `unmeasured`。
+- [x] topic 誤分類候補は消さず、判定理由付き quarantine に入る。
+- [x] generator は同じ入力から byte-identical output を生成する。
+- [x] site は JavaScript/CSS/JSON の静的ファイルだけで動作する。
+- [x] ZIP は同じ commit から同じ SHA-256 になる。
+- [x] Pages、Release asset、ZIP checksum を匿名 read-back する。
 
 ## Non-goals
 

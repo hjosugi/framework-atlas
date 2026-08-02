@@ -28,6 +28,6 @@ Goに学ぶ点はgoroutineの表面的syntaxではなく、cancel伝播、struct
 
 - https://gin-gonic.com/en/docs/
 - https://gin-gonic.com/en/docs/examples/using-middleware/
-- https://gin-gonic.com/en/docs/examples/binding-and-validation/
+- https://gin-gonic.com/en/docs/binding/binding-and-validation/
 - https://github.com/gin-gonic/gin
 - https://github.com/gin-gonic/gin/releases/tag/v1.12.0

@@ -1,12 +1,12 @@
 # #5 E4 production architecture: modular monolith DDD case study and framework mappings
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/5
-- Updated: 2026-08-02T05:45:11Z
+- Updated: 2026-08-02T07:02:00Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: execution lane
 - Parent: [A0 #1](https://github.com/hjosugi/framework-atlas/issues/1)
 - Primary case: https://github.com/kgrzybek/modular-monolith-with-ddd
@@ -31,13 +31,13 @@ bounded context/module、composition root、DDD tactical model、CQRS、decorato
 
 ## Gates
 
-- [ ] case repositoryが主張するものとAtlasの評価を分離。
-- [ ] OOP固有実装を普遍パターンとして扱わない。
-- [ ] FastAPI/Ginにcontainer/mediatorを無理に移植しない。
-- [ ] Outbox/Inboxのat-least-once、idempotency、ordering、transaction boundaryを明記。
-- [ ] event sourcingとaudit logを区別。
-- [ ] kofun-boot mappingは capability、closed ADT、replay gateへ具体的に着地。
-- [ ] 古いsecurity/auth例は現行推奨として転載せず historical caveat にする。
+- [x] case repositoryが主張するものとAtlasの評価を分離。
+- [x] OOP固有実装を普遍パターンとして扱わない。
+- [x] FastAPI/Ginにcontainer/mediatorを無理に移植しない。
+- [x] Outbox/Inboxのat-least-once、idempotency、ordering、transaction boundaryを明記。
+- [x] event sourcingとaudit logを区別。
+- [x] kofun-boot mappingは capability、closed ADT、replay gateへ具体的に着地。
+- [x] 古いsecurity/auth例は現行推奨として転載せず historical caveat にする。
 
 ## Non-goals
 
@@ -45,13 +45,13 @@ case repositoryのfork、完全アプリ再実装、特定architectureの万能�
 
 ## Children
 
-- [ ] [#27](https://github.com/hjosugi/framework-atlas/issues/27) M1 pinned case inventory
-- [ ] [#28](https://github.com/hjosugi/framework-atlas/issues/28) M2 DDD/module boundaries
-- [ ] [#29](https://github.com/hjosugi/framework-atlas/issues/29) M3 CQRS/decorators
-- [ ] [#30](https://github.com/hjosugi/framework-atlas/issues/30) M4 Outbox/Inbox
-- [ ] [#31](https://github.com/hjosugi/framework-atlas/issues/31) M5 event sourcing/migrations
-- [ ] [#32](https://github.com/hjosugi/framework-atlas/issues/32) M6 architecture/testing gates
-- [ ] [#33](https://github.com/hjosugi/framework-atlas/issues/33) M7 Spring mapping
-- [ ] [#34](https://github.com/hjosugi/framework-atlas/issues/34) M8 FastAPI mapping
-- [ ] [#35](https://github.com/hjosugi/framework-atlas/issues/35) M9 Gin mapping
-- [ ] [#36](https://github.com/hjosugi/framework-atlas/issues/36) M10 kofun-boot mapping
+- [x] [#27](https://github.com/hjosugi/framework-atlas/issues/27) M1 pinned case inventory
+- [x] [#28](https://github.com/hjosugi/framework-atlas/issues/28) M2 DDD/module boundaries
+- [x] [#29](https://github.com/hjosugi/framework-atlas/issues/29) M3 CQRS/decorators
+- [x] [#30](https://github.com/hjosugi/framework-atlas/issues/30) M4 Outbox/Inbox
+- [x] [#31](https://github.com/hjosugi/framework-atlas/issues/31) M5 event sourcing/migrations
+- [x] [#32](https://github.com/hjosugi/framework-atlas/issues/32) M6 architecture/testing gates
+- [x] [#33](https://github.com/hjosugi/framework-atlas/issues/33) M7 Spring mapping
+- [x] [#34](https://github.com/hjosugi/framework-atlas/issues/34) M8 FastAPI mapping
+- [x] [#35](https://github.com/hjosugi/framework-atlas/issues/35) M9 Gin mapping
+- [x] [#36](https://github.com/hjosugi/framework-atlas/issues/36) M10 kofun-boot mapping

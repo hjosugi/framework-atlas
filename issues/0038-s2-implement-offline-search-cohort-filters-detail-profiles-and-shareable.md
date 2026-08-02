@@ -1,12 +1,12 @@
 # #38 S2 implement offline search, cohort filters, detail profiles, and shareable URLs
 
-- State: open
+- State: closed
 - Labels: none
 - URL: https://github.com/hjosugi/framework-atlas/issues/38
-- Updated: 2026-08-02T05:43:31Z
+- Updated: 2026-08-02T07:01:24Z
 
 ## Metadata
-- State: ready
+- State: complete
 - Tracker role: bounded implementation
 - Parent: [E5 #6](https://github.com/hjosugi/framework-atlas/issues/6)
 - Blocked on: S1
@@ -18,12 +18,12 @@
 name/description/traits/language/topic検索、cohort/kind/profile/evidence/disposition filter、profile detail、source drill-downを実装し、URL query/hashに状態を保存する。
 
 ## Acceptance
-- [ ] zero-result/invalid query/unknown profile。
-- [ ] browser reload/back-forwardで状態維持。
-- [ ] quarantineは明示filterでのみ表示。
-- [ ] search resultがsource/evidence statusを示す。
-- [ ] user dataをinnerHTMLへ入れない。
-- [ ] 外部search/CDNなし。
+- [x] zero-result/invalid query/unknown profile。
+- [x] browser reload/back-forwardで状態維持。
+- [x] quarantineは明示filterでのみ表示。
+- [x] search resultがsource/evidence statusを示す。
+- [x] user dataをinnerHTMLへ入れない。
+- [x] 外部search/CDNなし。
 
 ## Non-goals
 fuzzy rankingサービス、analytics。

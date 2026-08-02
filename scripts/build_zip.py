@@ -12,8 +12,17 @@ from pathlib import Path
 
 from common import ROOT, canonical_json, sha256
 
-INCLUDE_ROOTS = ("data", "docs", "issues", "profiles", "release", "schema", "scripts", "tests")
-INCLUDE_FILES = ("README.md", "LICENSE", "Makefile")
+INCLUDE_ROOTS = (
+    ".github", "data", "docs", "framework-depth-lab", "history", "issues", "profiles",
+    "release", "research", "schema", "scripts", "tests",
+)
+INCLUDE_FILES = (
+    ".editorconfig", ".gitattributes", ".gitignore", "CITATION.cff", "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md", "COVERAGE.md", "GOVERNANCE.md", "LICENSE",
+    "LIMITATIONS.md", "MANIFEST.sha256", "Makefile", "METHODOLOGY.md",
+    "README.md", "RELEASE_NOTES.md", "ROADMAP.md", "SCHEMA.md", "SECURITY.md",
+    "SOURCES.md", "START_HERE.md", "VERSION", "pyproject.toml",
+)
 EXCLUDED_NAMES = {"__pycache__", ".DS_Store"}
 FIXED_TIME = (2020, 1, 1, 0, 0, 0)
 

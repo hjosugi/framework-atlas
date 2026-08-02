@@ -1,0 +1,373 @@
+[
+  {
+    "id": "concept-active-record",
+    "name": "Active Record pattern",
+    "kind": "concept",
+    "year": "2002",
+    "summary_ja": "record object 自身が persistence operation を持つ enterprise application pattern。"
+  },
+  {
+    "id": "concept-actor",
+    "name": "Actor model",
+    "kind": "concept",
+    "year": "1973",
+    "summary_ja": "isolated actor が message passing で concurrency と failure boundary を形成する。"
+  },
+  {
+    "id": "concept-agent-loop",
+    "name": "Tool-using agent loop",
+    "kind": "ai-pattern",
+    "year": "2022",
+    "summary_ja": "modelが判断、tool実行、observation、state更新を反復するexecution pattern。"
+  },
+  {
+    "id": "concept-asgi",
+    "name": "ASGI",
+    "kind": "standard",
+    "year": "2016",
+    "summary_ja": "Python の async HTTP/WebSocket application interface。"
+  },
+  {
+    "id": "concept-bdd",
+    "name": "Behavior-Driven Development",
+    "kind": "testing-practice",
+    "year": "2003",
+    "summary_ja": "振る舞いとexampleを中心にspecificationを表現する開発・test style。"
+  },
+  {
+    "id": "concept-build-time",
+    "name": "Build-time augmentation",
+    "kind": "concept",
+    "year": "2010s",
+    "summary_ja": "runtime scan/reflection/wiring を build step へ移し起動と memory を改善する。"
+  },
+  {
+    "id": "concept-coc",
+    "name": "Convention over Configuration",
+    "kind": "concept",
+    "year": "2004",
+    "summary_ja": "一般的な選択を規約化し明示設定を必要な差分だけにする。"
+  },
+  {
+    "id": "concept-cocos2d",
+    "name": "Cocos2d lineage",
+    "kind": "game-framework-lineage",
+    "year": "2008",
+    "summary_ja": "2D scene/sprite frameworkからCocos2d-x等へ広がったfamily。"
+  },
+  {
+    "id": "concept-compiler-ui",
+    "name": "Compiler-first UI",
+    "kind": "concept",
+    "year": "2010s",
+    "summary_ja": "build 時に component dependency と update code を生成し runtime work を減らす。"
+  },
+  {
+    "id": "concept-components",
+    "name": "Component-based UI",
+    "kind": "concept",
+    "year": "1990s",
+    "summary_ja": "state、view、behavior を再利用可能な UI component にまとめる。"
+  },
+  {
+    "id": "concept-computational-graph",
+    "name": "Computational graph",
+    "kind": "ml-architecture",
+    "year": "1987",
+    "summary_ja": "operationとtensor dependencyをgraphとして表し、optimization・automatic differentiationへ使う。"
+  },
+  {
+    "id": "concept-cross-platform-ui",
+    "name": "Cross-platform UI",
+    "kind": "ui-problem",
+    "year": "1990",
+    "summary_ja": "一つのcodebaseから複数OSへUIとapplication logicを展開する設計問題。"
+  },
+  {
+    "id": "concept-curses",
+    "name": "curses / ncurses",
+    "kind": "terminal-platform",
+    "year": "1980",
+    "summary_ja": "terminal screen、cursor、keyboard inputをcell単位で扱う低level UI基盤。"
+  },
+  {
+    "id": "concept-data-mapper",
+    "name": "Data Mapper pattern",
+    "kind": "concept",
+    "year": "2002",
+    "summary_ja": "domain object と database representation の mapping を独立 layer に置く pattern。"
+  },
+  {
+    "id": "concept-declarative-ui",
+    "name": "Declarative UI",
+    "kind": "ui-architecture",
+    "year": "2010",
+    "summary_ja": "現在のstateから望ましいUI treeを宣言し、差分反映をruntimeへ任せる。"
+  },
+  {
+    "id": "concept-dry",
+    "name": "DRY",
+    "kind": "concept",
+    "year": "1999",
+    "summary_ja": "知識の重複を一つの authoritative representation に集約する。"
+  },
+  {
+    "id": "concept-eager-autograd",
+    "name": "Eager dynamic autograd",
+    "kind": "ml-architecture",
+    "year": "2015",
+    "summary_ja": "通常のprogram execution中にoperation graphを記録しgradientを計算する。"
+  },
+  {
+    "id": "concept-ecs",
+    "name": "Entity Component System",
+    "kind": "game-architecture",
+    "year": "2000",
+    "summary_ja": "entity、data component、system processingを分離するdata-oriented game architecture。"
+  },
+  {
+    "id": "concept-elm-architecture",
+    "name": "The Elm Architecture",
+    "kind": "concept",
+    "year": "2012",
+    "summary_ja": "Model、Update、View と message による unidirectional UI architecture。"
+  },
+  {
+    "id": "concept-event-loop",
+    "name": "Event loop / non-blocking I/O",
+    "kind": "concept",
+    "year": "2000s",
+    "summary_ja": "少数 thread で多数 I/O operation を multiplex する concurrency model。"
+  },
+  {
+    "id": "concept-fetch",
+    "name": "Web Standards Fetch API",
+    "kind": "standard",
+    "year": "2015",
+    "summary_ja": "Request、Response、Headers 等の platform-neutral Web API model。"
+  },
+  {
+    "id": "concept-html-over-wire",
+    "name": "HTML over the wire",
+    "kind": "concept",
+    "year": "2000s",
+    "summary_ja": "server-generated HTML fragment を interaction の主要 transfer format にする。"
+  },
+  {
+    "id": "concept-ioc-di",
+    "name": "Inversion of Control / Dependency Injection",
+    "kind": "concept",
+    "year": "1990s",
+    "summary_ja": "object creation と dependency wiring の制御を application code 外へ移す。"
+  },
+  {
+    "id": "concept-islands",
+    "name": "Islands architecture",
+    "kind": "concept",
+    "year": "2019",
+    "summary_ja": "static/server HTML 内の対話領域だけを個別 hydrate する。"
+  },
+  {
+    "id": "concept-mvc",
+    "name": "Model-View-Controller",
+    "kind": "concept",
+    "year": "1979",
+    "summary_ja": "Smalltalk で整理された Model、View、Controller の責務分離。"
+  },
+  {
+    "id": "concept-native-widget",
+    "name": "Native widget toolkit",
+    "kind": "ui-architecture",
+    "year": "1980",
+    "summary_ja": "OS固有controlとevent loopを直接またはwrapper経由で使うUI model。"
+  },
+  {
+    "id": "concept-net-http",
+    "name": "Go net/http",
+    "kind": "platform-api",
+    "year": "2009",
+    "summary_ja": "Go標準ライブラリのHTTP server/client interface。Go Web frameworkの共通土台。"
+  },
+  {
+    "id": "concept-psr-http",
+    "name": "PHP PSR HTTP / component ecosystem",
+    "kind": "php-standard",
+    "year": "2012",
+    "summary_ja": "PSR interfacesとComposer component reuseによりPHP framework間の相互運用を高める。"
+  },
+  {
+    "id": "concept-rack",
+    "name": "Rack interface",
+    "kind": "standard",
+    "year": "2007",
+    "summary_ja": "Ruby Web server と application の共通 call contract。"
+  },
+  {
+    "id": "concept-radix-tree",
+    "name": "Radix tree routing",
+    "kind": "routing-technique",
+    "year": "1968",
+    "summary_ja": "共通prefixを圧縮したtreeでpath matchingを高速化する手法。"
+  },
+  {
+    "id": "concept-rag",
+    "name": "Retrieval-Augmented Generation",
+    "kind": "ai-pattern",
+    "year": "2020",
+    "summary_ja": "外部document検索結果をmodel contextへ加えて生成するapplication pattern。"
+  },
+  {
+    "id": "concept-reactive",
+    "name": "Reactive programming",
+    "kind": "concept",
+    "year": "1980s",
+    "summary_ja": "値や event の依存関係に応じて更新を伝播させる。"
+  },
+  {
+    "id": "concept-resumability",
+    "name": "Resumability",
+    "kind": "concept",
+    "year": "2020s",
+    "summary_ja": "server state を serialize し、client が application execution を hydration なしに再開する。"
+  },
+  {
+    "id": "concept-scene-graph",
+    "name": "Scene graph / component engine",
+    "kind": "game-architecture",
+    "year": "1990",
+    "summary_ja": "scene hierarchyとcomponent lifecycleでgame objectを管理する。"
+  },
+  {
+    "id": "concept-server-components",
+    "name": "Server Components",
+    "kind": "concept",
+    "year": "2020",
+    "summary_ja": "component tree の一部を server-only execution/data access として扱う。"
+  },
+  {
+    "id": "concept-servlet",
+    "name": "Java Servlet API",
+    "kind": "standard",
+    "year": "1997",
+    "summary_ja": "Java Web container と application の request/response contract。"
+  },
+  {
+    "id": "concept-signals",
+    "name": "Fine-grained signals",
+    "kind": "concept",
+    "year": "2010s",
+    "summary_ja": "値単位の dependency graph で必要な consumer だけを更新する。"
+  },
+  {
+    "id": "concept-unit-of-work",
+    "name": "Unit of Work",
+    "kind": "concept",
+    "year": "2002",
+    "summary_ja": "transaction 内の object change を追跡してまとめて persistence する pattern。"
+  },
+  {
+    "id": "concept-vdom",
+    "name": "Virtual DOM",
+    "kind": "concept",
+    "year": "2010s",
+    "summary_ja": "UI tree の仮想表現を比較して実 DOM/native updates を導出する。"
+  },
+  {
+    "id": "concept-webdriver",
+    "name": "WebDriver model",
+    "kind": "browser-automation-standard",
+    "year": "2006",
+    "summary_ja": "browserを外部process/APIから操作するautomation model。"
+  },
+  {
+    "id": "concept-wsgi",
+    "name": "WSGI",
+    "kind": "standard",
+    "year": "2003",
+    "summary_ja": "Python Web server と synchronous application の標準 interface。"
+  },
+  {
+    "id": "concept-xna",
+    "name": "Microsoft XNA",
+    "kind": "game-framework-lineage",
+    "year": "2006",
+    "summary_ja": "C# game loop、graphics、content pipelineを統合しMonoGame等のAPI lineageを作った。"
+  },
+  {
+    "id": "concept-xunit",
+    "name": "xUnit family",
+    "kind": "testing-architecture",
+    "year": "1989",
+    "summary_ja": "TestCase、fixture、assertion、runnerで自動テストを構成するfamily。"
+  },
+  {
+    "id": "elixir",
+    "name": "Elixir language/platform",
+    "kind": "language-platform",
+    "year": "2012",
+    "summary_ja": "Erlang VM 上の functional language と macro/tooling ecosystem。"
+  },
+  {
+    "id": "fasthttp",
+    "name": "fasthttp",
+    "kind": "runtime-library",
+    "year": "2015",
+    "summary_ja": "Go の performance-oriented HTTP implementation。Fiber の基盤。"
+  },
+  {
+    "id": "flux-architecture",
+    "name": "Flux architecture",
+    "kind": "concept",
+    "year": "2014",
+    "summary_ja": "dispatcher、store、action による one-way data flow architecture。"
+  },
+  {
+    "id": "hyper",
+    "name": "Hyper",
+    "kind": "runtime-library",
+    "year": "2014",
+    "summary_ja": "Rust の low-level HTTP implementation。"
+  },
+  {
+    "id": "ink",
+    "name": "Ink",
+    "kind": "tui-framework",
+    "year": "2017",
+    "summary_ja": "React component model を Node.js terminal UI に適用する framework。"
+  },
+  {
+    "id": "lightning",
+    "name": "Lightning",
+    "kind": "ml-framework",
+    "year": "2019",
+    "summary_ja": "PyTorch training loop と distributed execution を構造化する framework。"
+  },
+  {
+    "id": "tokio",
+    "name": "Tokio",
+    "kind": "runtime",
+    "year": "2016",
+    "summary_ja": "Rust async runtime と I/O ecosystem。"
+  },
+  {
+    "id": "tower",
+    "name": "Tower",
+    "kind": "service-framework",
+    "year": "2018",
+    "summary_ja": "Rust の Service/Layer による middleware と resilience abstraction。"
+  },
+  {
+    "id": "tui-rs",
+    "name": "tui-rs",
+    "kind": "historical-library",
+    "year": "2018",
+    "summary_ja": "Rust immediate-mode terminal UI library。Ratatuiのcommunity fork lineageの前身。"
+  },
+  {
+    "id": "webview",
+    "name": "System WebView",
+    "kind": "platform",
+    "year": "2000s",
+    "summary_ja": "OS が提供する embedded Web rendering component。"
+  }
+]

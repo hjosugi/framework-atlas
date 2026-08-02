@@ -1,0 +1,10 @@
+[project]
+name = "framework-atlas"
+version = "0.2.0"
+description = "An evidence-aware atlas of software frameworks and their design lineage"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[tool.framework-atlas]
+data_dir = "data"
+docs_dir = "docs"

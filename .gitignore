@@ -1,7 +1,15 @@
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
 .env
+.DS_Store
+.cache/
+*.tmp
+site-report.json
+
+data/discovered/
 data/snapshots/
+data/checkpoints/
+
 dist/*
 !dist/.gitkeep

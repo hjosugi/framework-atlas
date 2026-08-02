@@ -21,10 +21,20 @@ def main() -> int:
     if len(args.source_sha) != 40:
         parser.error("--source-sha must be an exact 40-character commit")
     pages = {}
-    for relative in ("docs/index.html", "docs/app.js", "docs/style.css", "docs/atlas-data.json"):
+    for relative in (
+        "docs/index.html",
+        "docs/app.js",
+        "docs/styles.css",
+        "docs/data/atlas.js",
+        "docs/data/atlas.json",
+        "docs/data/frameworks.csv",
+        "docs/atlas-data.json",
+    ):
         path = ROOT / relative
         pages[relative] = {"sha256": sha256(path), "bytes": path.stat().st_size, "contentType": mimetypes.guess_type(path.name)[0] or "application/octet-stream"}
     issue_index = ROOT / "issues/index.json"
+    catalog_stats = json.loads((ROOT / "data/stats.json").read_text(encoding="utf-8"))
+    v1_entities = json.loads((ROOT / "data/entities.v1.json").read_text(encoding="utf-8"))["entities"]
     document = {
         "version": args.version,
         "sourceCommit": args.source_sha,
@@ -32,6 +42,10 @@ def main() -> int:
         "zip": {"name": args.zip.name, "sha256": sha256(args.zip), "bytes": args.zip.stat().st_size, "contentType": "application/zip"},
         "checksum": {"name": args.checksum.name, "sha256": sha256(args.checksum), "bytes": args.checksum.stat().st_size, "contentType": "text/plain"},
         "issueIndex": {"path": "issues/index.json", "sha256": sha256(issue_index), "count": len(json.loads(issue_index.read_text(encoding="utf-8"))["issues"])},
+        "datasets": {
+            "broadCatalog": {"path": "data/frameworks.json", "count": catalog_stats["frameworks"], "sha256": sha256(ROOT / "data/frameworks.json")},
+            "versionedV1": {"path": "data/entities.v1.json", "count": len(v1_entities), "sha256": sha256(ROOT / "data/entities.v1.json")},
+        },
         "pagesSource": pages,
         "publicVerification": {"state": "pending-read-back", "policy": "release publication does not become verified until anonymous HTTP responses are recorded"}
     }

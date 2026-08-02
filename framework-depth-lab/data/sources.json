@@ -1,0 +1,23 @@
+{
+  "as_of": "2026-08-02",
+  "sources": [
+    {"id":"spring-project","title":"Spring Boot project","url":"https://spring.io/projects/spring-boot","kind":"official-doc"},
+    {"id":"spring-requirements","title":"Spring Boot system requirements","url":"https://docs.spring.io/spring-boot/system-requirements.html","kind":"official-doc"},
+    {"id":"spring-reference","title":"Spring Boot reference","url":"https://docs.spring.io/spring-boot/reference/","kind":"official-doc"},
+    {"id":"spring-41-notes","title":"Spring Boot 4.1 release notes","url":"https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.1-Release-Notes","kind":"official-release"},
+    {"id":"spring-410-tag","title":"Spring Boot v4.1.0 source","url":"https://github.com/spring-projects/spring-boot/tree/v4.1.0","kind":"tagged-source"},
+    {"id":"fastapi-docs","title":"FastAPI documentation","url":"https://fastapi.tiangolo.com/","kind":"official-doc"},
+    {"id":"fastapi-releases","title":"FastAPI release notes","url":"https://fastapi.tiangolo.com/release-notes/","kind":"official-release"},
+    {"id":"fastapi-influences","title":"FastAPI alternatives inspiration and comparisons","url":"https://fastapi.tiangolo.com/alternatives/","kind":"official-doc"},
+    {"id":"fastapi-01411","title":"FastAPI 0.141.1 source","url":"https://github.com/fastapi/fastapi/tree/0.141.1","kind":"tagged-source"},
+    {"id":"gin-docs","title":"Gin documentation","url":"https://gin-gonic.com/en/docs/","kind":"official-doc"},
+    {"id":"gin-release","title":"Gin 1.12.0 release","url":"https://gin-gonic.com/en/blog/releases/release1120/","kind":"official-release"},
+    {"id":"gin-benchmark","title":"Gin benchmark documentation","url":"https://gin-gonic.com/en/docs/benchmarks/","kind":"official-benchmark"},
+    {"id":"gin-1120","title":"Gin v1.12.0 source","url":"https://github.com/gin-gonic/gin/tree/v1.12.0","kind":"tagged-source"},
+    {"id":"modular-repo","title":"Modular Monolith with DDD","url":"https://github.com/kgrzybek/modular-monolith-with-ddd","kind":"repository"},
+    {"id":"modular-pinned","title":"Modular Monolith pinned commit","url":"https://github.com/kgrzybek/modular-monolith-with-ddd/tree/91c8ef24b4cb6ef558c95d8267fa07d68c7059f8","kind":"pinned-source"},
+    {"id":"dotnet-policy","title":".NET support policy","url":"https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core","kind":"official-policy"},
+    {"id":"identityserver4","title":"IdentityServer4 archive","url":"https://github.com/DuendeArchive/IdentityServer4","kind":"archived-source"},
+    {"id":"oauth21","title":"OAuth 2.1 draft","url":"https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/","kind":"standard"}
+  ]
+}

@@ -1,0 +1,24 @@
+source,target,type,confidence,evidence
+Spring Framework,Spring Boot,direct-dependency,high,Spring Boot project and source
+Servlet API,Spring Boot,ecosystem-foundation,high,Spring MVC server stack
+Reactive Streams,Spring Boot,ecosystem-foundation,high,Spring WebFlux stack
+Spring Boot,Spring Initializr,ecosystem-foundation,high,Spring project documentation
+Spring Boot,Spring Cloud,ecosystem-foundation,high,Spring project documentation
+Spring Boot,Spring Modulith,ecosystem-foundation,high,Spring project documentation
+Starlette,FastAPI,direct-dependency,high,pyproject and FastAPI class inheritance
+Pydantic,FastAPI,direct-dependency,high,pyproject and source imports
+ASGI,FastAPI,ecosystem-foundation,high,FastAPI deployment documentation
+Uvicorn,FastAPI,ecosystem-foundation,high,FastAPI documentation
+Django REST Framework,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+Flask,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+Requests,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+Swagger OpenAPI,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+Marshmallow webargs APISpec,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+NestJS Angular,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+APIStar,FastAPI,official-inspiration,high,FastAPI alternatives documentation
+FastAPI,SQLModel,ecosystem-foundation,medium,shared author and typed model design
+Go net/http,Gin,ecosystem-foundation,high,Gin Engine implements http.Handler
+Martini,Gin,official-inspiration,high,Gin official tagline
+julienschmidt httprouter,Gin,derived-code,high,tree.go copyright header
+Spring Boot,NestJS,inferred-similarity,low,annotation DI module similarity only
+Gin,Echo Fiber,inferred-similarity,low,Go HTTP framework similarity only

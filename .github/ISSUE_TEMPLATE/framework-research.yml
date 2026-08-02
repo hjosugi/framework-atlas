@@ -1,0 +1,53 @@
+name: Framework research
+description: Add a framework or fill missing background, tradeoffs, and sources.
+title: "research: "
+labels: ["research", "framework"]
+body:
+  - type: input
+    id: framework
+    attributes:
+      label: Framework
+      placeholder: "Example: Django"
+    validations:
+      required: true
+  - type: input
+    id: canonical
+    attributes:
+      label: Official repository or website
+    validations:
+      required: true
+  - type: dropdown
+    id: gap
+    attributes:
+      label: Main research gap
+      options:
+        - Identity and classification
+        - Origin and history
+        - Problem statement
+        - Architecture and design ideas
+        - Advantages and disadvantages
+        - Influence and lineage
+        - Maintenance and governance
+        - Migration or successor history
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Primary evidence
+      description: Add official documentation, maintainer material, papers, or repository history.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed summary
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I separated explicit historical influence from architectural similarity.
+          required: true
+        - label: I did not copy a long passage from a source.
+          required: true

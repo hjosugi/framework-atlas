@@ -1,0 +1,47 @@
+name: Relationship evidence
+description: Verify, reject, or refine a claimed framework relationship.
+title: "lineage: "
+labels: ["research", "lineage"]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source framework
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Target framework or idea
+    validations:
+      required: true
+  - type: dropdown
+    id: relation
+    attributes:
+      label: Proposed relationship
+      options:
+        - built-on
+        - inspired-by
+        - successor-of
+        - fork-of
+        - reaction-against
+        - uses
+        - implements
+        - ecosystem-of
+        - alternative-to
+        - architectural-similarity
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Evidence URLs and explanation
+    validations:
+      required: true
+  - type: dropdown
+    id: confidence
+    attributes:
+      label: Evidence grade
+      options: [A, B, C, D, U]
+    validations:
+      required: true

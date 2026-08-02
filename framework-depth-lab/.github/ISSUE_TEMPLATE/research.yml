@@ -1,0 +1,28 @@
+name: Research task
+description: Add or verify a framework research item
+title: "research: "
+labels: [research]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+      description: State one falsifiable question.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Primary evidence
+      description: Official docs, release notes, tagged source, reproducible raw data.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Pin versions and date
+        - [ ] Separate fact from inference
+        - [ ] Update data and prose
+        - [ ] Run validation

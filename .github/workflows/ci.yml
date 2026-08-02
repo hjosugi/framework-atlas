@@ -13,27 +13,37 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.12'
-      - name: Validate data, tests, generated site and reproducibility
-        run: make check
+          python-version: "3.13"
+      - id: version
+        name: Read release version
+        run: echo "value=$(cat VERSION)" >> "$GITHUB_OUTPUT"
+      - name: Validate both datasets, generated outputs and reproducibility
+        run: make check VERSION=${{ steps.version.outputs.value }}
+      - name: Ensure generators are drift-free
+        run: git diff --exit-code
       - name: Build release archive
-        run: make zip VERSION=v0.1.1
-      - name: Extract archive and verify manifest
+        run: make zip VERSION=${{ steps.version.outputs.value }}
+      - name: Extract archive and verify all contracts
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
         run: |
-          mkdir -p /tmp/framework-atlas-extract
-          unzip -q dist/framework-atlas-v0.1.1.zip -d /tmp/framework-atlas-extract
-          test -s /tmp/framework-atlas-extract/MANIFEST.json
-          test -s /tmp/framework-atlas-extract/docs/index.html
+          extract_dir="$(mktemp -d)"
+          unzip -q "dist/framework-atlas-${VERSION}.zip" -d "$extract_dir"
+          test -s "$extract_dir/MANIFEST.json"
+          test -s "$extract_dir/docs/index.html"
           (cd dist && sha256sum -c SHA256SUMS)
-          (cd /tmp/framework-atlas-extract && python3 scripts/validate.py)
-          (cd /tmp/framework-atlas-extract && python3 scripts/build_site.py --check)
-          (cd /tmp/framework-atlas-extract && python3 -m unittest discover -s tests -v)
-      - uses: actions/upload-artifact@v4
+          (cd "$extract_dir" && python3 scripts/validate.py)
+          (cd "$extract_dir" && python3 scripts/validate_data.py)
+          (cd "$extract_dir" && python3 scripts/build_site.py --check)
+          (cd "$extract_dir" && python3 scripts/manifest.py --check)
+          (cd "$extract_dir" && python3 -m unittest discover -s tests -v)
+          (cd "$extract_dir" && python3 framework-depth-lab/scripts/validate.py)
+      - uses: actions/upload-artifact@v7
         with:
-          name: framework-atlas-v0.1.1
+          name: framework-atlas-${{ steps.version.outputs.value }}
           path: |
-            dist/framework-atlas-v0.1.1.zip
+            dist/framework-atlas-${{ steps.version.outputs.value }}.zip
             dist/SHA256SUMS

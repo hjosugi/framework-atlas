@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Spring Boot, FastAPI, Gin and Modular Monolith with DDD research dashboard">
+  <title>Framework Depth Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <nav aria-label="Primary">
+      <a class="brand" href="#top">Framework Depth Lab</a>
+      <a href="#compare">比較</a>
+      <a href="#flow">Request</a>
+      <a href="#influence">影響関係</a>
+      <a href="#case-study">DDD事例</a>
+    </nav>
+    <div class="hero-grid" id="top">
+      <div>
+        <p class="eyebrow">SOURCE-GROUNDED · 2026-08-02</p>
+        <h1>“速さ”ではなく、<br><span>引き受ける責任</span>で比べる。</h1>
+        <p class="lede">Spring Boot 4.1.0、FastAPI 0.141.1、Gin 1.12.0を内部構造まで分解し、Modular Monolith + DDDへ接続する研究ダッシュボード。</p>
+        <div class="actions">
+          <a class="button primary" href="#compare">比較を始める</a>
+          <a class="button" href="../EXECUTIVE_SUMMARY.md">全文を読む</a>
+        </div>
+      </div>
+      <div class="responsibility" aria-label="Responsibility spectrum">
+        <p>Responsibility surface</p>
+        <div class="spectrum"><span></span></div>
+        <div class="spectrum-labels"><b>HTTP</b><b>Typed API</b><b>App Platform</b></div>
+        <div class="marker gin">Gin</div>
+        <div class="marker fastapi">FastAPI</div>
+        <div class="marker spring">Spring Boot</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="compare">
+      <div class="section-head">
+        <div><p class="eyebrow">01 · COMPARE</p><h2>違う抽象度を、同じ軸で。</h2></div>
+        <div class="filters" role="group" aria-label="Framework filter">
+          <button class="filter active" data-framework="all">すべて</button>
+          <button class="filter" data-framework="spring">Spring</button>
+          <button class="filter" data-framework="fastapi">FastAPI</button>
+          <button class="filter" data-framework="gin">Gin</button>
+        </div>
+      </div>
+      <div class="cards" id="framework-cards"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Dimension</th><th>Spring Boot</th><th>FastAPI</th><th>Gin</th></tr></thead>
+          <tbody id="comparison-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section dark" id="flow">
+      <p class="eyebrow">02 · REQUEST LIFECYCLE</p>
+      <h2>意味を解決する場所が違う。</h2>
+      <p class="section-copy">routerの先で、SpringはBean graph、FastAPIはdependency/type graph、Ginはhandler chainを解決します。</p>
+      <div class="flows" id="flows"></div>
+    </section>
+
+    <section class="section" id="influence">
+      <div class="section-head">
+        <div><p class="eyebrow">03 · INFLUENCE</p><h2>影響と類似を混ぜない。</h2></div>
+        <div class="legend"><span class="direct"></span>直接/派生 <span class="official"></span>公式着想 <span class="inferred"></span>推定類似</div>
+      </div>
+      <div class="graph-wrap">
+        <svg id="influence-graph" viewBox="0 0 1000 570" role="img" aria-label="Framework influence graph"></svg>
+      </div>
+    </section>
+
+    <section class="section accent" id="case-study">
+      <p class="eyebrow">04 · ARCHITECTURE CASE</p>
+      <h2>Frameworkの上に、境界を設計する。</h2>
+      <div class="case-grid">
+        <article><span>KEEP</span><h3>Data ownership</h3><p>moduleごとにpublic APIとschemaを所有し、architecture testで依存方向を守る。</p></article>
+        <article><span>USE SELECTIVELY</span><h3>CQRS / Events</h3><p>複雑なreadと独立性が必要な境界に限定し、すべてを非同期に固定しない。</p></article>
+        <article><span>MODERNIZE</span><h3>Security / Runtime</h3><p>IdentityServer4・password grant・.NET 8基準を現行OIDCと.NET 10 LTS候補へ更新。</p></article>
+      </div>
+      <a class="text-link" href="../docs/13-modular-monolith-case-study.md">ケーススタディ全文 →</a>
+    </section>
+  </main>
+
+  <footer><p>Framework Depth Lab · Facts are pinned to official docs, tags, and ADRs.</p></footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+[
+  {
+    "date": "1973",
+    "title": "Actor model",
+    "category": "concept",
+    "summary_ja": "message passing と isolated actor による concurrency model が提案される。",
+    "nodes": [
+      "concept-actor"
+    ],
+    "confidence": "high",
+    "source_url": "https://dl.acm.org/doi/10.5555/1624775.1624804"
+  },
+  {
+    "date": "1979",
+    "title": "Smalltalk MVC",
+    "category": "architecture",
+    "summary_ja": "Model、View、Controller の責務分離が GUI architecture として整理される。",
+    "nodes": [
+      "concept-mvc"
+    ],
+    "confidence": "high",
+    "source_url": "https://folk.universitetetioslo.no/trygver/themes/mvc/mvc-index.html"
+  },
+  {
+    "date": "1986",
+    "title": "Erlang development begins",
+    "category": "runtime",
+    "summary_ja": "telecom 向け fault-tolerant concurrency から Erlang/OTP lineage が始まる。",
+    "nodes": [
+      "erlang-otp"
+    ],
+    "confidence": "high",
+    "source_url": "https://www.erlang.org/about"
+  },
+  {
+    "date": "1992",
+    "title": "wxWidgets lineage",
+    "category": "desktop",
+    "summary_ja": "native widget を抽象化する cross-platform desktop framework が登場。",
+    "nodes": [
+      "wxwidgets"
+    ],
+    "confidence": "medium",
+    "source_url": "https://www.wxwidgets.org/about/"
+  },
+  {
+    "date": "1995",
+    "title": "Qt first public era",
+    "category": "desktop",
+    "summary_ja": "signals/slots と cross-platform GUI の強力な application framework が普及を開始。",
+    "nodes": [
+      "qt"
+    ],
+    "confidence": "high",
+    "source_url": "https://wiki.qt.io/Qt_History"
+  },
+  {
+    "date": "1997",
+    "title": "Java Servlet API",
+    "category": "web-standard",
+    "summary_ja": "Java Web container と application の request/response contract が標準化される。",
+    "nodes": [
+      "concept-servlet"
+    ],
+    "confidence": "medium",
+    "source_url": "https://jakarta.ee/specifications/servlet/"
+  },
+  {
+    "date": "1998",
+    "title": "GTK 1.0",
+    "category": "desktop",
+    "summary_ja": "open-source native desktop widget toolkit が確立。",
+    "nodes": [
+      "gtk"
+    ],
+    "confidence": "medium",
+    "source_url": "https://www.gtk.org/"
+  },
+  {
+    "date": "2000",
+    "title": "Apache Struts",
+    "category": "backend-web",
+    "summary_ja": "Servlet/JSP application の action-based MVC を普及させる。",
+    "nodes": [
+      "apache-struts",
+      "concept-mvc"
+    ],
+    "confidence": "high",
+    "source_url": "https://struts.apache.org/"
+  },
+  {
+    "date": "2001",
+    "title": "Hibernate ORM",
+    "category": "data-model",
+    "summary_ja": "Java object graph と relational DB の ORM が enterprise development に普及。",
+    "nodes": [
+      "hibernate-orm"
+    ],
+    "confidence": "high",
+    "source_url": "https://hibernate.org/orm/"
+  },
+  {
+    "date": "2002",
+    "title": "Enterprise Application Architecture patterns",
+    "category": "architecture",
+    "summary_ja": "Active Record、Data Mapper、Unit of Work などが共通語彙として整理される。",
+    "nodes": [
+      "concept-active-record",
+      "concept-data-mapper",
+      "concept-unit-of-work"
+    ],
+    "confidence": "high",
+    "source_url": "https://martinfowler.com/eaaCatalog/"
+  },
+  {
+    "date": "2003",
+    "title": "WSGI",
+    "category": "web-standard",
+    "summary_ja": "Python Web server と synchronous framework の共通 interface が定義される。",
+    "nodes": [
+      "concept-wsgi"
+    ],
+    "confidence": "high",
+    "source_url": "https://peps.python.org/pep-0333/"
+  },
+  {
+    "date": "2004",
+    "title": "Spring Framework 1.0",
+    "category": "backend-web",
+    "summary_ja": "POJO、IoC/DI、宣言的 transaction の lightweight enterprise model が確立。",
+    "nodes": [
+      "spring-framework",
+      "concept-ioc-di"
+    ],
+    "confidence": "high",
+    "source_url": "https://spring.io/projects/spring-framework"
+  },
+  {
+    "date": "2004",
+    "title": "Ruby on Rails public release",
+    "category": "backend-web",
+    "summary_ja": "Convention over Configuration と Active Record を統合した full-stack productivity が注目される。",
+    "nodes": [
+      "ruby-on-rails",
+      "rails-active-record",
+      "concept-coc"
+    ],
+    "confidence": "high",
+    "source_url": "https://rubyonrails.org/"
+  },
+  {
+    "date": "2004",
+    "title": "Django development begins",
+    "category": "backend-web",
+    "summary_ja": "newsroom tooling から batteries-included Python framework が形成される。",
+    "nodes": [
+      "django"
+    ],
+    "confidence": "high",
+    "source_url": "https://www.djangoproject.com/start/overview/"
+  },
+  {
+    "date": "2005",
+    "title": "Django open sourced",
+    "category": "backend-web",
+    "summary_ja": "ORM、admin、template、security を統合した Python framework が公開される。",
+    "nodes": [
+      "django"
+    ],
+    "confidence": "high",
+    "source_url": "https://www.djangoproject.com/weblog/2005/jul/15/django/"
+  },
+  {
+    "date": "2005",
+    "title": "Symfony and CakePHP era",
+    "category": "backend-web",
+    "summary_ja": "PHP に component-based と Rails-inspired full-stack framework が広がる。",
+    "nodes": [
+      "symfony",
+      "cakephp"
+    ],
+    "confidence": "medium",
+    "source_url": "https://symfony.com/"
+  },
+  {
+    "date": "2006",
+    "title": "SQLAlchemy",
+    "category": "data-model",
+    "summary_ja": "SQL toolkit と Data Mapper ORM を分ける Python data architecture が登場。",
+    "nodes": [
+      "sqlalchemy"
+    ],
+    "confidence": "high",
+    "source_url": "https://www.sqlalchemy.org/"
+  },
+  {
+    "date": "2007",
+    "title": "Rack and Sinatra",
+    "category": "backend-web",
+    "summary_ja": "Ruby Web server interface と microframework style が確立。",
+    "nodes": [
+      "rack",
+      "sinatra"
+    ],
+    "confidence": "high",
+    "source_url": "https://rack.github.io/"
+  },
+  {
+    "date": "2008",
+    "title": "Entity Framework",
+    "category": "data-model",
+    "summary_ja": ".NET に LINQ-centric ORM lineage が導入される。",
+    "nodes": [
+      "entity-framework-core"
+    ],
+    "confidence": "medium",
+    "source_url": "https://learn.microsoft.com/ef/"
+  },
+  {
+    "date": "2009",
+    "title": "Node.js and Express lineage",
+    "category": "backend-web",
+    "summary_ja": "event-loop server JavaScript と middleware-based Web framework の時代が始まる。",
+    "nodes": [
+      "express",
+      "concept-event-loop"
+    ],
+    "confidence": "high",
+    "source_url": "https://expressjs.com/"
+  },
+  {
+    "date": "2009",
+    "title": "ASP.NET MVC",
+    "category": "backend-web",
+    "summary_ja": ".NET Web development に routing と testable MVC を導入。",
+    "nodes": [
+      "asp-net-mvc"
+    ],
+    "confidence": "high",
+    "source_url": "https://learn.microsoft.com/aspnet/mvc/"
+  },
+  {
+    "date": "2010",
+    "title": "AngularJS, Backbone, Flask",
+    "category": "web-generation",
+    "summary_ja": "client SPA structure と Python microframework が同時期に普及。",
+    "nodes": [
+      "angularjs",
+      "backbone-js",
+      "flask"
+    ],
+    "confidence": "high",
+    "source_url": "https://github.com/angular/angular.js"
+  },
+  {
+    "date": "2011",
+    "title": "Laravel",
+    "category": "backend-web",
+    "summary_ja": "Rails、ASP.NET MVC、Sinatra などの良い点を PHP ecosystem に統合。",
+    "nodes": [
+      "laravel"
+    ],
+    "confidence": "high",
+    "source_url": "https://github.com/laravel/docs/blob/4.2/introduction.md"
+  },
+  {
+    "date": "2011",
+    "title": "Bootstrap",
+    "category": "css-ui",
+    "summary_ja": "responsive grid と reusable Web component の標準形を普及。",
+    "nodes": [
+      "bootstrap"
+    ],
+    "confidence": "high",
+    "source_url": "https://getbootstrap.com/"
+  },
+  {
+    "date": "2012",
+    "title": "Elm and Meteor",
+    "category": "frontend",
+    "summary_ja": "typed functional UI architecture と full-stack realtime JavaScript という異なる方向が登場。",
+    "nodes": [
+      "elm",
+      "meteor"
+    ],
+    "confidence": "high",
+    "source_url": "https://elm-lang.org/"
+  },
+  {
+    "date": "2013",
+    "title": "React open sourced",
+    "category": "frontend",
+    "summary_ja": "component、one-way data flow、reconciliation が UI architecture の中心になる。",
+    "nodes": [
+      "react",
+      "concept-components",
+      "concept-vdom"
+    ],
+    "confidence": "high",
+    "source_url": "https://react.dev/"
+  },
+  {
+    "date": "2013",
+    "title": "Docker-era service frameworks accelerate",
+    "category": "backend-web",
+    "summary_ja": "Gin、Dropwizard、Vert.x など小さな service/async stack の需要が高まる。",
+    "nodes": [
+      "gin",
+      "dropwizard",
+      "vert-x"
+    ],
+    "confidence": "medium",
+    "source_url": ""
+  },
+  {
+    "date": "2014",
+    "title": "Vue first release",
+    "category": "frontend",
+    "summary_ja": "progressive adoption と template/reactivity/component の balanced framework が登場。",
+    "nodes": [
+      "vue"
+    ],
+    "confidence": "high",
+    "source_url": "https://github.com/vuejs/core"
+  },
+  {
+    "date": "2014",
+    "title": "Spring Boot 1.0",
+    "category": "backend-web",
+    "summary_ja": "auto-configuration、Starter、embedded server により Spring service 作成を高速化。",
+    "nodes": [
+      "spring-boot"
+    ],
+    "confidence": "high",
+    "source_url": "https://spring.io/projects/spring-boot"
+  },
+  {
+    "date": "2014",
+    "title": "Phoenix",
+    "category": "backend-web",
+    "summary_ja": "Rails-like productivity と BEAM concurrency/fault tolerance を統合。",
+    "nodes": [
+      "phoenix",
+      "erlang-otp"
+    ],
+    "confidence": "high",
+    "source_url": "https://www.phoenixframework.org/"
+  },
+  {
+    "date": "2015",
+    "title": "React Native and Redux",
+    "category": "application-architecture",
+    "summary_ja": "React model が native UI と predictable state architecture に拡張。",
+    "nodes": [
+      "react-native",
+      "redux"
+    ],
+    "confidence": "high",
+    "source_url": "https://reactnative.dev/"
+  },
+  {
+    "date": "2015",
+    "title": "TensorFlow",
+    "category": "ai-data",
+    "summary_ja": "large-scale tensor computation と ML training framework が open source 化。",
+    "nodes": [
+      "tensorflow"
+    ],
+    "confidence": "high",
+    "source_url": "https://www.tensorflow.org/"
+  },
+  {
+    "date": "2016",
+    "title": "Angular 2 rewrite",
+    "category": "frontend",
+    "summary_ja": "TypeScript、component、DI、RxJS を中心に AngularJS を全面再設計。",
+    "nodes": [
+      "angular",
+      "angularjs"
+    ],
+    "confidence": "high",
+    "source_url": "https://angular.dev/"
+  },
+  {
+    "date": "2016",
+    "title": "Svelte and compiler-first UI",
+    "category": "frontend",
+    "summary_ja": "framework work を compile time へ移す UI lineage が明確になる。",
+    "nodes": [
+      "svelte",
+      "concept-compiler-ui"
+    ],
+    "confidence": "high",
+    "source_url": "https://svelte.dev/"
+  },
+  {
+    "date": "2016",
+    "title": "Next.js and Nuxt",
+    "category": "meta-framework",
+    "summary_ja": "React/Vue に SSR、routing、build、deployment conventions を加える meta-framework 時代。",
+    "nodes": [
+      "next-js",
+      "nuxt"
+    ],
+    "confidence": "high",
+    "source_url": "https://nextjs.org/"
+  },
+  {
+    "date": "2016",
+    "title": "ASP.NET Core and EF Core",
+    "category": "backend-web",
+    "summary_ja": ".NET Web/data stack が cross-platform に再設計される。",
+    "nodes": [
+      "asp-net-core",
+      "entity-framework-core"
+    ],
+    "confidence": "high",
+    "source_url": "https://learn.microsoft.com/aspnet/core/"
+  },
+  {
+    "date": "2016",
+    "title": "PyTorch",
+    "category": "ai-data",
+    "summary_ja": "eager/Pythonic deep learning framework が research workflow を変える。",
+    "nodes": [
+      "pytorch"
+    ],
+    "confidence": "high",
+    "source_url": "https://pytorch.org/"
+  },
+  {
+    "date": "2017",
+    "title": "NestJS and enterprise TypeScript server",
+    "category": "backend-web",
+    "summary_ja": "Angular-like module/DI/decorator architecture が Node backend に広がる。",
+    "nodes": [
+      "nestjs",
+      "angular"
+    ],
+    "confidence": "high",
+    "source_url": "https://nestjs.com/"
+  },
+  {
+    "date": "2017",
+    "title": "Tailwind CSS",
+    "category": "css-ui",
+    "summary_ja": "utility-first styling と build-time class generation が普及。",
+    "nodes": [
+      "tailwind-css"
+    ],
+    "confidence": "high",
+    "source_url": "https://tailwindcss.com/"
+  },
+  {
+    "date": "2018",
+    "title": "FastAPI, Micronaut, Flutter 1.0",
+    "category": "framework-generation",
+    "summary_ja": "type-driven API、compile-time JVM DI、cross-platform declarative UI が同時期に成熟。",
+    "nodes": [
+      "fastapi",
+      "micronaut",
+      "flutter"
+    ],
+    "confidence": "high",
+    "source_url": ""
+  },
+  {
+    "date": "2019",
+    "title": "Quarkus and cloud-native JVM",
+    "category": "backend-web",
+    "summary_ja": "build-time augmentation と native image を軸に JVM framework が再設計される。",
+    "nodes": [
+      "quarkus",
+      "concept-build-time"
+    ],
+    "confidence": "high",
+    "source_url": "https://quarkus.io/"
+  },
+  {
+    "date": "2019",
+    "title": "Phoenix LiveView and server-driven UI",
+    "category": "frontend",
+    "summary_ja": "server state と HTML diff による rich interaction が再評価される。",
+    "nodes": [
+      "phoenix-liveview",
+      "concept-html-over-wire"
+    ],
+    "confidence": "high",
+    "source_url": "https://hexdocs.pm/phoenix_live_view/"
+  },
+  {
+    "date": "2020",
+    "title": "Hotwire, HTMX, HTML over the wire revival",
+    "category": "frontend",
+    "summary_ja": "SPA complexity を避ける server-generated HTML interaction が再び主流候補になる。",
+    "nodes": [
+      "hotwire",
+      "htmx",
+      "concept-html-over-wire"
+    ],
+    "confidence": "high",
+    "source_url": "https://hotwired.dev/"
+  },
+  {
+    "date": "2020",
+    "title": "Bevy and modern Rust engine design",
+    "category": "game",
+    "summary_ja": "ECS、plugin、data-oriented design を安全な Rust engine に統合。",
+    "nodes": [
+      "bevy"
+    ],
+    "confidence": "high",
+    "source_url": "https://bevyengine.org/"
+  },
+  {
+    "date": "2021",
+    "title": "Hono and Web Standards multi-runtime",
+    "category": "backend-web",
+    "summary_ja": "Fetch-compatible API により edge、Deno、Bun、Node を横断する framework が成長。",
+    "nodes": [
+      "hono",
+      "concept-fetch"
+    ],
+    "confidence": "medium",
+    "source_url": "https://hono.dev/"
+  },
+  {
+    "date": "2021",
+    "title": "Textual and terminal as application platform",
+    "category": "tui",
+    "summary_ja": "reactive widgets、CSS-like layout、browser delivery を持つ Python TUI framework が登場。",
+    "nodes": [
+      "textual",
+      "rich"
+    ],
+    "confidence": "medium",
+    "source_url": "https://textual.textualize.io/"
+  },
+  {
+    "date": "2021",
+    "title": "Astro islands and Qwik resumability",
+    "category": "frontend",
+    "summary_ja": "hydration cost を減らす islands/resumability architecture が前面に出る。",
+    "nodes": [
+      "astro",
+      "qwik",
+      "concept-islands",
+      "concept-resumability"
+    ],
+    "confidence": "high",
+    "source_url": "https://astro.build/"
+  },
+  {
+    "date": "2022",
+    "title": "Tauri 1.0 and smaller desktop WebView apps",
+    "category": "desktop",
+    "summary_ja": "system WebView と Rust capability model による Electron 代替が成熟。",
+    "nodes": [
+      "tauri"
+    ],
+    "confidence": "high",
+    "source_url": "https://tauri.app/"
+  },
+  {
+    "date": "2022",
+    "title": "LLM application frameworks emerge",
+    "category": "ai-data",
+    "summary_ja": "LangChain、LlamaIndex が model/tool/retrieval integration を framework 化。",
+    "nodes": [
+      "langchain",
+      "llamaindex"
+    ],
+    "confidence": "high",
+    "source_url": "https://github.com/langchain-ai/langchain"
+  },
+  {
+    "date": "2023",
+    "title": "Stateful agent graphs and multi-agent frameworks",
+    "category": "ai-data",
+    "summary_ja": "LangGraph、AutoGen、CrewAI、DSPy が agent workflow の異なる abstraction を競う。",
+    "nodes": [
+      "langgraph",
+      "autogen",
+      "crewai",
+      "dspy"
+    ],
+    "confidence": "high",
+    "source_url": ""
+  },
+  {
+    "date": "2024",
+    "title": "React meta-frameworks converge on server/client boundaries",
+    "category": "meta-framework",
+    "summary_ja": "RSC、server functions、route data、streaming が framework architecture の中心になる。",
+    "nodes": [
+      "react",
+      "next-js",
+      "react-router",
+      "concept-server-components"
+    ],
+    "confidence": "medium",
+    "source_url": "https://react.dev/reference/rsc/server-components"
+  },
+  {
+    "date": "2025",
+    "title": "OpenAI Agents SDK",
+    "category": "ai-data",
+    "summary_ja": "handoff、guardrail、session、tracing を lightweight agent framework として提供。",
+    "nodes": [
+      "openai-agents-sdk"
+    ],
+    "confidence": "high",
+    "source_url": "https://openai.github.io/openai-agents-python/"
+  },
+  {
+    "date": "2026",
+    "title": "React Foundation announced",
+    "category": "governance",
+    "summary_ja": "React の governance が Linux Foundation hosted foundation へ移ることが発表される。",
+    "nodes": [
+      "react"
+    ],
+    "confidence": "high",
+    "source_url": "https://react.dev/blog/2026/02/24/the-react-foundation"
+  }
+]

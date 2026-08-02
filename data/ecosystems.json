@@ -1,0 +1,234 @@
+[
+  {
+    "id": "spring",
+    "name": "Spring ecosystem",
+    "summary_ja": "IoC/DI 基盤から application bootstrap、data、security、cloud、batch へ分化した JVM ecosystem。",
+    "members": [
+      "spring-framework",
+      "spring-boot",
+      "spring-data-jpa",
+      "spring-ai",
+      "hibernate-orm"
+    ],
+    "organization": "Spring / Broadcom"
+  },
+  {
+    "id": "rails",
+    "name": "Rails ecosystem",
+    "summary_ja": "Rack、Rails components、Active Record、Hotwire、testing gems が規約で統合される。",
+    "members": [
+      "rack",
+      "ruby-on-rails",
+      "rails-active-record",
+      "hotwire",
+      "turbo",
+      "stimulus",
+      "rspec"
+    ],
+    "organization": "Rails Foundation / community"
+  },
+  {
+    "id": "laravel",
+    "name": "Laravel ecosystem",
+    "summary_ja": "Framework、Eloquent、Blade、Artisan と first-party product/tooling が一貫した PHP platform を形成。",
+    "members": [
+      "laravel",
+      "eloquent-orm",
+      "symfony",
+      "pest"
+    ],
+    "organization": "Laravel"
+  },
+  {
+    "id": "django",
+    "name": "Django ecosystem",
+    "summary_ja": "Django core、ORM、admin、REST、Channels、Celery 等を組み合わせる Python batteries-included ecosystem。",
+    "members": [
+      "django",
+      "django-orm",
+      "django-rest-framework",
+      "celery"
+    ],
+    "organization": "Django Software Foundation / community"
+  },
+  {
+    "id": "react",
+    "name": "React ecosystem",
+    "summary_ja": "UI library を中心に routing、meta-framework、native、state、testing が多様に分岐する。",
+    "members": [
+      "react",
+      "next-js",
+      "react-router",
+      "remix",
+      "tanstack-router",
+      "react-native",
+      "expo",
+      "redux",
+      "gatsby",
+      "redwoodjs"
+    ],
+    "organization": "React Foundation / community"
+  },
+  {
+    "id": "vue",
+    "name": "Vue ecosystem",
+    "summary_ja": "core、official router/store、Vite、Nuxt、VitePress が比較的一貫した progressive stack を形成。",
+    "members": [
+      "vue",
+      "vue-router",
+      "pinia",
+      "vite",
+      "nuxt",
+      "vitepress"
+    ],
+    "organization": "Vue team / community"
+  },
+  {
+    "id": "svelte",
+    "name": "Svelte ecosystem",
+    "summary_ja": "compiler-first component と SvelteKit full-stack layer。",
+    "members": [
+      "svelte",
+      "sveltekit",
+      "vite"
+    ],
+    "organization": "Svelte team / Vercel"
+  },
+  {
+    "id": "angular",
+    "name": "Angular ecosystem",
+    "summary_ja": "compiler、DI、router、forms、RxJS を official framework 内で統合し、Analog が meta-framework layer を補う。",
+    "members": [
+      "angular",
+      "angularjs",
+      "analog"
+    ],
+    "organization": "Google / community"
+  },
+  {
+    "id": "textualize",
+    "name": "Textualize ecosystem",
+    "summary_ja": "Rich rendering を基盤に Textual application framework、browser delivery、CLI conversion、testing、reference applications を展開。",
+    "members": [
+      "rich",
+      "textual",
+      "textual-web",
+      "trogon",
+      "pytest-textual-snapshot",
+      "frogmouth",
+      "toolong",
+      "rich-cli"
+    ],
+    "organization": "Textualize"
+  },
+  {
+    "id": "charm",
+    "name": "Charmbracelet ecosystem",
+    "summary_ja": "Bubble Tea の Elm Architecture と styling/components/SSH tools で Go TUI platform を形成。",
+    "members": [
+      "bubble-tea"
+    ],
+    "organization": "Charmbracelet"
+  },
+  {
+    "id": "go-web",
+    "name": "Go Web ecosystem",
+    "summary_ja": "標準 net/http 互換、radix router、高機能 framework、microservice platform の複数設計流派。",
+    "members": [
+      "chi",
+      "gin",
+      "echo",
+      "fiber",
+      "httprouter",
+      "gorilla-mux",
+      "goframe",
+      "go-zero",
+      "kratos",
+      "hertz"
+    ],
+    "organization": "Multiple communities"
+  },
+  {
+    "id": "rust-web",
+    "name": "Rust Web ecosystem",
+    "summary_ja": "Tokio/Hyper/Tower の composable stack と Actix、Rocket 等の application-facing framework。",
+    "members": [
+      "tokio",
+      "hyper",
+      "tower",
+      "axum",
+      "actix-web",
+      "rocket",
+      "warp",
+      "poem",
+      "salvo"
+    ],
+    "organization": "Multiple communities"
+  },
+  {
+    "id": "beam",
+    "name": "BEAM Web ecosystem",
+    "summary_ja": "Erlang/OTP、Elixir、Plug、Phoenix、Ecto、LiveView が concurrency、data、UI を統合。",
+    "members": [
+      "erlang-otp",
+      "elixir",
+      "plug",
+      "phoenix",
+      "ecto",
+      "phoenix-liveview",
+      "nerves",
+      "ash-framework"
+    ],
+    "organization": "BEAM community"
+  },
+  {
+    "id": "dotnet",
+    "name": ".NET application ecosystem",
+    "summary_ja": "ASP.NET Core、EF Core、Blazor、MAUI、desktop UI、distributed actors を同じ runtime/tooling で統合。",
+    "members": [
+      "asp-net-core",
+      "entity-framework-core",
+      "blazor",
+      "net-maui",
+      "wpf",
+      "winui",
+      "avalonia",
+      "orleans"
+    ],
+    "organization": "Microsoft / .NET Foundation / community"
+  },
+  {
+    "id": "flutter",
+    "name": "Flutter ecosystem",
+    "summary_ja": "Dart、widget rendering、state frameworks、backend integration、game framework を一つの cross-platform stack に拡張。",
+    "members": [
+      "flutter",
+      "riverpod",
+      "bloc",
+      "getx",
+      "serverpod",
+      "dart-frog",
+      "flame"
+    ],
+    "organization": "Google / community"
+  },
+  {
+    "id": "ai-agents",
+    "name": "LLM/agent frameworks",
+    "summary_ja": "chain、retrieval、graph、multi-agent、program optimization、enterprise integration という異なる abstraction が競合。",
+    "members": [
+      "langchain",
+      "langgraph",
+      "llamaindex",
+      "haystack",
+      "semantic-kernel",
+      "autogen",
+      "crewai",
+      "dspy",
+      "openai-agents-sdk",
+      "spring-ai",
+      "langchain4j"
+    ],
+    "organization": "Multiple organizations"
+  }
+]

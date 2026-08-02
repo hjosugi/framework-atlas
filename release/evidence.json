@@ -1,16 +1,16 @@
 {
-  "version": 1,
-  "release": "v0.1.0",
+  "version": 2,
+  "release": "v0.2.0",
   "requiredGates": [
-    "python3 scripts/validate.py",
-    "python3 -m unittest discover -s tests -v",
-    "python3 scripts/build_site.py --check",
-    "python3 scripts/build_zip.py --version v0.1.0 --check"
+    "make check VERSION=v0.2.0",
+    "make zip VERSION=v0.2.0",
+    "python3 scripts/release_manifest.py",
+    "python3 scripts/verify_public_release.py"
   ],
   "publicSurfaces": [
     "https://github.com/hjosugi/framework-atlas",
     "https://hjosugi.github.io/framework-atlas/",
-    "https://github.com/hjosugi/framework-atlas/releases/tag/v0.1.0"
+    "https://github.com/hjosugi/framework-atlas/releases/tag/v0.2.0"
   ],
-  "policy": "A green gate proves only its named invariant; CI, Pages and release assets are read back independently."
+  "policy": "A green gate proves only its named invariant; main, tag, Pages and release assets are read back independently at the same exact source commit."
 }

@@ -1,0 +1,34 @@
+name: Refresh GitHub topic candidates
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 1 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: Collect all repositories for core topics
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/collect_github_topics.py --scope core --resume
+      - name: Merge only high-confidence new candidates
+        run: python scripts/merge_discovered.py --min-confidence 0.85 --max-new 500
+      - run: make check
+      - name: Create update pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "data: refresh GitHub topic candidates"
+          title: "data: refresh GitHub topic candidates"
+          body: "Automated monthly snapshot. Review machine classifications before merging. Family-tree editorial data is never overwritten automatically."
+          branch: automation/refresh-topic-candidates
+          labels: data,automation

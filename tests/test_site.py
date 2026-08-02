@@ -27,13 +27,15 @@ class SiteTests(unittest.TestCase):
     def test_html_has_accessible_fallbacks_and_strict_csp(self) -> None:
         html = (ROOT / "docs/index.html").read_text(encoding="utf-8")
         self.assertIn("Content-Security-Policy", html)
-        self.assertIn("prefers-reduced-motion", (ROOT / "docs/style.css").read_text(encoding="utf-8"))
-        self.assertIn('id="relation-list"', html)
-        self.assertIn('class="skip"', html)
+        self.assertIn("prefers-reduced-motion", (ROOT / "docs/styles.css").read_text(encoding="utf-8"))
+        self.assertIn('id="relationship-list"', html)
+        self.assertIn('class="skip-link"', html)
 
-    def test_javascript_does_not_inject_inner_html(self) -> None:
+    def test_javascript_has_explicit_html_escaping_and_no_eval(self) -> None:
         script = (ROOT / "docs/app.js").read_text(encoding="utf-8")
-        self.assertNotIn("innerHTML", script)
+        self.assertIn("function escapeHTML", script)
+        self.assertIn("function escapeAttribute", script)
+        self.assertNotIn("insertAdjacentHTML", script)
         self.assertNotIn("eval(", script)
 
 

@@ -1,0 +1,1 @@
+"""Comparable FastAPI example."""

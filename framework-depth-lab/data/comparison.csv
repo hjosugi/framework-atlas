@@ -1,0 +1,18 @@
+dimension,spring_boot,fastapi,gin
+abstraction,application platform,typed API framework,HTTP framework
+version,4.1.0,0.141.1,1.12.0
+language,Java,Python,Go
+minimum_runtime,Java 17,Python 3.10,Go 1.25
+server,embedded Servlet or reactive server,external ASGI server,net/http Server
+routing,Spring MVC or WebFlux,Starlette APIRoute,method radix tree
+dependency_injection,application context container,callable dependency graph,manual constructor or third-party
+validation,Bean Validation and converters,Pydantic,go-playground validator via binding
+openapi,ecosystem integration,built in from types,third-party or contract-first
+data_access,Spring Data portfolio,external ORM or driver,external database/sql ORM or generator
+transactions,Spring transaction abstraction,external session or UoW,explicit helper or ORM
+concurrency,threads virtual threads reactive,ASGI async thread pool workers,goroutine per request
+operations,Actuator Micrometer configuration,compose ASGI server and libraries,compose standard library and middleware
+startup_cost,high relative,medium relative,low relative
+runtime_explicitness,medium,medium-high,high
+best_fit,integrated long-lived systems,typed Python APIs,lean explicit Go services
+main_risk,hidden auto-configuration and breadth,blocking work or missing production topology,inconsistent application conventions

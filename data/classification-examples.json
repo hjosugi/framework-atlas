@@ -1,0 +1,92 @@
+[
+  {
+    "repository": "gin-gonic/gin",
+    "topic": "router",
+    "classification": "core-framework",
+    "reason_ja": "routing に加え middleware、binding、rendering、request context を持つ Web framework。"
+  },
+  {
+    "repository": "honojs/hono",
+    "topic": "router",
+    "classification": "core-framework",
+    "reason_ja": "Web Standards 上の routing/middleware/application lifecycle を提供。"
+  },
+  {
+    "repository": "go-chi/chi",
+    "topic": "router",
+    "classification": "ecosystem-component",
+    "reason_ja": "net/http 互換 router。framework と呼べるが intentionally small なので router component として分類。"
+  },
+  {
+    "repository": "julienschmidt/httprouter",
+    "topic": "router",
+    "classification": "ecosystem-component",
+    "reason_ja": "path matching に集中し、Gin などの基盤になる。"
+  },
+  {
+    "repository": "vuejs/router",
+    "topic": "router",
+    "classification": "ecosystem-component",
+    "reason_ja": "Vue ecosystem の official router。単独 application framework ではない。"
+  },
+  {
+    "repository": "pillarjs/path-to-regexp",
+    "topic": "router",
+    "classification": "ecosystem-component",
+    "reason_ja": "path pattern parser utility。lifecycle や middleware を持たない。"
+  },
+  {
+    "repository": "TanStack/router",
+    "topic": "router",
+    "classification": "core-framework",
+    "reason_ja": "routing library から full-stack framework foundation まで scope が拡大。"
+  },
+  {
+    "repository": "single-spa/single-spa",
+    "topic": "router",
+    "classification": "core-framework",
+    "reason_ja": "microfrontend lifecycle と composition を規定する framework。"
+  },
+  {
+    "repository": "getlantern/lantern",
+    "topic": "router",
+    "classification": "network-product",
+    "reason_ja": "VPN/circumvention application。Web application framework ではない。"
+  },
+  {
+    "repository": "istoreos/istoreos",
+    "topic": "router",
+    "classification": "network-product",
+    "reason_ja": "router/NAS operating system。語義衝突。"
+  },
+  {
+    "repository": "threat9/routersploit",
+    "topic": "router",
+    "classification": "security-framework",
+    "reason_ja": "framework だが embedded device exploitation domain。別 taxonomy に置く。"
+  },
+  {
+    "repository": "RaspAP/raspap-webgui",
+    "topic": "router",
+    "classification": "application",
+    "reason_ja": "router 管理 application。再利用 framework ではない。"
+  },
+  {
+    "repository": "Textualize/textual",
+    "topic": "framework",
+    "classification": "core-framework",
+    "reason_ja": "widget、event、reactive state、layout、testing を規定する application framework。"
+  },
+  {
+    "repository": "Textualize/rich",
+    "topic": "framework",
+    "classification": "ecosystem-component",
+    "reason_ja": "terminal rendering library。Textual の基盤だが application lifecycle は規定しない。"
+  },
+  {
+    "repository": "Textualize/frogmouth",
+    "topic": "tui",
+    "classification": "application",
+    "reason_ja": "Textual で作られた Markdown browser。framework の実例として関連付ける。"
+  }
+]

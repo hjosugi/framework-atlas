@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use Framework Atlas, cite this repository and the upstream sources listed for each record."
+title: "Framework Atlas"
+type: dataset
+version: 0.2.0
+date-released: 2026-08-02
+license: MIT
+repository-code: "https://github.com/hjosugi/framework-atlas"
+abstract: "An evidence-aware, continuously extensible catalog of software frameworks, adjacent libraries, runtimes, and their design lineage."
+keywords:
+  - software-frameworks
+  - architecture
+  - design-history
+  - technology-radar

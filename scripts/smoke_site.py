@@ -23,10 +23,12 @@ def main() -> int:
     base = f"http://127.0.0.1:{server.server_port}"
     try:
         expectations = {
-            "/?kind=http-framework#graph": "text/html",
+            "/#family": "text/html",
             "/app.js": "text/javascript",
-            "/style.css": "text/css",
-            "/atlas-data.json": "application/json"
+            "/styles.css": "text/css",
+            "/data/atlas.json": "application/json",
+            "/data/frameworks.csv": "text/csv",
+            "/atlas-data.json": "application/json",
         }
         for path, content_type in expectations.items():
             with urllib.request.urlopen(base + path, timeout=5) as response:
@@ -48,7 +50,7 @@ def main() -> int:
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
-    print("local static-server smoke passed for HTML, JS, CSS, JSON and deep query/hash URL")
+    print("local static-server smoke passed for HTML, JS, CSS, JSON, CSV and compatibility data")
     return 0
 
 

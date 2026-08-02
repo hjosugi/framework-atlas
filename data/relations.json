@@ -1,0 +1,1292 @@
+[
+  {
+    "from": "angular",
+    "to": "analog",
+    "type": "built-on",
+    "label_ja": "Angular meta-framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://analogjs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "angular",
+    "to": "nestjs",
+    "type": "direct-influence",
+    "label_ja": "module/decorator/DI architecture",
+    "confidence": "high",
+    "evidence_ja": "Nest official positioning。",
+    "source_url": "https://nestjs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "angularjs",
+    "to": "angular",
+    "type": "successor-rewrite",
+    "label_ja": "全面再設計された後継",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://angular.dev/overview",
+    "verification": "verified"
+  },
+  {
+    "from": "angularjs",
+    "to": "vue",
+    "type": "design-influence",
+    "label_ja": "template/directive/reactivity lineage",
+    "confidence": "medium",
+    "evidence_ja": "Evan You の historical interview/source を追加確認。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "asp-net-mvc",
+    "to": "laravel",
+    "type": "direct-influence",
+    "label_ja": "Laravel 公式が ASP.NET MVC を影響源に列挙",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/laravel/docs/blob/4.2/introduction.md",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-active-record",
+    "to": "django-orm",
+    "type": "partial-pattern",
+    "label_ja": "model-centric persistence API",
+    "confidence": "medium",
+    "evidence_ja": "Django ORM は純粋な Fowler Active Record と完全同一ではない。",
+    "source_url": "https://docs.djangoproject.com/en/stable/topics/db/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "concept-active-record",
+    "to": "gorm",
+    "type": "pattern-lineage",
+    "label_ja": "model-centric ORM API",
+    "confidence": "medium",
+    "evidence_ja": "",
+    "source_url": "https://gorm.io/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "concept-active-record",
+    "to": "rails-active-record",
+    "type": "implements",
+    "label_ja": "Active Record pattern を実装",
+    "confidence": "high",
+    "evidence_ja": "Rails ORM の名称と責務。",
+    "source_url": "https://guides.rubyonrails.org/active_record_basics.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-actor",
+    "to": "autogen",
+    "type": "design-relative",
+    "label_ja": "message-driven multi-agent runtime",
+    "confidence": "low",
+    "evidence_ja": "直接 lineage ではなく architecture comparison。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "concept-actor",
+    "to": "erlang-otp",
+    "type": "design-foundation",
+    "label_ja": "process/message/supervision model",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.erlang.org/doc/system/design_principles.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-actor",
+    "to": "phoenix",
+    "type": "runtime-foundation",
+    "label_ja": "BEAM process と supervision",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.phoenixframework.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-asgi",
+    "to": "django",
+    "type": "platform-extension",
+    "label_ja": "ASGI deployment path",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.djangoproject.com/en/stable/howto/deployment/asgi/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-asgi",
+    "to": "fastapi",
+    "type": "platform-foundation",
+    "label_ja": "ASGI application",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://fastapi.tiangolo.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-asgi",
+    "to": "starlette",
+    "type": "platform-foundation",
+    "label_ja": "ASGI toolkit",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.starlette.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-build-time",
+    "to": "micronaut",
+    "type": "design-foundation",
+    "label_ja": "compile-time DI/AOP metadata",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.micronaut.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-build-time",
+    "to": "quarkus",
+    "type": "design-foundation",
+    "label_ja": "augmentation を build 時へ移動",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://quarkus.io/guides/writing-extensions",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-compiler-ui",
+    "to": "svelte",
+    "type": "design-foundation",
+    "label_ja": "component を build 時に変換",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://svelte.dev/docs/svelte/overview",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-components",
+    "to": "react",
+    "type": "design-foundation",
+    "label_ja": "component から UI を構成",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://react.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-data-mapper",
+    "to": "doctrine-orm",
+    "type": "implements",
+    "label_ja": "Data Mapper/Unit of Work",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.doctrine-project.org/projects/orm.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-data-mapper",
+    "to": "entity-framework-core",
+    "type": "implements",
+    "label_ja": "DbContext/mapper model",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://learn.microsoft.com/ef/core/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-data-mapper",
+    "to": "sqlalchemy",
+    "type": "implements",
+    "label_ja": "Data Mapper と Unit of Work",
+    "confidence": "high",
+    "evidence_ja": "SQLAlchemy ORM architecture。",
+    "source_url": "https://docs.sqlalchemy.org/en/20/orm/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-elm-architecture",
+    "to": "bubble-tea",
+    "type": "direct-influence",
+    "label_ja": "Elm Architecture を TUI に適用",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/charmbracelet/bubbletea",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-elm-architecture",
+    "to": "elm",
+    "type": "origin",
+    "label_ja": "Model/Update/View の原型",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://guide.elm-lang.org/architecture/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-elm-architecture",
+    "to": "fabulous",
+    "type": "direct-influence",
+    "label_ja": "MVU architecture",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/fabulous-dev/Fabulous",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-elm-architecture",
+    "to": "iced",
+    "type": "direct-influence",
+    "label_ja": "Elm-inspired architecture",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/iced-rs/iced",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-event-loop",
+    "to": "express",
+    "type": "runtime-foundation",
+    "label_ja": "Node.js event loop 上で動作",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://nodejs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-event-loop",
+    "to": "tornado",
+    "type": "runtime-foundation",
+    "label_ja": "non-blocking I/O",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.tornadoweb.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-fetch",
+    "to": "hono",
+    "type": "platform-foundation",
+    "label_ja": "Web Standards Request/Response を中核にする",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://hono.dev/docs/concepts/web-standard",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-html-over-wire",
+    "to": "hotwire",
+    "type": "design-foundation",
+    "label_ja": "HTML を transfer format として利用",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://hotwired.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-html-over-wire",
+    "to": "htmx",
+    "type": "design-foundation",
+    "label_ja": "HTML response を DOM に swap",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://htmx.org/docs/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-html-over-wire",
+    "to": "stimulus",
+    "type": "complement",
+    "label_ja": "HTML-first behavior layer",
+    "confidence": "medium",
+    "evidence_ja": "",
+    "source_url": "https://stimulus.hotwired.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-ioc-di",
+    "to": "spring-framework",
+    "type": "design-foundation",
+    "label_ja": "IoC/DI container",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.spring.io/spring-framework/reference/core/beans.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-islands",
+    "to": "astro",
+    "type": "design-foundation",
+    "label_ja": "interactive island のみ hydrate",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.astro.build/en/concepts/islands/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-mvc",
+    "to": "ruby-on-rails",
+    "type": "design-foundation",
+    "label_ja": "MVC を中核に採用",
+    "confidence": "high",
+    "evidence_ja": "Rails 公式 README が MVC の三層を説明。",
+    "source_url": "https://github.com/rails/rails/blob/main/README.md",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-rack",
+    "to": "hanami",
+    "type": "platform-foundation",
+    "label_ja": "Ruby Web server interface",
+    "confidence": "medium",
+    "evidence_ja": "",
+    "source_url": "https://hanamirb.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-rack",
+    "to": "ruby-on-rails",
+    "type": "platform-foundation",
+    "label_ja": "Rack server interface 上で動作",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://guides.rubyonrails.org/rails_on_rack.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-rack",
+    "to": "sinatra",
+    "type": "platform-foundation",
+    "label_ja": "Rack application",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://sinatrarb.com/intro.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-reactive",
+    "to": "vue",
+    "type": "design-foundation",
+    "label_ja": "reactive dependency tracking",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://vuejs.org/guide/extras/reactivity-in-depth.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-resumability",
+    "to": "qwik",
+    "type": "design-foundation",
+    "label_ja": "serialization と lazy resume",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://qwik.dev/docs/concepts/resumable/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-server-components",
+    "to": "next-js",
+    "type": "framework-integration",
+    "label_ja": "App Router で RSC を統合",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://nextjs.org/docs/app/building-your-application/rendering/server-components",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-server-components",
+    "to": "react",
+    "type": "evolution",
+    "label_ja": "server-only component execution",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://react.dev/reference/rsc/server-components",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-servlet",
+    "to": "javalin",
+    "type": "platform-foundation",
+    "label_ja": "Jetty/Servlet-style JVM HTTP layer",
+    "confidence": "medium",
+    "evidence_ja": "",
+    "source_url": "https://javalin.io/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "concept-servlet",
+    "to": "spring-framework",
+    "type": "platform-foundation",
+    "label_ja": "Servlet Web stack を抽象化",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.spring.io/spring-framework/reference/web/webmvc.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-signals",
+    "to": "angular",
+    "type": "adopted-pattern",
+    "label_ja": "Signals を state primitive として採用",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://angular.dev/guide/signals",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-signals",
+    "to": "solidjs",
+    "type": "design-foundation",
+    "label_ja": "fine-grained reactive signals",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.solidjs.com/concepts/signals",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-unit-of-work",
+    "to": "entity-framework-core",
+    "type": "implements",
+    "label_ja": "DbContext SaveChanges",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://learn.microsoft.com/ef/core/dbcontext-configuration/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-unit-of-work",
+    "to": "hibernate-orm",
+    "type": "implements",
+    "label_ja": "Persistence Context / Unit of Work",
+    "confidence": "high",
+    "evidence_ja": "Session が entity change を追跡。",
+    "source_url": "https://hibernate.org/orm/documentation/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-unit-of-work",
+    "to": "sqlalchemy",
+    "type": "implements",
+    "label_ja": "Session が Unit of Work を管理",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.sqlalchemy.org/en/20/orm/session_basics.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-vdom",
+    "to": "react",
+    "type": "rendering-model",
+    "label_ja": "reconciliation の仮想 tree",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://react.dev/learn/preserving-and-resetting-state",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-vdom",
+    "to": "vue",
+    "type": "rendering-model",
+    "label_ja": "Virtual DOM + compiler optimization",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://vuejs.org/guide/extras/rendering-mechanism.html",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-wsgi",
+    "to": "django",
+    "type": "platform-foundation",
+    "label_ja": "WSGI deployment",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.djangoproject.com/en/stable/howto/deployment/wsgi/",
+    "verification": "verified"
+  },
+  {
+    "from": "concept-wsgi",
+    "to": "flask",
+    "type": "platform-foundation",
+    "label_ja": "WSGI framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://flask.palletsprojects.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "ecto",
+    "to": "phoenix",
+    "type": "ecosystem",
+    "label_ja": "標準的 data layer",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.phoenixframework.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "elixir",
+    "to": "phoenix",
+    "type": "language-platform",
+    "label_ja": "Elixir macros/process ecosystem",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.phoenixframework.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "elm",
+    "to": "redux",
+    "type": "direct-influence",
+    "label_ja": "Elm Architecture の reducer/update model",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://redux.js.org/understanding/history-and-design/history",
+    "verification": "verified"
+  },
+  {
+    "from": "erlang-otp",
+    "to": "phoenix",
+    "type": "runtime-foundation",
+    "label_ja": "BEAM supervision/distribution",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.phoenixframework.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "express",
+    "to": "fiber",
+    "type": "api-inspiration",
+    "label_ja": "Express-inspired API",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.gofiber.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "express",
+    "to": "hono",
+    "type": "api-affinity",
+    "label_ja": "Hono 公式が Express に似た backend framework と説明",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://hono.dev/docs",
+    "verification": "verified"
+  },
+  {
+    "from": "express",
+    "to": "koa",
+    "type": "successor-experiment",
+    "label_ja": "Express authors が async/minimal middleware を再設計",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://koajs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "express",
+    "to": "nestjs",
+    "type": "platform-adapter",
+    "label_ja": "Nest の default HTTP adapter",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.nestjs.com/faq/http-adapter",
+    "verification": "verified"
+  },
+  {
+    "from": "fasthttp",
+    "to": "fiber",
+    "type": "built-on",
+    "label_ja": "fasthttp runtime",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.gofiber.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "fastify",
+    "to": "nestjs",
+    "type": "platform-adapter",
+    "label_ja": "Nest の alternate HTTP adapter",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://docs.nestjs.com/techniques/performance",
+    "verification": "verified"
+  },
+  {
+    "from": "flask",
+    "to": "quart",
+    "type": "api-compatible-reimplementation",
+    "label_ja": "Flask-compatible async framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://quart.palletsprojects.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "flux-architecture",
+    "to": "redux",
+    "type": "direct-influence",
+    "label_ja": "unidirectional action/store lineage",
+    "confidence": "medium",
+    "evidence_ja": "Flux concept node を将来追加。",
+    "source_url": "https://redux.js.org/understanding/history-and-design/history",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "hibernate-orm",
+    "to": "quarkus",
+    "type": "ecosystem",
+    "label_ja": "Hibernate ORM/Panache integration",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://quarkus.io/guides/hibernate-orm-panache",
+    "verification": "verified"
+  },
+  {
+    "from": "hibernate-orm",
+    "to": "spring-data-jpa",
+    "type": "common-implementation",
+    "label_ja": "JPA provider として広く利用",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://spring.io/projects/spring-data-jpa",
+    "verification": "verified"
+  },
+  {
+    "from": "hibernate-orm",
+    "to": "spring-data-jpa",
+    "type": "implementation-layer",
+    "label_ja": "JPA provider の一般的選択",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://spring.io/projects/spring-data-jpa",
+    "verification": "verified"
+  },
+  {
+    "from": "hotwire",
+    "to": "ruby-on-rails",
+    "type": "ecosystem",
+    "label_ja": "modern Rails interaction stack",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://rubyonrails.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "httprouter",
+    "to": "gin",
+    "type": "built-on",
+    "label_ja": "routing performance foundation",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/gin-gonic/gin/blob/master/README.md",
+    "verification": "verified"
+  },
+  {
+    "from": "hyper",
+    "to": "axum",
+    "type": "built-on",
+    "label_ja": "HTTP implementation",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/tokio-rs/axum",
+    "verification": "verified"
+  },
+  {
+    "from": "jakarta-ee",
+    "to": "quarkus",
+    "type": "standards-foundation",
+    "label_ja": "Jakarta EE/MicroProfile APIs を cloud-native に実装",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://quarkus.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "langchain",
+    "to": "langgraph",
+    "type": "ecosystem-evolution",
+    "label_ja": "stateful graph/agent orchestration",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://langchain-ai.github.io/langgraph/",
+    "verification": "verified"
+  },
+  {
+    "from": "martini",
+    "to": "gin",
+    "type": "direct-influence",
+    "label_ja": "Martini-like API",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/gin-gonic/gin/blob/master/README.md",
+    "verification": "verified"
+  },
+  {
+    "from": "next-js",
+    "to": "blitz-js",
+    "type": "built-on",
+    "label_ja": "Next ecosystem full-stack toolkit",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://blitzjs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "nitro",
+    "to": "analog",
+    "type": "server-foundation",
+    "label_ja": "Nitro server output",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://analogjs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "nitro",
+    "to": "nuxt",
+    "type": "server-foundation",
+    "label_ja": "portable server engine",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://nitro.build/",
+    "verification": "verified"
+  },
+  {
+    "from": "phoenix",
+    "to": "phoenix-liveview",
+    "type": "ecosystem",
+    "label_ja": "server-driven UI extension",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://hexdocs.pm/phoenix_live_view/",
+    "verification": "verified"
+  },
+  {
+    "from": "plug",
+    "to": "phoenix",
+    "type": "built-on",
+    "label_ja": "HTTP connection pipeline",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.phoenixframework.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "prisma-orm",
+    "to": "redwoodjs",
+    "type": "ecosystem",
+    "label_ja": "default data layer lineage",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://redwoodjs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "pydantic",
+    "to": "fastapi",
+    "type": "built-on",
+    "label_ja": "validation/schema layer",
+    "confidence": "high",
+    "evidence_ja": "FastAPI は Pydantic を data layer に利用。",
+    "source_url": "https://fastapi.tiangolo.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "pydantic",
+    "to": "sqlmodel",
+    "type": "built-on",
+    "label_ja": "validation/schema foundation",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://sqlmodel.tiangolo.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "pytorch",
+    "to": "lightning",
+    "type": "ecosystem",
+    "label_ja": "training framework layer",
+    "confidence": "medium",
+    "evidence_ja": "Lightning node は seed 追加対象。",
+    "source_url": "https://lightning.ai/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "qwik",
+    "to": "qwik-city",
+    "type": "built-on",
+    "label_ja": "Qwik routing/meta-framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://qwik.dev/docs/qwikcity/",
+    "verification": "verified"
+  },
+  {
+    "from": "rails-active-record",
+    "to": "eloquent-orm",
+    "type": "pattern-lineage",
+    "label_ja": "Active Record 型 ORM",
+    "confidence": "medium",
+    "evidence_ja": "Laravel の公式影響源に Rails。ORM 個別の一次資料追加が必要。",
+    "source_url": "https://github.com/laravel/docs/blob/4.2/introduction.md",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "react",
+    "to": "gatsby",
+    "type": "built-on",
+    "label_ja": "React site framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://www.gatsbyjs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "react",
+    "to": "ink",
+    "type": "renderer-extension",
+    "label_ja": "React component model を terminal に適用",
+    "confidence": "medium",
+    "evidence_ja": "Ink node を seed catalog に追加予定。",
+    "source_url": "https://github.com/vadimdemedes/ink",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "react",
+    "to": "next-js",
+    "type": "built-on",
+    "label_ja": "React full-stack meta-framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://nextjs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "react",
+    "to": "react-native",
+    "type": "renderer-extension",
+    "label_ja": "React component model を native に展開",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://reactnative.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "react",
+    "to": "react-router",
+    "type": "ecosystem",
+    "label_ja": "routing/full-stack framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://reactrouter.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "react",
+    "to": "redwoodjs",
+    "type": "built-on",
+    "label_ja": "React full-stack UI layer",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://redwoodjs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "react",
+    "to": "vue",
+    "type": "design-influence",
+    "label_ja": "component/Virtual DOM 世代の設計統合",
+    "confidence": "medium",
+    "evidence_ja": "creator interview の一次・準一次資料を追加調査。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "react-native",
+    "to": "expo",
+    "type": "application-platform",
+    "label_ja": "SDK/router/build/update layer",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://expo.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "react-native",
+    "to": "expo",
+    "type": "built-on",
+    "label_ja": "React Native application framework/tooling",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://expo.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "react-router",
+    "to": "tanstack-router",
+    "type": "design-contrast",
+    "label_ja": "routing ecosystem に type-safe URL state を強化",
+    "confidence": "low",
+    "evidence_ja": "直接 influence ではなく設計比較。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "redux",
+    "to": "re-frame",
+    "type": "design-relative",
+    "label_ja": "unidirectional event/effect architecture",
+    "confidence": "low",
+    "evidence_ja": "独立 lineage もあるため direct influence を断定しない。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "remix",
+    "to": "react-router",
+    "type": "evolved-into",
+    "label_ja": "Remix concepts/features が React Router framework mode に統合",
+    "confidence": "high",
+    "evidence_ja": "公式 React Router/Remix evolution。",
+    "source_url": "https://reactrouter.com/home",
+    "verification": "verified"
+  },
+  {
+    "from": "rich",
+    "to": "textual",
+    "type": "built-on",
+    "label_ja": "terminal rendering foundation と同一 ecosystem",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://textual.textualize.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "ruby-on-rails",
+    "to": "grails",
+    "type": "direct-influence",
+    "label_ja": "Rails-like convention を JVM/Groovy に展開",
+    "confidence": "medium",
+    "evidence_ja": "",
+    "source_url": "https://grails.org/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "ruby-on-rails",
+    "to": "laravel",
+    "type": "direct-influence",
+    "label_ja": "Laravel 公式が Rails の良い点を統合したと説明",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/laravel/docs/blob/4.2/introduction.md",
+    "verification": "verified"
+  },
+  {
+    "from": "ruby-on-rails",
+    "to": "phoenix",
+    "type": "design-lineage",
+    "label_ja": "Rails 級の productivity を BEAM 上で再構成",
+    "confidence": "medium",
+    "evidence_ja": "creator background と architecture comparison。一次資料を追加調査。",
+    "source_url": "https://www.phoenixframework.org/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "ruby-on-rails",
+    "to": "play-framework",
+    "type": "design-lineage",
+    "label_ja": "rapid full-stack feedback loop と convention",
+    "confidence": "low",
+    "evidence_ja": "直接影響の一次資料追加が必要。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "sinatra",
+    "to": "flask",
+    "type": "microframework-lineage",
+    "label_ja": "route DSL を中心とする microframework style",
+    "confidence": "medium",
+    "evidence_ja": "Flask の成立史一次資料を追加調査。",
+    "source_url": "",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "sinatra",
+    "to": "laravel",
+    "type": "direct-influence",
+    "label_ja": "Laravel 公式が Sinatra を影響源に列挙",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/laravel/docs/blob/4.2/introduction.md",
+    "verification": "verified"
+  },
+  {
+    "from": "solidjs",
+    "to": "solidstart",
+    "type": "built-on",
+    "label_ja": "Solid full-stack framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://start.solidjs.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "spring-boot",
+    "to": "quarkus",
+    "type": "design-response",
+    "label_ja": "JVM service productivity を保ち起動/メモリを再設計",
+    "confidence": "medium",
+    "evidence_ja": "競合世代としての設計応答。直接 influence の断定ではない。",
+    "source_url": "https://quarkus.io/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "spring-framework",
+    "to": "micronaut",
+    "type": "api-lineage",
+    "label_ja": "Spring-like annotations と DI experience を compile-time 化",
+    "confidence": "medium",
+    "evidence_ja": "設計比較として広く認識されるが一次資料の明示引用を追加調査。",
+    "source_url": "https://micronaut.io/",
+    "verification": "needs-evidence"
+  },
+  {
+    "from": "spring-framework",
+    "to": "spring-ai",
+    "type": "ecosystem",
+    "label_ja": "Spring idiom の AI integration",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://spring.io/projects/spring-ai",
+    "verification": "verified"
+  },
+  {
+    "from": "spring-framework",
+    "to": "spring-boot",
+    "type": "built-on",
+    "label_ja": "Spring を opinionated に本番化",
+    "confidence": "high",
+    "evidence_ja": "Spring Boot は Spring-powered application を作る。",
+    "source_url": "https://github.com/spring-projects/spring-boot/blob/main/README.adoc",
+    "verification": "verified"
+  },
+  {
+    "from": "spring-framework",
+    "to": "spring-data-jpa",
+    "type": "ecosystem",
+    "label_ja": "Spring Repository abstraction",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://spring.io/projects/spring-data-jpa",
+    "verification": "verified"
+  },
+  {
+    "from": "sqlalchemy",
+    "to": "sqlmodel",
+    "type": "built-on",
+    "label_ja": "ORM/query foundation",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://sqlmodel.tiangolo.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "starlette",
+    "to": "fastapi",
+    "type": "built-on",
+    "label_ja": "Web/ASGI layer",
+    "confidence": "high",
+    "evidence_ja": "FastAPI は Starlette を基盤とする。",
+    "source_url": "https://fastapi.tiangolo.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "stimulus",
+    "to": "hotwire",
+    "type": "component-of",
+    "label_ja": "HTML behavior controller",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://hotwired.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "svelte",
+    "to": "sveltekit",
+    "type": "built-on",
+    "label_ja": "Svelte full-stack framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://svelte.dev/docs/kit",
+    "verification": "verified"
+  },
+  {
+    "from": "symfony",
+    "to": "laravel",
+    "type": "uses-components",
+    "label_ja": "Symfony HTTP/Console 等の components を利用",
+    "confidence": "high",
+    "evidence_ja": "dependency-level relation。",
+    "source_url": "https://github.com/laravel/framework/blob/13.x/composer.json",
+    "verification": "verified"
+  },
+  {
+    "from": "tensorflow",
+    "to": "keras",
+    "type": "backend-ecosystem",
+    "label_ja": "長期に TensorFlow high-level API として統合",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://keras.io/",
+    "verification": "verified"
+  },
+  {
+    "from": "textual",
+    "to": "frogmouth",
+    "type": "built-with",
+    "label_ja": "Textual application example",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/Textualize/frogmouth",
+    "verification": "verified"
+  },
+  {
+    "from": "textual",
+    "to": "pytest-textual-snapshot",
+    "type": "testing-ecosystem",
+    "label_ja": "snapshot testing",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/Textualize/pytest-textual-snapshot",
+    "verification": "verified"
+  },
+  {
+    "from": "textual",
+    "to": "textual-web",
+    "type": "ecosystem",
+    "label_ja": "browser delivery",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/Textualize/textual-web",
+    "verification": "verified"
+  },
+  {
+    "from": "textual",
+    "to": "toolong",
+    "type": "built-with",
+    "label_ja": "Textual application example",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/Textualize/toolong",
+    "verification": "verified"
+  },
+  {
+    "from": "textual",
+    "to": "trogon",
+    "type": "ecosystem",
+    "label_ja": "CLI を Textual UI に変換",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/Textualize/trogon",
+    "verification": "verified"
+  },
+  {
+    "from": "tokio",
+    "to": "axum",
+    "type": "ecosystem-foundation",
+    "label_ja": "Tokio project framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/tokio-rs/axum",
+    "verification": "verified"
+  },
+  {
+    "from": "tower",
+    "to": "axum",
+    "type": "built-on",
+    "label_ja": "Service/Layer middleware model",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://github.com/tokio-rs/axum",
+    "verification": "verified"
+  },
+  {
+    "from": "turbo",
+    "to": "hotwire",
+    "type": "component-of",
+    "label_ja": "navigation/frames/streams",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://hotwired.dev/",
+    "verification": "verified"
+  },
+  {
+    "from": "vite",
+    "to": "analog",
+    "type": "tooling-foundation",
+    "label_ja": "Vite build foundation",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://analogjs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "vite",
+    "to": "nuxt",
+    "type": "tooling-foundation",
+    "label_ja": "Nuxt development/build layer",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://nuxt.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "vue",
+    "to": "nuxt",
+    "type": "built-on",
+    "label_ja": "Vue full-stack meta-framework",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://nuxt.com/",
+    "verification": "verified"
+  },
+  {
+    "from": "vue",
+    "to": "pinia",
+    "type": "ecosystem",
+    "label_ja": "official state store",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://pinia.vuejs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "vue",
+    "to": "vue-router",
+    "type": "ecosystem",
+    "label_ja": "official router",
+    "confidence": "high",
+    "evidence_ja": "",
+    "source_url": "https://router.vuejs.org/",
+    "verification": "verified"
+  },
+  {
+    "from": "webview",
+    "to": "tauri",
+    "type": "platform-foundation",
+    "label_ja": "system WebView を UI renderer として利用",
+    "confidence": "medium",
+    "evidence_ja": "WebView concept node を将来追加。",
+    "source_url": "https://tauri.app/",
+    "verification": "needs-evidence"
+  }
+]

@@ -1,0 +1,41 @@
+# Deep framework profiles
+
+JSON catalog のうち `maturity: deep` の項目を Markdown へ生成したもの。
+
+- [Actix Web](web/actix-web.md) — Rust の型、安全性、async runtime を使い、高性能 HTTP server、extractor、middleware、routing を提供する Web framework。
+- [ASP.NET Core](web/asp-net-core.md) — .NET の routing、middleware、DI、MVC、minimal API、Razor、Blazor、SignalR、auth を統合する cross-platform Web framework。
+- [Axum](web/axum.md) — Tokio、Tower、Hyper の型と middleware ecosystem を直接活用する ergonomic な Rust Web framework。
+- [Django](web/django.md) — ORM、URL routing、template、form、admin、auth、migration、security を統合した Python の batteries-included Web framework。
+- [Express](web/express.md) — Node.js の HTTP server に routing と middleware pipeline を加える小さく非規約的な Web framework。
+- [FastAPI](web/fastapi.md) — Python type hints から validation、serialization、dependency、OpenAPI schema を導出する ASGI API framework。
+- [Flask](web/flask.md) — Werkzeug と Jinja を基盤に、routing、request context、template を小さく提供する Python microframework。
+- [Gin](web/gin.md) — Go の net/http ecosystem 上で高速 router、middleware、binding/validation、rendering を提供する小さな Web framework。
+- [Hono](web/hono.md) — Fetch API など Web Standards の Request/Response を中核に、edge、Deno、Bun、Node、WASI へ同一 API を展開する軽量 Web framework。
+- [Laravel](web/laravel.md) — 表現力の高い API と統合された routing、container、Eloquent ORM、queue、cache、auth、CLI を提供する PHP のフルスタック framework。
+- [Micronaut](web/micronaut.md) — compile-time DI/AOP と cloud integration により、reflection を減らし高速起動・低 memory を狙う JVM application framework。
+- [NestJS](web/nestjs.md) — Angular に似た module、decorator、DI を Node.js server development に適用する TypeScript framework。Express/Fastify を transport layer として利用できる。
+- [Phoenix](web/phoenix.md) — Elixir/Erlang VM の supervision、lightweight process、message passing を Web、channel、LiveView に結び付ける full-stack framework。
+- [Quarkus](web/quarkus.md) — build-time processing と GraalVM native image 対応により、Java の起動時間・memory footprint を cloud/container 向けに最適化する framework。
+- [Ruby on Rails](web/ruby-on-rails.md) — データベース駆動 Web アプリを Convention over Configuration、MVC、Active Record、統合ツール群で一体的に構築するフルスタック framework。
+- [Spring Boot](web/spring-boot.md) — Spring アプリケーションを自動設定、Starter、組み込みサーバー、運用機能で素早く本番化するための意見を持った層。
+- [Spring Framework](web/spring-framework.md) — Java/Kotlin アプリケーションの構成、依存性注入、Web、データアクセス、トランザクション、テストを統合する基盤フレームワーク。
+- [Eloquent ORM](data-model/eloquent-orm.md) — Laravel の Active Record ORM。relation、query scope、cast、event、factory、resource serialization を表現力の高い PHP API に統合する。
+- [Entity Framework Core](data-model/entity-framework-core.md) — .NET object model と relational/document providers を LINQ、change tracking、migration、unit of work で接続する ORM。
+- [Hibernate ORM](data-model/hibernate-orm.md) — Java object graph と relational database を mapping し、unit of work、lazy loading、query language、cache、transaction integration を提供する ORM。
+- [Prisma ORM](data-model/prisma-orm.md) — 専用 schema から type-safe client と migration を生成し、TypeScript application と relational/document database の contract を揃える ORM。
+- [Rails Active Record](data-model/rails-active-record.md) — database table と Ruby class、row と object を対応させ、query、association、validation、callback、migration を統合する Rails の ORM。
+- [Spring Data JPA](data-model/spring-data-jpa.md) — JPA EntityManager の上に Repository interface、query derivation、pagination、auditing、specification を追加する Spring data access framework。
+- [SQLAlchemy](data-model/sqlalchemy.md) — SQL expression language と Data Mapper ORM を分離しつつ統合し、Python から relational database を明示的かつ柔軟に扱う toolkit。
+- [Angular](frontend/angular.md) — component、template、routing、forms、HTTP、DI、build tooling を統合した TypeScript の full client application framework。
+- [Svelte](frontend/svelte.md) — component を build 時に命令的 DOM 更新コードへ変換し、runtime abstraction を小さくする compiler-first UI framework。
+- [Vue](frontend/vue.md) — 標準 HTML/CSS/JavaScript に近い template、reactivity、component を持ち、library から full framework まで段階的に採用できる UI framework。
+- [React](frontend/react.md) — component と declarative rendering で Web と native UI を構築するライブラリ。routing や data layer は別選択に残す。
+- [Next.js](frontend/next-js.md) — React に file-based routing、server rendering、static generation、server functions、bundling、deployment conventions を加える full-stack meta-framework。
+- [Nuxt](frontend/nuxt.md) — Vue に routing、SSR/SSG、server endpoints、auto-import、modules、deployment adapters を統合する full-stack meta-framework。
+- [Electron](mobile-desktop/electron.md) — ChromiumとNode.jsを同梱し、Web技術でWindows/macOS/Linuxのdesktop applicationを構築するframework。
+- [Flutter](mobile-desktop/flutter.md) — Dart と独自 rendering engine/widget tree で Android、iOS、Web、desktop、embedded UI を共有する cross-platform application framework。
+- [React Native](mobile-desktop/react-native.md) — React component model を用い、WebView ではなく platform native view を render する Android/iOS application framework。
+- [Tauri](mobile-desktop/tauri.md) — system WebView と Rust backend を組み合わせ、Web frontend skill で小型・権限制御可能な desktop/mobile application を作る framework。
+- [chi](routing/chi.md) — Go の標準 net/http Handler interface を維持しながら、軽量で composable な routing と middleware を提供する router。
+- [Bubble Tea](tui/bubble-tea.md) — The Elm Architecture を Go terminal application に適用し、Model、Update、View と command/message で TUI を構築する framework。
+- [Textual](tui/textual.md) — Python API、reactive state、CSS-like styling、widgets、async event loop で sophisticated な terminal UI を作り、browser delivery にも展開できる RAD framework。

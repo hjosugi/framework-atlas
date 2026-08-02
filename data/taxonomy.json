@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "principles_ja": [
+    "GitHub Topic は discovery signal であり taxonomy ではない",
+    "framework、library、runtime、platform、application、product、security tool を分離する",
+    "一つの project が複数 domain に跨る場合でも primary category と subcategory を明示する",
+    "直接 influence と同時代の類似設計を分ける"
+  ],
+  "categories": [
+    {
+      "id": "backend-web",
+      "name_ja": "Backend Web",
+      "definition_ja": "HTTP application lifecycle、routing、middleware、request/response、service integration を管理する。"
+    },
+    {
+      "id": "frontend-framework",
+      "name_ja": "Frontend framework",
+      "definition_ja": "component、rendering、reactivity、state、interaction lifecycle を管理する。"
+    },
+    {
+      "id": "frontend-library",
+      "name_ja": "Frontend library",
+      "definition_ja": "UI の一部を提供するが application 全体の routing/data/deployment を必須で管理しない。"
+    },
+    {
+      "id": "meta-framework",
+      "name_ja": "Meta-framework",
+      "definition_ja": "UI framework の上に routing、data loading、SSR/SSG、build、deployment を統合する。"
+    },
+    {
+      "id": "router",
+      "name_ja": "Router / Navigation",
+      "definition_ja": "HTTP request routing、client navigation、mobile navigation 等。network router は別 category。"
+    },
+    {
+      "id": "data-model",
+      "name_ja": "Data model / ORM",
+      "definition_ja": "object/type/domain model と persistence/query/schema の対応を管理する。"
+    },
+    {
+      "id": "tui",
+      "name_ja": "Terminal UI",
+      "definition_ja": "terminal rendering、input、widget、layout、event/state lifecycle を扱う。"
+    },
+    {
+      "id": "mobile-desktop",
+      "name_ja": "Mobile / Desktop",
+      "definition_ja": "native、cross-platform、WebView-based application UI framework。"
+    },
+    {
+      "id": "testing",
+      "name_ja": "Testing",
+      "definition_ja": "test discovery、lifecycle、assertion、fixture、browser automation 等を管理する。"
+    },
+    {
+      "id": "ai-data",
+      "name_ja": "AI / Data",
+      "definition_ja": "model、training、pipeline、RAG、agent orchestration 等を管理する。"
+    },
+    {
+      "id": "runtime",
+      "name_ja": "Runtime",
+      "definition_ja": "framework が動作する execution / networking / rendering substrate。"
+    },
+    {
+      "id": "network-product",
+      "name_ja": "Network product",
+      "definition_ja": "router firmware、VPN、NAS、network appliance。Web framework ではない。"
+    },
+    {
+      "id": "security-framework",
+      "name_ja": "Security framework",
+      "definition_ja": "scanner、exploit、security testing の lifecycle を提供する。Web router とは分離する。"
+    }
+  ],
+  "relationship_states": {
+    "verified": "一次資料・公式資料等で関係を確認",
+    "needs-evidence": "有力な仮説または設計上の応答だが追加 evidence が必要",
+    "grouping": "同じ問題領域・共通基盤・分類であり歴史的 influence を主張しない"
+  }
+}

@@ -1,0 +1,2747 @@
+[
+  {
+    "id": "spring-jvm",
+    "name_ja": "Java / Spring 家系",
+    "short_ja": "Servlet と DI から、Spring Boot、Micronaut、Quarkus へ",
+    "summary_ja": "Java Web の container 標準と IoC/DI を起点に、設定の複雑さを減らす Spring、起動を簡単にする Spring Boot、build-time 最適化を重視する Micronaut / Quarkus へ進んだ流れ。",
+    "question_ja": "大規模 Java application の配線、設定、起動、運用をどう簡単にするか。",
+    "generations": [
+      {
+        "label_ja": "祖先・基礎標準",
+        "era_ja": "1990s–2000s",
+        "nodes": [
+          {
+            "id": "concept-servlet",
+            "role_ja": "Web container と application の契約"
+          },
+          {
+            "id": "concept-ioc-di",
+            "role_ja": "object の生成と配線を外へ出す"
+          },
+          {
+            "id": "concept-build-time",
+            "role_ja": "runtime 処理を build 時へ移す"
+          },
+          {
+            "id": "jakarta-ee",
+            "role_ja": "enterprise Java の標準群"
+          }
+        ]
+      },
+      {
+        "label_ja": "基盤 framework",
+        "era_ja": "2004",
+        "nodes": [
+          {
+            "id": "spring-framework",
+            "role_ja": "DI container と enterprise abstraction を統合"
+          }
+        ]
+      },
+      {
+        "label_ja": "第二世代",
+        "era_ja": "2011–2019",
+        "nodes": [
+          {
+            "id": "spring-data-jpa",
+            "role_ja": "Repository で data access を標準化"
+          },
+          {
+            "id": "spring-boot",
+            "role_ja": "良い既定値と自動設定で起動を高速化"
+          },
+          {
+            "id": "micronaut",
+            "role_ja": "compile-time DI で起動と memory を改善"
+          },
+          {
+            "id": "quarkus",
+            "role_ja": "cloud-native / native image 向けに build-time 化"
+          }
+        ]
+      },
+      {
+        "label_ja": "拡張領域",
+        "era_ja": "2024–",
+        "nodes": [
+          {
+            "id": "spring-ai",
+            "role_ja": "Spring の流儀で AI integration を統合"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-servlet",
+        "to": "spring-framework",
+        "label_ja": "Servlet Web stack を抽象化",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-ioc-di",
+        "to": "spring-framework",
+        "label_ja": "IoC/DI container を中核に採用",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "spring-framework",
+        "to": "spring-boot",
+        "label_ja": "Spring を opinionated に本番化",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "spring-framework",
+        "to": "spring-data-jpa",
+        "label_ja": "Repository abstraction を ecosystem 化",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "spring-framework",
+        "to": "micronaut",
+        "label_ja": "Spring-like API を compile-time 化",
+        "type": "api-lineage",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "concept-build-time",
+        "to": "micronaut",
+        "label_ja": "DI/AOP metadata を build 時に生成",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-build-time",
+        "to": "quarkus",
+        "label_ja": "augmentation を build 時へ移動",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "jakarta-ee",
+        "to": "quarkus",
+        "label_ja": "Jakarta EE / MicroProfile を cloud-native に実装",
+        "type": "standards-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "spring-boot",
+        "to": "quarkus",
+        "label_ja": "同じ生産性課題への別解",
+        "type": "design-response",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "spring-framework",
+        "to": "spring-ai",
+        "label_ja": "Spring idiom の AI integration",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "Spring Boot は Spring Framework の置き換えではなく、その上に良い既定値を置く層。",
+      "Micronaut と Quarkus は単なる子孫ではなく、起動時間・memory・native image という新しい制約への設計上の応答。",
+      "家系図の破線は「影響の可能性や設計上の応答」で、公式に明記された直接継承とは区別する。"
+    ]
+  },
+  {
+    "id": "rails-laravel",
+    "name_ja": "Rails / Laravel と MVC 家系",
+    "short_ja": "MVC と Convention over Configuration が各言語へ拡散",
+    "summary_ja": "MVC、Rack、Active Record、Convention over Configuration を結びつけた Rails が、Web application の開発速度を大きく変え、Laravel、Grails、Phoenix などの設計議論に影響した流れ。",
+    "question_ja": "database-backed Web application を、少ない設定と一貫した規約でどう速く作るか。",
+    "generations": [
+      {
+        "label_ja": "設計思想",
+        "era_ja": "1979–2004",
+        "nodes": [
+          {
+            "id": "concept-mvc",
+            "role_ja": "Model / View / Controller の責務分離"
+          },
+          {
+            "id": "concept-coc",
+            "role_ja": "一般的な選択を規約にする"
+          },
+          {
+            "id": "concept-rack",
+            "role_ja": "Ruby server と app の共通 interface"
+          },
+          {
+            "id": "concept-active-record",
+            "role_ja": "record object が persistence を持つ"
+          }
+        ]
+      },
+      {
+        "label_ja": "第一世代",
+        "era_ja": "2004–2009",
+        "nodes": [
+          {
+            "id": "ruby-on-rails",
+            "role_ja": "full-stack MVC + convention"
+          },
+          {
+            "id": "sinatra",
+            "role_ja": "小さな route DSL"
+          },
+          {
+            "id": "asp-net-mvc",
+            "role_ja": "Microsoft の MVC framework"
+          },
+          {
+            "id": "symfony",
+            "role_ja": "再利用可能 components を持つ PHP framework"
+          }
+        ]
+      },
+      {
+        "label_ja": "派生・再解釈",
+        "era_ja": "2005–2014",
+        "nodes": [
+          {
+            "id": "grails",
+            "role_ja": "Rails-like productivity を JVM/Groovy へ"
+          },
+          {
+            "id": "play-framework",
+            "role_ja": "JVM で高速 feedback loop"
+          },
+          {
+            "id": "laravel",
+            "role_ja": "PHP で expressive full-stack experience"
+          },
+          {
+            "id": "phoenix",
+            "role_ja": "BEAM 上で Rails 級の productivity"
+          }
+        ]
+      },
+      {
+        "label_ja": "data model の枝",
+        "era_ja": "2004–",
+        "nodes": [
+          {
+            "id": "rails-active-record",
+            "role_ja": "Rails の ORM"
+          },
+          {
+            "id": "eloquent-orm",
+            "role_ja": "Laravel の Active Record ORM"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-mvc",
+        "to": "ruby-on-rails",
+        "label_ja": "MVC を中核に採用",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-coc",
+        "to": "ruby-on-rails",
+        "label_ja": "規約で設定量を削減",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-rack",
+        "to": "ruby-on-rails",
+        "label_ja": "Rack interface 上で動作",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-rack",
+        "to": "sinatra",
+        "label_ja": "Rack application",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-active-record",
+        "to": "rails-active-record",
+        "label_ja": "Active Record pattern を実装",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "ruby-on-rails",
+        "to": "grails",
+        "label_ja": "Rails-like convention を JVM へ",
+        "type": "direct-influence",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "ruby-on-rails",
+        "to": "play-framework",
+        "label_ja": "rapid full-stack feedback loop の系譜",
+        "type": "design-lineage",
+        "confidence": "low",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "ruby-on-rails",
+        "to": "laravel",
+        "label_ja": "Laravel 公式が影響源に列挙",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "sinatra",
+        "to": "laravel",
+        "label_ja": "Laravel 公式が影響源に列挙",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "asp-net-mvc",
+        "to": "laravel",
+        "label_ja": "Laravel 公式が影響源に列挙",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "symfony",
+        "to": "laravel",
+        "label_ja": "Symfony components を利用",
+        "type": "uses-components",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "ruby-on-rails",
+        "to": "phoenix",
+        "label_ja": "Rails 級の productivity を BEAM で再構成",
+        "type": "design-lineage",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "rails-active-record",
+        "to": "eloquent-orm",
+        "label_ja": "Active Record 型 ORM の系譜",
+        "type": "pattern-lineage",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      }
+    ],
+    "takeaways_ja": [
+      "Rails の革新は個別機能より、MVC・ORM・routing・migration・testing を一つの規約にまとめた点。",
+      "Laravel は Rails のコピーではなく、Rails / Sinatra / ASP.NET MVC の体験と Symfony components を PHP に統合した。",
+      "Phoenix は見た目が Rails に近くても、runtime と failure model は Erlang/OTP に由来する。"
+    ]
+  },
+  {
+    "id": "python-web",
+    "name_ja": "Python Web 家系",
+    "short_ja": "WSGI の同期世界から ASGI の async 世界へ",
+    "summary_ja": "WSGI が Python Web server と application の共通契約を作り、Django と Flask が成熟した。WebSocket と async I/O の要求から ASGI、Starlette、FastAPI という新しい枝が生まれた。",
+    "question_ja": "Python の簡潔さを保ちながら、full-stack、microservice、async API をどう支えるか。",
+    "generations": [
+      {
+        "label_ja": "server contract",
+        "era_ja": "2003–2016",
+        "nodes": [
+          {
+            "id": "concept-wsgi",
+            "role_ja": "同期 Web server interface"
+          },
+          {
+            "id": "concept-asgi",
+            "role_ja": "async HTTP / WebSocket interface"
+          },
+          {
+            "id": "concept-event-loop",
+            "role_ja": "non-blocking I/O"
+          }
+        ]
+      },
+      {
+        "label_ja": "主要基盤",
+        "era_ja": "2005–2018",
+        "nodes": [
+          {
+            "id": "django",
+            "role_ja": "batteries-included full-stack"
+          },
+          {
+            "id": "flask",
+            "role_ja": "小さな WSGI microframework"
+          },
+          {
+            "id": "starlette",
+            "role_ja": "軽量 ASGI toolkit"
+          },
+          {
+            "id": "pydantic",
+            "role_ja": "type-driven validation"
+          },
+          {
+            "id": "tornado",
+            "role_ja": "non-blocking Web server/framework"
+          },
+          {
+            "id": "sqlalchemy",
+            "role_ja": "SQLModel の ORM/query foundation"
+          }
+        ]
+      },
+      {
+        "label_ja": "派生・統合",
+        "era_ja": "2011–2021",
+        "nodes": [
+          {
+            "id": "django-rest-framework",
+            "role_ja": "Django に API layer を追加"
+          },
+          {
+            "id": "quart",
+            "role_ja": "Flask-compatible async framework"
+          },
+          {
+            "id": "fastapi",
+            "role_ja": "Starlette + Pydantic の API framework"
+          },
+          {
+            "id": "litestar",
+            "role_ja": "ASGI application framework"
+          },
+          {
+            "id": "sqlmodel",
+            "role_ja": "Pydantic + SQLAlchemy の model"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-wsgi",
+        "to": "django",
+        "label_ja": "WSGI deployment",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-wsgi",
+        "to": "flask",
+        "label_ja": "WSGI framework",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-asgi",
+        "to": "django",
+        "label_ja": "ASGI deployment path",
+        "type": "platform-extension",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-asgi",
+        "to": "starlette",
+        "label_ja": "ASGI toolkit",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-asgi",
+        "to": "fastapi",
+        "label_ja": "ASGI application",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-event-loop",
+        "to": "tornado",
+        "label_ja": "non-blocking I/O",
+        "type": "runtime-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "django",
+        "to": "django-rest-framework",
+        "label_ja": "Django ecosystem の API layer",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "flask",
+        "to": "quart",
+        "label_ja": "Flask-compatible async reimplementation",
+        "type": "api-compatible-reimplementation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "starlette",
+        "to": "fastapi",
+        "label_ja": "Web / ASGI layer",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "pydantic",
+        "to": "fastapi",
+        "label_ja": "validation / schema layer",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-asgi",
+        "to": "litestar",
+        "label_ja": "同じ ASGI application problem を扱う",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "pydantic",
+        "to": "sqlmodel",
+        "label_ja": "validation/schema foundation",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "sqlalchemy",
+        "to": "sqlmodel",
+        "label_ja": "ORM/query foundation",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "Django と Flask の違いは大小だけでなく、framework が application architecture をどこまで決めるか。",
+      "FastAPI の核は async だけではなく、Starlette の Web layer と Pydantic の data contract を統合した点。",
+      "WSGI と ASGI は framework ではなく、server と application の契約。"
+    ]
+  },
+  {
+    "id": "go-http",
+    "name_ja": "Go HTTP framework 家系",
+    "short_ja": "標準 net/http を保つ枝と、高速専用 runtime の枝",
+    "summary_ja": "Go は標準 library の net/http が強いため、framework は薄い router と middleware の形になりやすい。Gin は httprouter と Martini-like API を統合し、Fiber は fasthttp と Express-like API を組み合わせた。",
+    "question_ja": "Go の標準性と単純さを壊さず、routing・middleware・validation の定型作業をどこまで提供するか。",
+    "generations": [
+      {
+        "label_ja": "共通基盤",
+        "era_ja": "2009–",
+        "nodes": [
+          {
+            "id": "virtual-go-net-http",
+            "virtual": true,
+            "name": "Go net/http",
+            "year": "2009",
+            "kind": "idea",
+            "summary_ja": "Go 標準の HTTP server / Handler interface。ここから多数の薄い router が発展した。",
+            "role_ja": "標準 interface"
+          },
+          {
+            "id": "fasthttp",
+            "role_ja": "performance-oriented HTTP implementation"
+          },
+          {
+            "id": "express",
+            "role_ja": "Express-like developer experience の参照点"
+          }
+        ]
+      },
+      {
+        "label_ja": "router / API style",
+        "era_ja": "2012–2015",
+        "nodes": [
+          {
+            "id": "httprouter",
+            "role_ja": "radix tree の高速 router"
+          },
+          {
+            "id": "chi",
+            "role_ja": "net/http 互換の composable router"
+          },
+          {
+            "id": "gorilla-mux",
+            "role_ja": "柔軟な URL matcher"
+          },
+          {
+            "id": "martini",
+            "role_ja": "早期の Go Web microframework"
+          },
+          {
+            "id": "echo",
+            "role_ja": "小さな API framework"
+          }
+        ]
+      },
+      {
+        "label_ja": "統合 framework",
+        "era_ja": "2014–2020",
+        "nodes": [
+          {
+            "id": "gin",
+            "role_ja": "httprouter + Martini-like API"
+          },
+          {
+            "id": "fiber",
+            "role_ja": "fasthttp + Express-like API"
+          },
+          {
+            "id": "goframe",
+            "role_ja": "より統合的な Go application framework"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "virtual-go-net-http",
+        "to": "httprouter",
+        "label_ja": "Go HTTP ecosystem の router",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-go-net-http",
+        "to": "chi",
+        "label_ja": "標準 http.Handler を維持",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-go-net-http",
+        "to": "gorilla-mux",
+        "label_ja": "標準 HTTP router",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-go-net-http",
+        "to": "martini",
+        "label_ja": "Go Web application layer",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-go-net-http",
+        "to": "echo",
+        "label_ja": "Go API framework",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "httprouter",
+        "to": "gin",
+        "label_ja": "routing performance foundation",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "martini",
+        "to": "gin",
+        "label_ja": "Martini-like API",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "fasthttp",
+        "to": "fiber",
+        "label_ja": "fasthttp runtime",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "express",
+        "to": "fiber",
+        "label_ja": "Express-inspired API",
+        "type": "api-inspiration",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "virtual-go-net-http",
+        "to": "goframe",
+        "label_ja": "同じ Go Web problem の統合型解",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      }
+    ],
+    "takeaways_ja": [
+      "chi は標準 net/http との互換性を最優先し、Gin は便利な Context と binding を追加する。",
+      "Fiber は net/http 互換性より fasthttp の performance model を選ぶため、移植性との tradeoff がある。",
+      "点線は「同じ基盤・問題領域」であり、直接影響を意味しない。"
+    ]
+  },
+  {
+    "id": "javascript-server",
+    "name_ja": "JavaScript / Edge backend 家系",
+    "short_ja": "Node event loop から Web Standards multi-runtime へ",
+    "summary_ja": "Node.js の event loop 上で Express が middleware と routing の事実上の型を作った。その後 Koa、Fastify、NestJS が構造や性能を再設計し、Hono は Fetch API を共通基盤に edge / Deno / Bun / Node を横断する。",
+    "question_ja": "JavaScript backend の簡潔さを保ちながら、async、型、安全な構造、multi-runtime portability をどう実現するか。",
+    "generations": [
+      {
+        "label_ja": "runtime / standard",
+        "era_ja": "2000s–2015",
+        "nodes": [
+          {
+            "id": "concept-event-loop",
+            "role_ja": "Node の non-blocking I/O model"
+          },
+          {
+            "id": "concept-fetch",
+            "role_ja": "Request / Response の Web Standard"
+          }
+        ]
+      },
+      {
+        "label_ja": "API の原型",
+        "era_ja": "2010",
+        "nodes": [
+          {
+            "id": "express",
+            "role_ja": "middleware + routing の最小 core"
+          },
+          {
+            "id": "angular",
+            "role_ja": "NestJS の module/decorator/DI 設計への影響源"
+          }
+        ]
+      },
+      {
+        "label_ja": "再設計と分化",
+        "era_ja": "2013–2022",
+        "nodes": [
+          {
+            "id": "koa",
+            "role_ja": "async middleware を小さく再設計"
+          },
+          {
+            "id": "fastify",
+            "role_ja": "schema と performance を重視"
+          },
+          {
+            "id": "nestjs",
+            "role_ja": "module / decorator / DI で大規模化"
+          },
+          {
+            "id": "hono",
+            "role_ja": "Web Standards で multi-runtime 化"
+          },
+          {
+            "id": "elysia",
+            "role_ja": "Bun と type inference を重視"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-event-loop",
+        "to": "express",
+        "label_ja": "Node.js event loop 上で動作",
+        "type": "runtime-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "express",
+        "to": "koa",
+        "label_ja": "Express authors による async/minimal 再設計",
+        "type": "successor-experiment",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "express",
+        "to": "nestjs",
+        "label_ja": "default HTTP adapter",
+        "type": "platform-adapter",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "fastify",
+        "to": "nestjs",
+        "label_ja": "alternate HTTP adapter",
+        "type": "platform-adapter",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "angular",
+        "to": "nestjs",
+        "label_ja": "module/decorator/DI architecture",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-fetch",
+        "to": "hono",
+        "label_ja": "Web Standards Request/Response を中核化",
+        "type": "platform-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "express",
+        "to": "hono",
+        "label_ja": "Express に近い小さな API",
+        "type": "api-affinity",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "express",
+        "to": "fastify",
+        "label_ja": "同じ Node server problem への別解",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "concept-fetch",
+        "to": "elysia",
+        "label_ja": "modern runtime / typed HTTP の同世代",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      }
+    ],
+    "takeaways_ja": [
+      "Express は application architecture をほぼ決めない。NestJS は逆に module、DI、controller を強く規定する。",
+      "Hono の重要点は小ささだけでなく、Node 固有 API ではなく Web Standards を共通面にしたこと。",
+      "同じ JavaScript でも runtime と deployment target が設計を大きく変える。"
+    ]
+  },
+  {
+    "id": "react-family",
+    "name_ja": "React 家系",
+    "short_ja": "component + one-way data flow から full-stack / native へ",
+    "summary_ja": "React は component と declarative rendering を普及させたが、routing や data layer を別選択に残した。その空白を Redux、React Router、Next.js、React Native、Expo などが埋め、巨大な ecosystem が形成された。",
+    "question_ja": "UI を再利用可能な component として宣言し、Web・server・native へどう拡張するか。",
+    "generations": [
+      {
+        "label_ja": "設計原理",
+        "era_ja": "1990s–2020",
+        "nodes": [
+          {
+            "id": "concept-components",
+            "role_ja": "component-based UI"
+          },
+          {
+            "id": "concept-vdom",
+            "role_ja": "Virtual DOM reconciliation"
+          },
+          {
+            "id": "flux-architecture",
+            "role_ja": "one-way data flow"
+          },
+          {
+            "id": "concept-elm-architecture",
+            "role_ja": "Model / Update / View"
+          },
+          {
+            "id": "concept-server-components",
+            "role_ja": "server-only component execution"
+          }
+        ]
+      },
+      {
+        "label_ja": "中核",
+        "era_ja": "2013–2015",
+        "nodes": [
+          {
+            "id": "react",
+            "role_ja": "UI rendering library"
+          },
+          {
+            "id": "redux",
+            "role_ja": "predictable state container"
+          }
+        ]
+      },
+      {
+        "label_ja": "application layer",
+        "era_ja": "2014–2017",
+        "nodes": [
+          {
+            "id": "react-router",
+            "role_ja": "routing / framework mode"
+          },
+          {
+            "id": "next-js",
+            "role_ja": "full-stack meta-framework"
+          },
+          {
+            "id": "gatsby",
+            "role_ja": "static/site framework"
+          },
+          {
+            "id": "react-native",
+            "role_ja": "native renderer"
+          },
+          {
+            "id": "ink",
+            "role_ja": "terminal renderer"
+          }
+        ]
+      },
+      {
+        "label_ja": "さらに上の platform",
+        "era_ja": "2015–",
+        "nodes": [
+          {
+            "id": "expo",
+            "role_ja": "React Native application platform"
+          },
+          {
+            "id": "blitz-js",
+            "role_ja": "Next.js 上の full-stack toolkit"
+          },
+          {
+            "id": "tanstack-router",
+            "role_ja": "type-safe URL state を強化"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-components",
+        "to": "react",
+        "label_ja": "component から UI を構成",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-vdom",
+        "to": "react",
+        "label_ja": "reconciliation の仮想 tree",
+        "type": "rendering-model",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-server-components",
+        "to": "react",
+        "label_ja": "server-only component execution",
+        "type": "evolution",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "flux-architecture",
+        "to": "redux",
+        "label_ja": "action/store lineage",
+        "type": "direct-influence",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "concept-elm-architecture",
+        "to": "redux",
+        "label_ja": "reducer/update model",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react",
+        "to": "react-router",
+        "label_ja": "routing ecosystem",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react",
+        "to": "next-js",
+        "label_ja": "React full-stack meta-framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-server-components",
+        "to": "next-js",
+        "label_ja": "App Router で RSC を統合",
+        "type": "framework-integration",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react",
+        "to": "gatsby",
+        "label_ja": "React site framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react",
+        "to": "react-native",
+        "label_ja": "component model を native に展開",
+        "type": "renderer-extension",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react",
+        "to": "ink",
+        "label_ja": "component model を terminal に適用",
+        "type": "renderer-extension",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "react-native",
+        "to": "expo",
+        "label_ja": "SDK / build / update platform",
+        "type": "application-platform",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "next-js",
+        "to": "blitz-js",
+        "label_ja": "Next ecosystem full-stack toolkit",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react-router",
+        "to": "tanstack-router",
+        "label_ja": "type-safe URL state という設計上の対比",
+        "type": "design-contrast",
+        "confidence": "low",
+        "verification": "needs-evidence"
+      }
+    ],
+    "takeaways_ja": [
+      "React 自体は full framework ではないため、家族の多くが routing・data・deployment の空白を埋める。",
+      "Next.js は React の子孫というより application framework 層。React Native は DOM 以外へ renderer を差し替えた枝。",
+      "ecosystem の自由度は強みだが、設計判断が分散するという cost でもある。"
+    ]
+  },
+  {
+    "id": "vue-family",
+    "name_ja": "Vue 家系",
+    "short_ja": "AngularJS の親しみやすさと React 世代の component model を統合",
+    "summary_ja": "Vue は template と reactivity の学びやすさを保ちつつ、component、Virtual DOM、compiler optimization を組み合わせた。Vue Router、Pinia、Nuxt が routing・state・full-stack の公式に近い一貫した枝を作った。",
+    "question_ja": "既存 HTML に近い開発体験と、大規模 component application の構造をどう両立するか。",
+    "generations": [
+      {
+        "label_ja": "影響した設計",
+        "era_ja": "2010s",
+        "nodes": [
+          {
+            "id": "angularjs",
+            "role_ja": "template / directive / reactivity"
+          },
+          {
+            "id": "react",
+            "role_ja": "component / Virtual DOM 世代"
+          },
+          {
+            "id": "concept-reactive",
+            "role_ja": "dependency tracking"
+          },
+          {
+            "id": "concept-vdom",
+            "role_ja": "Virtual DOM"
+          }
+        ]
+      },
+      {
+        "label_ja": "中核",
+        "era_ja": "2014",
+        "nodes": [
+          {
+            "id": "vue",
+            "role_ja": "progressive UI framework"
+          }
+        ]
+      },
+      {
+        "label_ja": "公式 ecosystem",
+        "era_ja": "2014–2019",
+        "nodes": [
+          {
+            "id": "vue-router",
+            "role_ja": "routing"
+          },
+          {
+            "id": "pinia",
+            "role_ja": "state management"
+          },
+          {
+            "id": "nuxt",
+            "role_ja": "full-stack meta-framework"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "angularjs",
+        "to": "vue",
+        "label_ja": "template/directive/reactivity lineage",
+        "type": "design-influence",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "react",
+        "to": "vue",
+        "label_ja": "component/Virtual DOM 世代の設計統合",
+        "type": "design-influence",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "concept-reactive",
+        "to": "vue",
+        "label_ja": "reactive dependency tracking",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-vdom",
+        "to": "vue",
+        "label_ja": "Virtual DOM + compiler optimization",
+        "type": "rendering-model",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "vue",
+        "to": "vue-router",
+        "label_ja": "official routing ecosystem",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "vue",
+        "to": "pinia",
+        "label_ja": "official state store",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "vue",
+        "to": "nuxt",
+        "label_ja": "Vue full-stack meta-framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "Vue は React と AngularJS の中間というだけではなく、runtime reactivity と compiler の協調が重要。",
+      "Vue Router / Pinia / Nuxt が比較的一貫した推奨経路を作り、React より選択肢を絞りやすい。",
+      "Vue 2 から Vue 3 では Proxy-based reactivity と Composition API が大きな世代交代。"
+    ]
+  },
+  {
+    "id": "modern-ui",
+    "name_ja": "現代 UI framework の別系統",
+    "short_ja": "compile-time、signals、resumability、islands で hydration cost に挑む",
+    "summary_ja": "Angular、Svelte、Solid、Qwik、Astro は同じ SPA/UI 問題に対し、DI、compiler、fine-grained signals、resumability、islands という異なる解を選んだ。直接の親子ではなく「設計競争の家系図」として読む。",
+    "question_ja": "大規模 UI の開発性を保ちながら、bundle、hydration、再描画、server/client 境界の cost をどう減らすか。",
+    "generations": [
+      {
+        "label_ja": "設計原理",
+        "era_ja": "2010s–2020s",
+        "nodes": [
+          {
+            "id": "angularjs",
+            "role_ja": "初期 SPA framework"
+          },
+          {
+            "id": "concept-compiler-ui",
+            "role_ja": "compile-time UI"
+          },
+          {
+            "id": "concept-signals",
+            "role_ja": "fine-grained dependency graph"
+          },
+          {
+            "id": "concept-resumability",
+            "role_ja": "execution を再開する model"
+          },
+          {
+            "id": "concept-islands",
+            "role_ja": "必要な island だけ hydrate"
+          }
+        ]
+      },
+      {
+        "label_ja": "主要な別解",
+        "era_ja": "2016–2021",
+        "nodes": [
+          {
+            "id": "angular",
+            "role_ja": "統合型 enterprise UI framework"
+          },
+          {
+            "id": "svelte",
+            "role_ja": "compiler-first UI"
+          },
+          {
+            "id": "solidjs",
+            "role_ja": "signals 中心の fine-grained UI"
+          },
+          {
+            "id": "qwik",
+            "role_ja": "resumability"
+          },
+          {
+            "id": "astro",
+            "role_ja": "islands architecture"
+          }
+        ]
+      },
+      {
+        "label_ja": "full-stack layer",
+        "era_ja": "2020–2023",
+        "nodes": [
+          {
+            "id": "analog",
+            "role_ja": "Angular meta-framework"
+          },
+          {
+            "id": "sveltekit",
+            "role_ja": "Svelte meta-framework"
+          },
+          {
+            "id": "solidstart",
+            "role_ja": "Solid full-stack framework"
+          },
+          {
+            "id": "qwik-city",
+            "role_ja": "Qwik routing/meta-framework"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "angularjs",
+        "to": "angular",
+        "label_ja": "全面再設計された後継",
+        "type": "successor-rewrite",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-signals",
+        "to": "angular",
+        "label_ja": "Signals を state primitive として採用",
+        "type": "adopted-pattern",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-compiler-ui",
+        "to": "svelte",
+        "label_ja": "component を build 時に変換",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-signals",
+        "to": "solidjs",
+        "label_ja": "fine-grained reactive signals",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-resumability",
+        "to": "qwik",
+        "label_ja": "serialization と lazy resume",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-islands",
+        "to": "astro",
+        "label_ja": "interactive island のみ hydrate",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "angular",
+        "to": "analog",
+        "label_ja": "Angular meta-framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "svelte",
+        "to": "sveltekit",
+        "label_ja": "Svelte full-stack framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "solidjs",
+        "to": "solidstart",
+        "label_ja": "Solid full-stack framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "qwik",
+        "to": "qwik-city",
+        "label_ja": "Qwik routing/meta-framework",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "この図の横並びは直接の血縁ではなく、同じ performance 問題への異なる戦略。",
+      "Svelte は runtime diff を compiler に移し、Solid は dependency を細粒度に追跡し、Qwik は hydration 自体を避けようとする。",
+      "meta-framework 層では routing、data loading、SSR/SSG、deployment が統合される。"
+    ]
+  },
+  {
+    "id": "textual-tui",
+    "name_ja": "Terminal UI / Textualize 家系",
+    "short_ja": "terminal formatting から application framework、browser 配信へ",
+    "summary_ja": "Rich が terminal rendering の表現力を高め、その上に Textual が widget、reactive state、CSS-like styling、event loop を統合した。Trogon、Textual Web、snapshot testing、Frogmouth、Toolong が一つの ecosystem を形成する。",
+    "question_ja": "terminal を単なる文字出力ではなく、testable で配布可能な application platform にできるか。",
+    "generations": [
+      {
+        "label_ja": "複数の祖先",
+        "era_ja": "1980s–2010s",
+        "nodes": [
+          {
+            "id": "virtual-terminal-ui",
+            "virtual": true,
+            "name": "Terminal UI の伝統",
+            "year": "1980s–",
+            "kind": "idea",
+            "summary_ja": "curses 系 widget、keyboard event、screen buffer から続く問題領域。",
+            "role_ja": "共通の問題領域"
+          },
+          {
+            "id": "react",
+            "role_ja": "component model"
+          },
+          {
+            "id": "concept-elm-architecture",
+            "role_ja": "Model / Update / View"
+          }
+        ]
+      },
+      {
+        "label_ja": "基盤・別流派",
+        "era_ja": "2004–2023",
+        "nodes": [
+          {
+            "id": "rich",
+            "role_ja": "rich text / table / layout rendering"
+          },
+          {
+            "id": "urwid",
+            "role_ja": "Python console UI library"
+          },
+          {
+            "id": "prompt-toolkit",
+            "role_ja": "interactive command line toolkit"
+          },
+          {
+            "id": "ink",
+            "role_ja": "React renderer for terminal"
+          },
+          {
+            "id": "bubble-tea",
+            "role_ja": "Elm Architecture for TUI"
+          },
+          {
+            "id": "ratatui",
+            "role_ja": "Rust TUI library"
+          }
+        ]
+      },
+      {
+        "label_ja": "application framework",
+        "era_ja": "2021",
+        "nodes": [
+          {
+            "id": "textual",
+            "role_ja": "Python TUI application framework"
+          }
+        ]
+      },
+      {
+        "label_ja": "開発・配布 ecosystem",
+        "era_ja": "2023–",
+        "nodes": [
+          {
+            "id": "trogon",
+            "role_ja": "Click/Typer CLI を TUI 化"
+          },
+          {
+            "id": "textual-web",
+            "role_ja": "browser delivery"
+          },
+          {
+            "id": "pytest-textual-snapshot",
+            "role_ja": "snapshot testing"
+          }
+        ]
+      },
+      {
+        "label_ja": "代表 application",
+        "era_ja": "2023–",
+        "nodes": [
+          {
+            "id": "frogmouth",
+            "role_ja": "Markdown browser"
+          },
+          {
+            "id": "toolong",
+            "role_ja": "log viewer / search"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "virtual-terminal-ui",
+        "to": "rich",
+        "label_ja": "terminal rendering の問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-terminal-ui",
+        "to": "urwid",
+        "label_ja": "terminal widget/application の問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-terminal-ui",
+        "to": "prompt-toolkit",
+        "label_ja": "interactive terminal input の問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-terminal-ui",
+        "to": "ratatui",
+        "label_ja": "terminal widget/rendering の問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "react",
+        "to": "ink",
+        "label_ja": "React component model を terminal に適用",
+        "type": "renderer-extension",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "concept-elm-architecture",
+        "to": "bubble-tea",
+        "label_ja": "Elm Architecture を TUI に適用",
+        "type": "direct-influence",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "rich",
+        "to": "textual",
+        "label_ja": "terminal rendering foundation と同一 ecosystem",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "textual",
+        "to": "trogon",
+        "label_ja": "CLI を Textual UI に変換",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "textual",
+        "to": "textual-web",
+        "label_ja": "browser delivery",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "textual",
+        "to": "pytest-textual-snapshot",
+        "label_ja": "snapshot testing",
+        "type": "testing-ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "textual",
+        "to": "frogmouth",
+        "label_ja": "Textual で構築された application",
+        "type": "built-with",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "textual",
+        "to": "toolong",
+        "label_ja": "Textual で構築された application",
+        "type": "built-with",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "Rich は formatting/rendering library、Textual は application lifecycle を持つ framework。",
+      "Textual Web は別 framework ではなく Textual application の配信先を増やす ecosystem component。",
+      "Bubble Tea と Ink は Textual の祖先ではなく、Elm / React の考え方を terminal に持ち込んだ別系統。"
+    ]
+  },
+  {
+    "id": "orm-data-model",
+    "name_ja": "ORM / Data Model 家系",
+    "short_ja": "Active Record、Data Mapper、Unit of Work、型付き code generation",
+    "summary_ja": "ORM は一つの家系ではない。Model 自身が保存する Active Record、mapping を分離する Data Mapper、transaction の変更をまとめる Unit of Work、schema/code generation を重視する現代型に分かれる。",
+    "question_ja": "object / type / domain model と relational database の差を、どの責務分担で埋めるか。",
+    "generations": [
+      {
+        "label_ja": "設計 pattern",
+        "era_ja": "1980s–2000s",
+        "nodes": [
+          {
+            "id": "concept-active-record",
+            "role_ja": "model 自身が persistence を持つ"
+          },
+          {
+            "id": "concept-data-mapper",
+            "role_ja": "mapping を独立 layer に置く"
+          },
+          {
+            "id": "concept-unit-of-work",
+            "role_ja": "変更を追跡し一括 commit"
+          },
+          {
+            "id": "virtual-typed-data",
+            "virtual": true,
+            "name": "Typed schema / code generation",
+            "year": "2010s–",
+            "kind": "idea",
+            "summary_ja": "schema、generated client、compile-time checking を重視する現代の別系統。",
+            "role_ja": "同じ問題への別解"
+          }
+        ]
+      },
+      {
+        "label_ja": "Active Record / model-centric枝",
+        "era_ja": "2004–",
+        "nodes": [
+          {
+            "id": "rails-active-record",
+            "role_ja": "Active Record"
+          },
+          {
+            "id": "gorm",
+            "role_ja": "Go の model-centric ORM"
+          },
+          {
+            "id": "django-orm",
+            "role_ja": "Django model API"
+          },
+          {
+            "id": "pydantic",
+            "role_ja": "SQLModel の validation/schema foundation"
+          }
+        ]
+      },
+      {
+        "label_ja": "Data Mapper / Unit of Work枝",
+        "era_ja": "2001–",
+        "nodes": [
+          {
+            "id": "hibernate-orm",
+            "role_ja": "JPA / Unit of Work"
+          },
+          {
+            "id": "sqlalchemy",
+            "role_ja": "Data Mapper + Unit of Work"
+          },
+          {
+            "id": "doctrine-orm",
+            "role_ja": "Data Mapper + Unit of Work"
+          },
+          {
+            "id": "entity-framework-core",
+            "role_ja": ".NET DbContext / mapper"
+          }
+        ]
+      },
+      {
+        "label_ja": "Typed schema / codegen / SQL-first枝",
+        "era_ja": "2010s–",
+        "nodes": [
+          {
+            "id": "prisma-orm",
+            "role_ja": "schema-first typed client"
+          },
+          {
+            "id": "ent",
+            "role_ja": "Go schema/codegen"
+          },
+          {
+            "id": "sqlc",
+            "role_ja": "SQL-first codegen"
+          }
+        ]
+      },
+      {
+        "label_ja": "framework integration",
+        "era_ja": "ecosystem",
+        "nodes": [
+          {
+            "id": "eloquent-orm",
+            "role_ja": "Laravel Active Record"
+          },
+          {
+            "id": "spring-data-jpa",
+            "role_ja": "Repository abstraction over JPA"
+          },
+          {
+            "id": "sqlmodel",
+            "role_ja": "Pydantic + SQLAlchemy"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-active-record",
+        "to": "rails-active-record",
+        "label_ja": "Active Record pattern を実装",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-active-record",
+        "to": "gorm",
+        "label_ja": "model-centric ORM API",
+        "type": "pattern-lineage",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "concept-active-record",
+        "to": "django-orm",
+        "label_ja": "model-centric persistence API",
+        "type": "partial-pattern",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "rails-active-record",
+        "to": "eloquent-orm",
+        "label_ja": "Active Record 型 ORM の系譜",
+        "type": "pattern-lineage",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "concept-data-mapper",
+        "to": "hibernate-orm",
+        "label_ja": "mapping layer の系譜",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "concept-unit-of-work",
+        "to": "hibernate-orm",
+        "label_ja": "Persistence Context / Unit of Work",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-data-mapper",
+        "to": "sqlalchemy",
+        "label_ja": "Data Mapper",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-unit-of-work",
+        "to": "sqlalchemy",
+        "label_ja": "Session が Unit of Work を管理",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-data-mapper",
+        "to": "doctrine-orm",
+        "label_ja": "Data Mapper / Unit of Work",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-data-mapper",
+        "to": "entity-framework-core",
+        "label_ja": "DbContext / mapper model",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-unit-of-work",
+        "to": "entity-framework-core",
+        "label_ja": "DbContext SaveChanges",
+        "type": "implements",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "hibernate-orm",
+        "to": "spring-data-jpa",
+        "label_ja": "JPA provider の一般的選択",
+        "type": "implementation-layer",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "sqlalchemy",
+        "to": "sqlmodel",
+        "label_ja": "ORM/query foundation",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "pydantic",
+        "to": "sqlmodel",
+        "label_ja": "validation/schema foundation",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "virtual-typed-data",
+        "to": "prisma-orm",
+        "label_ja": "typed schema/code generation の流れ",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-typed-data",
+        "to": "ent",
+        "label_ja": "typed schema/code generation の流れ",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-typed-data",
+        "to": "sqlc",
+        "label_ja": "SQL-first code generation の流れ",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      }
+    ],
+    "takeaways_ja": [
+      "Active Record は速く作りやすいが、domain logic と persistence の責務が一つの model に集まりやすい。",
+      "Data Mapper は境界を分けやすいが、mapping と session lifecycle の複雑さが増える。",
+      "Prisma / Ent / sqlc は ORM の単純な後継ではなく、型・schema・code generation を重視する別の答え。"
+    ]
+  },
+  {
+    "id": "html-over-wire",
+    "name_ja": "HTML over the wire 家系",
+    "short_ja": "SPA の client state を減らし、server-rendered HTML を再活用",
+    "summary_ja": "HTMX、Hotwire、Phoenix LiveView は、すべてを巨大な client application にする代わりに、server で生成した HTML または server-managed UI state を活用する。",
+    "question_ja": "SPA-like な操作感を保ちながら、client-side JavaScript と二重 state 管理をどこまで減らせるか。",
+    "generations": [
+      {
+        "label_ja": "設計原理",
+        "era_ja": "2000s–",
+        "nodes": [
+          {
+            "id": "concept-html-over-wire",
+            "role_ja": "HTML fragment を主要 transfer format にする"
+          }
+        ]
+      },
+      {
+        "label_ja": "構成要素・主要 framework",
+        "era_ja": "2018–2020",
+        "nodes": [
+          {
+            "id": "stimulus",
+            "role_ja": "HTML-first behavior controller"
+          },
+          {
+            "id": "turbo",
+            "role_ja": "navigation / frames / streams"
+          },
+          {
+            "id": "htmx",
+            "role_ja": "HTML response を DOM に swap"
+          },
+          {
+            "id": "phoenix",
+            "role_ja": "BEAM full-stack framework"
+          },
+          {
+            "id": "ruby-on-rails",
+            "role_ja": "Hotwire を統合する application framework"
+          }
+        ]
+      },
+      {
+        "label_ja": "統合体",
+        "era_ja": "2019–2020",
+        "nodes": [
+          {
+            "id": "hotwire",
+            "role_ja": "Turbo + Stimulus の approach"
+          },
+          {
+            "id": "phoenix-liveview",
+            "role_ja": "server-driven realtime UI"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-html-over-wire",
+        "to": "htmx",
+        "label_ja": "HTML response を DOM に swap",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-html-over-wire",
+        "to": "hotwire",
+        "label_ja": "HTML を transfer format として利用",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "stimulus",
+        "to": "hotwire",
+        "label_ja": "HTML behavior controller",
+        "type": "component-of",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "turbo",
+        "to": "hotwire",
+        "label_ja": "navigation / frames / streams",
+        "type": "component-of",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "phoenix",
+        "to": "phoenix-liveview",
+        "label_ja": "server-driven UI extension",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-html-over-wire",
+        "to": "phoenix-liveview",
+        "label_ja": "同じ client-state 削減問題への別解",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "ruby-on-rails",
+        "to": "hotwire",
+        "label_ja": "modern Rails interaction stack",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "HTMX は HTML attribute と server response を中心にする小さな layer。Hotwire は Turbo と Stimulus を組み合わせた ecosystem。",
+      "LiveView は HTML fragment だけでなく、server process が UI state と event loop を管理する点が異なる。",
+      "offline-first や非常に rich な local interaction では client-heavy architecture が有利な場合もある。"
+    ]
+  },
+  {
+    "id": "beam-phoenix",
+    "name_ja": "Erlang/OTP・Elixir・Phoenix 家系",
+    "short_ja": "Actor model と supervision から realtime Web へ",
+    "summary_ja": "Actor model を実用化した Erlang/OTP、その VM 上で生産性を高めた Elixir、Plug / Ecto を統合する Phoenix、server-driven UI の LiveView へ続く流れ。",
+    "question_ja": "大量 concurrency、failure isolation、realtime communication を、application developer が扱いやすい形にできるか。",
+    "generations": [
+      {
+        "label_ja": "理論と runtime",
+        "era_ja": "1973–1986",
+        "nodes": [
+          {
+            "id": "concept-actor",
+            "role_ja": "message passing と isolation"
+          },
+          {
+            "id": "erlang-otp",
+            "role_ja": "process / supervision / distribution"
+          }
+        ]
+      },
+      {
+        "label_ja": "language と components",
+        "era_ja": "2012–2014",
+        "nodes": [
+          {
+            "id": "elixir",
+            "role_ja": "BEAM 上の language/tooling"
+          },
+          {
+            "id": "plug",
+            "role_ja": "HTTP connection pipeline"
+          },
+          {
+            "id": "ecto",
+            "role_ja": "data layer"
+          }
+        ]
+      },
+      {
+        "label_ja": "Web framework",
+        "era_ja": "2014",
+        "nodes": [
+          {
+            "id": "phoenix",
+            "role_ja": "full-stack Web framework"
+          }
+        ]
+      },
+      {
+        "label_ja": "realtime UI",
+        "era_ja": "2019",
+        "nodes": [
+          {
+            "id": "phoenix-liveview",
+            "role_ja": "server-driven UI"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "concept-actor",
+        "to": "erlang-otp",
+        "label_ja": "process/message/supervision model",
+        "type": "design-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "erlang-otp",
+        "to": "phoenix",
+        "label_ja": "BEAM supervision/distribution",
+        "type": "runtime-foundation",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "elixir",
+        "to": "phoenix",
+        "label_ja": "Elixir macro/process ecosystem",
+        "type": "language-platform",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "plug",
+        "to": "phoenix",
+        "label_ja": "HTTP connection pipeline",
+        "type": "built-on",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "ecto",
+        "to": "phoenix",
+        "label_ja": "標準的 data layer",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "phoenix",
+        "to": "phoenix-liveview",
+        "label_ja": "server-driven UI extension",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      }
+    ],
+    "takeaways_ja": [
+      "Phoenix の強みは Ruby-like syntax だけでなく、BEAM の process と supervision にある。",
+      "Ecto は Rails Active Record と異なり、changeset と query を明示的に扱う。",
+      "LiveView は server process と WebSocket を使い、UI state の中心を server に置く。"
+    ]
+  },
+  {
+    "id": "mobile-desktop",
+    "name_ja": "Mobile / Desktop UI 家系",
+    "short_ja": "component model、system WebView、native declarative UI の三つの枝",
+    "summary_ja": "React Native は React component model を native renderer に展開し、Expo が application platform を追加した。Tauri は system WebView を利用する。Flutter、SwiftUI、Jetpack Compose は declarative UI という同世代の別解で、直接の親子とは限らない。",
+    "question_ja": "一つの開発 model で複数 platform を狙いながら、native UX、binary size、performance をどう両立するか。",
+    "generations": [
+      {
+        "label_ja": "基礎モデル",
+        "era_ja": "2000s–2010s",
+        "nodes": [
+          {
+            "id": "react",
+            "role_ja": "component model"
+          },
+          {
+            "id": "webview",
+            "role_ja": "OS の embedded Web renderer"
+          },
+          {
+            "id": "virtual-declarative-native",
+            "virtual": true,
+            "name": "Declarative native UI",
+            "year": "2010s–",
+            "kind": "idea",
+            "summary_ja": "state から UI を宣言する mobile/desktop UI の同世代潮流。",
+            "role_ja": "同じ問題への別解"
+          }
+        ]
+      },
+      {
+        "label_ja": "主要 framework",
+        "era_ja": "2015–2022",
+        "nodes": [
+          {
+            "id": "react-native",
+            "role_ja": "React renderer for native"
+          },
+          {
+            "id": "tauri",
+            "role_ja": "system WebView + Rust host"
+          },
+          {
+            "id": "flutter",
+            "role_ja": "cross-platform rendering framework"
+          },
+          {
+            "id": "swiftui",
+            "role_ja": "Apple declarative UI"
+          },
+          {
+            "id": "jetpack-compose",
+            "role_ja": "Android declarative UI"
+          },
+          {
+            "id": "qt",
+            "role_ja": "mature cross-platform native toolkit"
+          }
+        ]
+      },
+      {
+        "label_ja": "application platform / expansion",
+        "era_ja": "2015–2021",
+        "nodes": [
+          {
+            "id": "expo",
+            "role_ja": "React Native SDK/build/update layer"
+          },
+          {
+            "id": "compose-multiplatform",
+            "role_ja": "Compose を desktop 等へ拡張"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "react",
+        "to": "react-native",
+        "label_ja": "component model を native に展開",
+        "type": "renderer-extension",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "react-native",
+        "to": "expo",
+        "label_ja": "SDK / router / build / update layer",
+        "type": "application-platform",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "webview",
+        "to": "tauri",
+        "label_ja": "system WebView を UI renderer に利用",
+        "type": "platform-foundation",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "virtual-declarative-native",
+        "to": "flutter",
+        "label_ja": "declarative cross-platform UI",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-declarative-native",
+        "to": "swiftui",
+        "label_ja": "declarative native UI",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-declarative-native",
+        "to": "jetpack-compose",
+        "label_ja": "declarative native UI",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "jetpack-compose",
+        "to": "compose-multiplatform",
+        "label_ja": "Compose programming model の platform expansion",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-declarative-native",
+        "to": "qt",
+        "label_ja": "cross-platform UI toolkit の先行世代",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      }
+    ],
+    "takeaways_ja": [
+      "React Native は WebView ではなく native renderer の枝。Tauri は system WebView を使う枝。",
+      "Flutter は独自 rendering stack を持ち、platform widget の wrapper とは異なる。",
+      "一つの codebase という利点と、platform-specific UX/SDK に降りる cost を比較する。"
+    ]
+  },
+  {
+    "id": "ai-frameworks",
+    "name_ja": "AI / Agent framework 家系",
+    "short_ja": "model framework、training layer、LLM chain、stateful agent graph",
+    "summary_ja": "TensorFlow / PyTorch の model execution 系、Keras / Lightning の高水準 training 系、LangChain / LangGraph の LLM orchestration 系、AutoGen / Agents SDK の agent runtime 系は、同じ AI topic でも解く問題が異なる。",
+    "question_ja": "model の構築、training、tool orchestration、stateful agent execution のどこを framework が管理するか。",
+    "generations": [
+      {
+        "label_ja": "基盤・設計原理",
+        "era_ja": "1973–2022",
+        "nodes": [
+          {
+            "id": "tensorflow",
+            "role_ja": "model/training runtime"
+          },
+          {
+            "id": "pytorch",
+            "role_ja": "eager tensor/autograd framework"
+          },
+          {
+            "id": "langchain",
+            "role_ja": "LLM chain/tool orchestration"
+          },
+          {
+            "id": "concept-actor",
+            "role_ja": "message-driven isolated actors"
+          },
+          {
+            "id": "spring-framework",
+            "role_ja": "enterprise application integration"
+          }
+        ]
+      },
+      {
+        "label_ja": "上位 abstraction",
+        "era_ja": "2015–2025",
+        "nodes": [
+          {
+            "id": "keras",
+            "role_ja": "high-level neural network API"
+          },
+          {
+            "id": "lightning",
+            "role_ja": "PyTorch training structure"
+          },
+          {
+            "id": "langgraph",
+            "role_ja": "stateful graph/agent orchestration"
+          },
+          {
+            "id": "autogen",
+            "role_ja": "multi-agent runtime"
+          },
+          {
+            "id": "spring-ai",
+            "role_ja": "Spring AI integration"
+          },
+          {
+            "id": "openai-agents-sdk",
+            "role_ja": "agent/tool/handoff runtime"
+          }
+        ]
+      },
+      {
+        "label_ja": "同世代の ecosystem",
+        "era_ja": "2022–2024",
+        "nodes": [
+          {
+            "id": "llamaindex",
+            "role_ja": "data/RAG framework"
+          },
+          {
+            "id": "crewai",
+            "role_ja": "role-based multi-agent framework"
+          },
+          {
+            "id": "semantic-kernel",
+            "role_ja": "enterprise AI orchestration"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "tensorflow",
+        "to": "keras",
+        "label_ja": "TensorFlow high-level API として統合",
+        "type": "backend-ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "pytorch",
+        "to": "lightning",
+        "label_ja": "training framework layer",
+        "type": "ecosystem",
+        "confidence": "medium",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "langchain",
+        "to": "langgraph",
+        "label_ja": "stateful graph/agent orchestration",
+        "type": "ecosystem-evolution",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "concept-actor",
+        "to": "autogen",
+        "label_ja": "message-driven multi-agent runtime の設計比較",
+        "type": "design-relative",
+        "confidence": "low",
+        "verification": "needs-evidence"
+      },
+      {
+        "from": "spring-framework",
+        "to": "spring-ai",
+        "label_ja": "Spring idiom の AI integration",
+        "type": "ecosystem",
+        "confidence": "high",
+        "verification": "verified"
+      },
+      {
+        "from": "langchain",
+        "to": "llamaindex",
+        "label_ja": "LLM application data/orchestration の同世代",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "concept-actor",
+        "to": "crewai",
+        "label_ja": "multi-agent coordination の同じ問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "concept-actor",
+        "to": "openai-agents-sdk",
+        "label_ja": "agent handoff/tool execution の同じ問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "spring-framework",
+        "to": "semantic-kernel",
+        "label_ja": "enterprise integration の同じ問題領域",
+        "type": "same-problem",
+        "confidence": "high",
+        "verification": "grouping"
+      }
+    ],
+    "takeaways_ja": [
+      "AI framework という一語で model training と agent orchestration を混ぜない。",
+      "LangGraph は LangChain の stateful workflow/agent branch。Keras は model API、Lightning は training lifecycle の layer。",
+      "agent framework の影響関係は新しく、公式 evidence が不足するため破線が多い。"
+    ]
+  },
+  {
+    "id": "router-topic",
+    "name_ja": "GitHub router topic の「単語の家系」",
+    "short_ja": "HTTP routing、画面 navigation、network router、security tool を分離",
+    "summary_ja": "GitHub の router topic は同じ単語を使う異なる分野が混ざる。これは歴史的な血縁図ではなく、誤分類を防ぐための分類家系図。",
+    "question_ja": "router という名前だけで、Web framework と network product を混同しないようにする。",
+    "generations": [
+      {
+        "label_ja": "曖昧な検索語",
+        "era_ja": "GitHub Topic",
+        "nodes": [
+          {
+            "id": "virtual-router-topic",
+            "virtual": true,
+            "name": "router topic",
+            "year": "current",
+            "kind": "idea",
+            "summary_ja": "ユーザーが付ける topic。framework taxonomy そのものではない。",
+            "role_ja": "入口"
+          }
+        ]
+      },
+      {
+        "label_ja": "意味の分岐",
+        "era_ja": "分類",
+        "nodes": [
+          {
+            "id": "virtual-http-routing",
+            "virtual": true,
+            "name": "HTTP request routing",
+            "year": "server",
+            "kind": "idea",
+            "summary_ja": "URL と HTTP request を handler へ対応付ける。"
+          },
+          {
+            "id": "virtual-ui-navigation",
+            "virtual": true,
+            "name": "UI / application navigation",
+            "year": "client/mobile",
+            "kind": "idea",
+            "summary_ja": "画面、URL、state、deep link を管理する。"
+          },
+          {
+            "id": "virtual-transition-microfrontend",
+            "virtual": true,
+            "name": "Page transition / microfrontend",
+            "year": "frontend",
+            "kind": "idea",
+            "summary_ja": "画面遷移効果や複数 frontend の統合。"
+          },
+          {
+            "id": "virtual-network-router",
+            "virtual": true,
+            "name": "Network router / firmware",
+            "year": "network",
+            "kind": "idea",
+            "summary_ja": "packet forwarding、VPN、router OS。Web framework ではない。"
+          },
+          {
+            "id": "virtual-router-security",
+            "virtual": true,
+            "name": "Router security tool",
+            "year": "security",
+            "kind": "idea",
+            "summary_ja": "network device の検査・exploit。Web routing framework ではない。"
+          }
+        ]
+      },
+      {
+        "label_ja": "HTTP request routing",
+        "era_ja": "server",
+        "nodes": [
+          {
+            "id": "httprouter",
+            "role_ja": "Go HTTP router"
+          },
+          {
+            "id": "chi",
+            "role_ja": "Go HTTP router"
+          },
+          {
+            "id": "gorilla-mux",
+            "role_ja": "Go HTTP router"
+          },
+          {
+            "id": "symfony-routing",
+            "role_ja": "PHP routing component"
+          },
+          {
+            "id": "path-to-regexp",
+            "role_ja": "path parser"
+          },
+          {
+            "id": "uwebsockets",
+            "role_ja": "HTTP/WebSocket runtime"
+          }
+        ]
+      },
+      {
+        "label_ja": "UI / application navigation",
+        "era_ja": "client/mobile",
+        "nodes": [
+          {
+            "id": "react-router",
+            "role_ja": "React routing/framework"
+          },
+          {
+            "id": "vue-router",
+            "role_ja": "Vue router"
+          },
+          {
+            "id": "tanstack-router",
+            "role_ja": "type-safe router"
+          },
+          {
+            "id": "ui-router",
+            "role_ja": "AngularJS state router"
+          },
+          {
+            "id": "wouter",
+            "role_ja": "minimal React router"
+          },
+          {
+            "id": "arouter",
+            "role_ja": "Android component routing"
+          },
+          {
+            "id": "voyager",
+            "role_ja": "Compose navigation"
+          }
+        ]
+      },
+      {
+        "label_ja": "Transition / microfrontend",
+        "era_ja": "frontend composition",
+        "nodes": [
+          {
+            "id": "barba-js",
+            "role_ja": "page transition"
+          },
+          {
+            "id": "swup",
+            "role_ja": "page transition"
+          },
+          {
+            "id": "single-spa",
+            "role_ja": "microfrontend"
+          }
+        ]
+      },
+      {
+        "label_ja": "Network product / security",
+        "era_ja": "別カテゴリ",
+        "nodes": [
+          {
+            "id": "lantern",
+            "role_ja": "VPN/circumvention application"
+          },
+          {
+            "id": "istoreos",
+            "role_ja": "router/NAS OS"
+          },
+          {
+            "id": "routersploit",
+            "role_ja": "embedded router exploitation framework"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "virtual-router-topic",
+        "to": "virtual-http-routing",
+        "label_ja": "語の意味を分類",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-router-topic",
+        "to": "virtual-ui-navigation",
+        "label_ja": "語の意味を分類",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-router-topic",
+        "to": "virtual-transition-microfrontend",
+        "label_ja": "語の意味を分類",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-router-topic",
+        "to": "virtual-network-router",
+        "label_ja": "語の意味を分類",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-router-topic",
+        "to": "virtual-router-security",
+        "label_ja": "語の意味を分類",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-http-routing",
+        "to": "httprouter",
+        "label_ja": "HTTP server routing",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-http-routing",
+        "to": "chi",
+        "label_ja": "HTTP server routing",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-http-routing",
+        "to": "gorilla-mux",
+        "label_ja": "HTTP server routing",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-http-routing",
+        "to": "symfony-routing",
+        "label_ja": "HTTP server routing",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-http-routing",
+        "to": "path-to-regexp",
+        "label_ja": "HTTP server routing",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-http-routing",
+        "to": "uwebsockets",
+        "label_ja": "HTTP server routing",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "react-router",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "vue-router",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "tanstack-router",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "ui-router",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "wouter",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "arouter",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-ui-navigation",
+        "to": "voyager",
+        "label_ja": "application navigation",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-transition-microfrontend",
+        "to": "barba-js",
+        "label_ja": "transition / composition",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-transition-microfrontend",
+        "to": "swup",
+        "label_ja": "transition / composition",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-transition-microfrontend",
+        "to": "single-spa",
+        "label_ja": "transition / composition",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-network-router",
+        "to": "lantern",
+        "label_ja": "network product",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-network-router",
+        "to": "istoreos",
+        "label_ja": "network product",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      },
+      {
+        "from": "virtual-router-security",
+        "to": "routersploit",
+        "label_ja": "security/exploitation tool",
+        "type": "classification",
+        "confidence": "high",
+        "verification": "grouping"
+      }
+    ],
+    "takeaways_ja": [
+      "GitHub Topic は discovery signal であり、分類体系ではない。",
+      "Lantern や iStoreOS は router topic に存在しても Web framework catalog の core には入れない。",
+      "RouterSploit の framework は security exploitation framework で、HTTP routing framework ではない。"
+    ]
+  }
+]

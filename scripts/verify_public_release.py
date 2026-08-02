@@ -68,8 +68,11 @@ def main() -> int:
     page_paths = {
         "docs/index.html": "/",
         "docs/app.js": "/app.js",
-        "docs/style.css": "/style.css",
-        "docs/atlas-data.json": "/atlas-data.json"
+        "docs/styles.css": "/styles.css",
+        "docs/data/atlas.js": "/data/atlas.js",
+        "docs/data/atlas.json": "/data/atlas.json",
+        "docs/data/frameworks.csv": "/data/frameworks.csv",
+        "docs/atlas-data.json": "/atlas-data.json",
     }
     endpoints: list[dict[str, Any]] = []
     for source_path, public_path in page_paths.items():
@@ -79,18 +82,22 @@ def main() -> int:
             raise RuntimeError(f"Pages digest differs for {public_path}")
         endpoints.append({"url": final_url, "bytes": len(payload), "contentType": headers.get("content-type"), "cacheControl": headers.get("cache-control"), "sha256": digest_bytes(payload)})
 
-    query_payload, query_headers, query_url = fetch(base_pages + "/?kind=http-framework#graph", args.attempts, args.delay)
-    endpoints.append({"url": query_url + "#graph", "bytes": len(query_payload), "contentType": query_headers.get("content-type"), "cacheControl": query_headers.get("cache-control"), "sha256": digest_bytes(query_payload)})
+    query_payload, query_headers, query_url = fetch(base_pages + "/?view=family", args.attempts, args.delay)
+    endpoints.append({"url": query_url + "#family", "bytes": len(query_payload), "contentType": query_headers.get("content-type"), "cacheControl": query_headers.get("cache-control"), "sha256": digest_bytes(query_payload)})
     source_payload, source_headers, source_url = fetch(base_pages + "/source.json", args.attempts, args.delay)
     deployed_source = json.loads(source_payload)
     if deployed_source["commit"] != args.source_sha:
         raise RuntimeError(f"Pages source is {deployed_source['commit']}, expected {args.source_sha}")
     endpoints.append({"url": source_url, "bytes": len(source_payload), "contentType": source_headers.get("content-type"), "cacheControl": source_headers.get("cache-control"), "sha256": digest_bytes(source_payload)})
 
-    raw_url = f"https://raw.githubusercontent.com/{OWNER}/{REPO}/{args.source_sha}/data/entities.v1.json"
-    raw_payload, raw_headers, raw_final = fetch(raw_url, args.attempts, args.delay)
-    json.loads(raw_payload)
-    endpoints.append({"url": raw_final, "bytes": len(raw_payload), "contentType": raw_headers.get("content-type"), "cacheControl": raw_headers.get("cache-control"), "sha256": digest_bytes(raw_payload)})
+    for dataset in manifest["datasets"].values():
+        raw_url = f"https://raw.githubusercontent.com/{OWNER}/{REPO}/{args.source_sha}/{dataset['path']}"
+        raw_payload, raw_headers, raw_final = fetch(raw_url, args.attempts, args.delay)
+        loaded = json.loads(raw_payload)
+        count = len(loaded["entities"]) if isinstance(loaded, dict) and "entities" in loaded else len(loaded)
+        if count != dataset["count"] or digest_bytes(raw_payload) != dataset["sha256"]:
+            raise RuntimeError(f"raw dataset differs: {dataset['path']}")
+        endpoints.append({"url": raw_final, "bytes": len(raw_payload), "contentType": raw_headers.get("content-type"), "cacheControl": raw_headers.get("cache-control"), "sha256": digest_bytes(raw_payload)})
 
     release_base = f"https://github.com/{OWNER}/{REPO}/releases/download/{args.version}"
     zip_name = manifest["zip"]["name"]
@@ -116,8 +123,11 @@ def main() -> int:
         with zipfile.ZipFile(archive) as zipped:
             zip_manifest = json.loads(zipped.read("MANIFEST.json"))
             issue_index = json.loads(zipped.read("issues/index.json"))
+            zipped_catalog = json.loads(zipped.read("data/frameworks.json"))
         if zip_manifest["sourceCommit"] != args.source_sha:
             raise RuntimeError("ZIP manifest source commit differs")
+        if len(zipped_catalog) != manifest["datasets"]["broadCatalog"]["count"]:
+            raise RuntimeError("ZIP catalog count differs")
     registered: dict[int, dict[str, Any]] = {}
     page = 1
     while True:

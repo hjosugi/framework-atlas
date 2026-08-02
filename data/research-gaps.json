@@ -1,0 +1,427 @@
+[
+  {
+    "id": "R001",
+    "priority": "P0",
+    "title": "GitHub Topics 全件収集を初回実行し snapshot を固定する",
+    "labels": [
+      "research",
+      "automation",
+      "github-topics",
+      "priority/p0"
+    ],
+    "body_ja": "scripts/collect_github_topics.py を GITHUB_TOKEN 付きで実行し、framework/router/orm/tui 等の全 topic を created date で再帰分割して取得する。重複を canonical repository ID で統合し、取得時刻と query を保存する。",
+    "acceptance_ja": [
+      "各 topic の total_count と取得件数が記録される",
+      "1000件制限を超える query が分割される",
+      "途中再開可能な checkpoint が残る"
+    ]
+  },
+  {
+    "id": "R002",
+    "priority": "P0",
+    "title": "router topic の語義衝突を全件分類する",
+    "labels": [
+      "research",
+      "taxonomy",
+      "router",
+      "priority/p0"
+    ],
+    "body_ja": "Web router/navigation、HTTP proxy、network router firmware、VPN、security framework、application を分類する。現在の user snapshot では 7,267 repositories が表示されているため自動 rule と manual review queue を併用する。",
+    "acceptance_ja": [
+      "classification rule が test で固定される",
+      "low-confidence candidate が review queue に出る",
+      "network product を framework catalog の既定表示から除外する"
+    ]
+  },
+  {
+    "id": "R003",
+    "priority": "P0",
+    "title": "重点 framework の一次資料レビューを完了する",
+    "labels": [
+      "research",
+      "sources",
+      "deep-profile",
+      "priority/p0"
+    ],
+    "body_ja": "Spring Boot、Laravel、Rails、React、Vue、Gin、Django、Textual の history、problem statement、influence edge を公式文書と repository history で再確認する。",
+    "acceptance_ja": [
+      "各 deep profile に最低2件の一次資料",
+      "断定 edge は official evidence を持つ",
+      "推定 edge は needs-evidence のまま表示される"
+    ]
+  },
+  {
+    "id": "R004",
+    "priority": "P1",
+    "title": "Vue の設計影響源を一次・準一次資料で検証する",
+    "labels": [
+      "research",
+      "frontend",
+      "influence-graph",
+      "priority/p1"
+    ],
+    "body_ja": "AngularJS、React、Knockout 等との関係について creator talk/interview/release note を調べ、direct influence、convergent design、shared-era pattern を区別する。",
+    "acceptance_ja": [
+      "各 edge に quote-free summary と URL",
+      "confidence を high/medium/low で更新",
+      "推測を official claim と混同しない"
+    ]
+  },
+  {
+    "id": "R005",
+    "priority": "P1",
+    "title": "Go Web framework 系譜を router/runtime 単位で精密化する",
+    "labels": [
+      "research",
+      "go",
+      "router",
+      "priority/p1"
+    ],
+    "body_ja": "net/http、httprouter、Martini、Gin、chi、Echo、fasthttp、Fiber、GoFrame、CloudWeGo の関係を API、router、context、middleware、runtime の各層に分ける。",
+    "acceptance_ja": [
+      "built-on と API-inspired を分離",
+      "standard http.Handler compatibility を記録",
+      "benchmark claim は独立 issue に分離"
+    ]
+  },
+  {
+    "id": "R006",
+    "priority": "P1",
+    "title": "Textualize ecosystem の組織内系譜を完成する",
+    "labels": [
+      "research",
+      "tui",
+      "textual",
+      "priority/p1"
+    ],
+    "body_ja": "Rich、Textual、Trogon、Textual Web、textual-serve、pytest-textual-snapshot、Frogmouth、Toolong の役割、dependency、release history を整理する。",
+    "acceptance_ja": [
+      "framework/library/application/test tooling を区別",
+      "Rich→Textual の technical dependency を source で確認",
+      "browser delivery architecture を図示"
+    ]
+  },
+  {
+    "id": "R007",
+    "priority": "P1",
+    "title": "TUI framework の歴史を curses 以前から整理する",
+    "labels": [
+      "research",
+      "tui",
+      "history",
+      "priority/p1"
+    ],
+    "body_ja": "curses、Turbo Vision、Urwid、prompt_toolkit、Rich/Textual、Elm Architecture 系 Bubble Tea/Iced/Ratatui、Terminal.Gui、Ink を timeline と設計比較に追加する。",
+    "acceptance_ja": [
+      "retained/immediate/reactive/MVU を比較",
+      "input/layout/render diff model を記録",
+      "terminal と browser delivery の差を整理"
+    ]
+  },
+  {
+    "id": "R008",
+    "priority": "P1",
+    "title": "Data model/ORM 比較 matrix を拡張する",
+    "labels": [
+      "research",
+      "orm",
+      "data-model",
+      "priority/p1"
+    ],
+    "body_ja": "Active Record、Data Mapper、Unit of Work、schema-first、SQL-first、codegen の軸で Hibernate、Rails Active Record、Eloquent、Django ORM、SQLAlchemy、EF Core、Prisma、Ent、sqlc、Diesel を比較する。",
+    "acceptance_ja": [
+      "identity map/dirty checking/lazy loading を記録",
+      "migration と transaction boundary を比較",
+      "N+1 と generated SQL observability を比較"
+    ]
+  },
+  {
+    "id": "R009",
+    "priority": "P1",
+    "title": "framework と library の判定 rubric を検証する",
+    "labels": [
+      "research",
+      "taxonomy",
+      "methodology",
+      "priority/p1"
+    ],
+    "body_ja": "lifecycle inversion、application skeleton、extension points、scope、opinionated defaults の点数化が React、Rich、chi、path-to-regexp、HTMX、TensorFlow に妥当か review する。",
+    "acceptance_ja": [
+      "ambiguous case を最低20件評価",
+      "single score だけでなく判定理由を保持",
+      "community feedback 用の issue template を更新"
+    ]
+  },
+  {
+    "id": "R010",
+    "priority": "P1",
+    "title": "Archived/EOL/maintenance 状態を自動監査する",
+    "labels": [
+      "research",
+      "maintenance",
+      "automation",
+      "priority/p1"
+    ],
+    "body_ja": "GitHub archived flag、latest release、default branch push、official EOL announcement を別 signal として保存する。単純な最終 commit 日だけで dead 判定しない。",
+    "acceptance_ja": [
+      "status evidence と observed_at を保存",
+      "AngularJS/Truffle 等の known EOL を test fixture 化",
+      "active-but-stable project を誤判定しない"
+    ]
+  },
+  {
+    "id": "R011",
+    "priority": "P1",
+    "title": "License と商用条件を監査する",
+    "labels": [
+      "research",
+      "license",
+      "governance",
+      "priority/p1"
+    ],
+    "body_ja": "repository license、dual license、commercial license、source-available、plugin license を記録し、framework adoption の制約を比較する。",
+    "acceptance_ja": [
+      "SPDX expression を優先",
+      "Qt/JUCE/Unreal/Unity 等を別扱い",
+      "unknown を推測で埋めない"
+    ]
+  },
+  {
+    "id": "R012",
+    "priority": "P1",
+    "title": "JVM framework 世代交代を startup/memory/DI で比較する",
+    "labels": [
+      "research",
+      "jvm",
+      "history",
+      "priority/p1"
+    ],
+    "body_ja": "Servlet/J2EE/EJB、Spring、Spring Boot、Dropwizard、Micronaut、Quarkus、Helidon を runtime scan、build-time processing、native image、virtual threads、reactive の軸で整理する。",
+    "acceptance_ja": [
+      "直接 influence と design response を分離",
+      "version-neutral architecture を記録",
+      "benchmark は reproducible source のみ採用"
+    ]
+  },
+  {
+    "id": "R013",
+    "priority": "P1",
+    "title": "Frontend meta-framework の server/client boundary を比較する",
+    "labels": [
+      "research",
+      "frontend",
+      "meta-framework",
+      "priority/p1"
+    ],
+    "body_ja": "Next.js、React Router、Nuxt、SvelteKit、SolidStart、Qwik City、Astro、Analog の data loading、server function、cache、streaming、hydration/resume を比較する。",
+    "acceptance_ja": [
+      "route unit と cache unit を記録",
+      "static/server/edge deployment 差を記録",
+      "vendor hosting と portable output を区別"
+    ]
+  },
+  {
+    "id": "R014",
+    "priority": "P1",
+    "title": "Security defaults comparison を追加する",
+    "labels": [
+      "research",
+      "security",
+      "comparison",
+      "priority/p1"
+    ],
+    "body_ja": "CSRF、XSS escaping、session cookie、CORS、request size、dependency advisory、secret/config handling の既定値を重点 Web frameworks で比較する。",
+    "acceptance_ja": [
+      "official security docs のみを根拠にする",
+      "default と optional middleware を区別",
+      "version/as-of date を明記"
+    ]
+  },
+  {
+    "id": "R015",
+    "priority": "P2",
+    "title": "Accessibility と internationalization の比較軸を追加する",
+    "labels": [
+      "research",
+      "accessibility",
+      "i18n",
+      "priority/p2"
+    ],
+    "body_ja": "Web/mobile/desktop/TUI framework で semantic output、focus、screen reader、RTL、locale、IME、keyboard navigation の support model を比較する。",
+    "acceptance_ja": [
+      "platform limitation と framework support を分離",
+      "official accessibility guide を source 化",
+      "TUI/browser/native の比較を行う"
+    ]
+  },
+  {
+    "id": "R016",
+    "priority": "P2",
+    "title": "非英語圏 framework ecosystem を拡充する",
+    "labels": [
+      "research",
+      "global",
+      "coverage",
+      "priority/p2"
+    ],
+    "body_ja": "中国、日本、韓国、東欧、南米などで広く使われる Go/PHP/Java/Android/mini-app frameworks を公式資料から追加する。",
+    "acceptance_ja": [
+      "地域 popularity を star 数だけで判断しない",
+      "原語名と英語 alias を保持",
+      "governance と documentation language を記録"
+    ]
+  },
+  {
+    "id": "R017",
+    "priority": "P2",
+    "title": "Embedded/IoT application frameworks を独立 taxonomy 化する",
+    "labels": [
+      "research",
+      "embedded",
+      "iot",
+      "priority/p2"
+    ],
+    "body_ja": "Nerves、Zephyr、ESP-IDF、Arduino、Mbed OS、F Prime、Matter SDK 等を OS/SDK/framework/runtime に分ける。",
+    "acceptance_ja": [
+      "hardware abstraction と application framework を区別",
+      "real-time/fault tolerance/update model を記録",
+      "network router firmware との誤分類を防ぐ"
+    ]
+  },
+  {
+    "id": "R018",
+    "priority": "P2",
+    "title": "Framework benchmark claim の evidence policy を作る",
+    "labels": [
+      "research",
+      "performance",
+      "methodology",
+      "priority/p2"
+    ],
+    "body_ja": "公式 README の「N倍高速」等をそのまま比較値にせず、hardware、version、workload、serialization、TLS、DB を記録した reproducible benchmark のみ chart に採用する。",
+    "acceptance_ja": [
+      "marketing claim と independent benchmark を分離",
+      "TechEmpower 等の limitation を説明",
+      "日付と commit SHA を保存"
+    ]
+  },
+  {
+    "id": "R019",
+    "priority": "P2",
+    "title": "Migration/upgrade cost の実例を収集する",
+    "labels": [
+      "research",
+      "migration",
+      "maintainability",
+      "priority/p2"
+    ],
+    "body_ja": "AngularJS→Angular、Vue2→Vue3、Rails major、Spring Boot major、React Router/Remix、Prisma generation、Tauri major などの migration tooling と breaking boundary を整理する。",
+    "acceptance_ja": [
+      "official migration guide を source 化",
+      "code mod/compat mode/dual run を記録",
+      "subjective pain score だけにしない"
+    ]
+  },
+  {
+    "id": "R020",
+    "priority": "P2",
+    "title": "Governance、funding、bus factor を記録する",
+    "labels": [
+      "research",
+      "governance",
+      "sustainability",
+      "priority/p2"
+    ],
+    "body_ja": "foundation、single vendor、independent maintainer、dual license、sponsor model を framework adoption risk として整理する。",
+    "acceptance_ja": [
+      "React Foundation 等の current governance を確認",
+      "organization と trademark owner を分離",
+      "個人への推測を避ける"
+    ]
+  },
+  {
+    "id": "R021",
+    "priority": "P2",
+    "title": "AI/agent framework の rename・archive・API churn を追跡する",
+    "labels": [
+      "research",
+      "ai-agents",
+      "maintenance",
+      "priority/p2"
+    ],
+    "body_ja": "LangChain、LangGraph、LlamaIndex、Haystack、Semantic Kernel、AutoGen、CrewAI、DSPy、OpenAI Agents SDK の scope と current API/guidance を quarterly に確認する。",
+    "acceptance_ja": [
+      "official docs/release/repository を quarterly snapshot",
+      "framework と hosted service を分離",
+      "provider-neutrality を根拠付きで評価"
+    ]
+  },
+  {
+    "id": "R022",
+    "priority": "P2",
+    "title": "Type safety の意味を層別に比較する",
+    "labels": [
+      "research",
+      "types",
+      "comparison",
+      "priority/p2"
+    ],
+    "body_ja": "route params、request validation、DB query、server-client RPC、template、state、DI、codegen のどこが compile-time/runtime で検査されるかを分ける。",
+    "acceptance_ja": [
+      "単一の type-safe ラベルを廃止",
+      "FastAPI/Nest/Hono/TanStack/Servant/Goa/Prisma を比較",
+      "generated client と shared types を区別"
+    ]
+  },
+  {
+    "id": "R023",
+    "priority": "P2",
+    "title": "Deployment portability matrix を追加する",
+    "labels": [
+      "research",
+      "deployment",
+      "edge",
+      "priority/p2"
+    ],
+    "body_ja": "process、container、serverless、edge、WASI、mobile store、desktop bundle、SSH/TUI の deployment target と adapter lock-in を記録する。",
+    "acceptance_ja": [
+      "runtime standard と vendor adapter を分離",
+      "cold start claim は測定条件を付与",
+      "same code の制約を明記"
+    ]
+  },
+  {
+    "id": "R024",
+    "priority": "P2",
+    "title": "Organization ecosystem view を追加拡張する",
+    "labels": [
+      "research",
+      "ecosystem",
+      "organization",
+      "priority/p2"
+    ],
+    "body_ja": "Textualize、Spring、Rails、Laravel、Vue、Charmbracelet、TanStack、Tokio、CloudWeGo など organization 単位で core、component、tool、application を表示する。",
+    "acceptance_ja": [
+      "repository owner と governance owner を分離",
+      "fork/archive を重複排除",
+      "dependency edge と marketing bundle を区別"
+    ]
+  },
+  {
+    "id": "R025",
+    "priority": "P3",
+    "title": "Public contribution 用 source review workflow を整備する",
+    "labels": [
+      "documentation",
+      "contributing",
+      "sources",
+      "priority/p3"
+    ],
+    "body_ja": "新規 profile/edge を追加する pull request template、source quality checklist、JSON schema validation、preview screenshot を整備する。",
+    "acceptance_ja": [
+      "PR で validation が必須",
+      "needs-evidence edge を自動検出",
+      "content license と quote limit を明記"
+    ]
+  }
+]

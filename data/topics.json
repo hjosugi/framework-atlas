@@ -1,0 +1,498 @@
+[
+  {
+    "topic": "framework",
+    "group": "general"
+  },
+  {
+    "topic": "web-framework",
+    "group": "web"
+  },
+  {
+    "topic": "backend-framework",
+    "group": "web"
+  },
+  {
+    "topic": "frontend-framework",
+    "group": "frontend"
+  },
+  {
+    "topic": "meta-framework",
+    "group": "frontend"
+  },
+  {
+    "topic": "application-framework",
+    "group": "general"
+  },
+  {
+    "topic": "software-framework",
+    "group": "general"
+  },
+  {
+    "topic": "ui-framework",
+    "group": "ui"
+  },
+  {
+    "topic": "component-framework",
+    "group": "ui"
+  },
+  {
+    "topic": "reactive-framework",
+    "group": "ui"
+  },
+  {
+    "topic": "router",
+    "group": "routing"
+  },
+  {
+    "topic": "routing",
+    "group": "routing"
+  },
+  {
+    "topic": "http-router",
+    "group": "routing"
+  },
+  {
+    "topic": "navigation",
+    "group": "routing"
+  },
+  {
+    "topic": "middleware",
+    "group": "architecture"
+  },
+  {
+    "topic": "mvc",
+    "group": "architecture"
+  },
+  {
+    "topic": "mvvm",
+    "group": "architecture"
+  },
+  {
+    "topic": "mvu",
+    "group": "architecture"
+  },
+  {
+    "topic": "dependency-injection",
+    "group": "architecture"
+  },
+  {
+    "topic": "inversion-of-control",
+    "group": "architecture"
+  },
+  {
+    "topic": "state-management",
+    "group": "frontend"
+  },
+  {
+    "topic": "reactive-programming",
+    "group": "frontend"
+  },
+  {
+    "topic": "virtual-dom",
+    "group": "frontend"
+  },
+  {
+    "topic": "signals",
+    "group": "frontend"
+  },
+  {
+    "topic": "server-components",
+    "group": "frontend"
+  },
+  {
+    "topic": "static-site-generator",
+    "group": "web"
+  },
+  {
+    "topic": "server-side-rendering",
+    "group": "web"
+  },
+  {
+    "topic": "fullstack-framework",
+    "group": "web"
+  },
+  {
+    "topic": "microframework",
+    "group": "web"
+  },
+  {
+    "topic": "rest-api",
+    "group": "web"
+  },
+  {
+    "topic": "graphql-framework",
+    "group": "web"
+  },
+  {
+    "topic": "rpc-framework",
+    "group": "distributed"
+  },
+  {
+    "topic": "microservices",
+    "group": "distributed"
+  },
+  {
+    "topic": "distributed-systems",
+    "group": "distributed"
+  },
+  {
+    "topic": "api-gateway",
+    "group": "distributed"
+  },
+  {
+    "topic": "orm",
+    "group": "data-model"
+  },
+  {
+    "topic": "data-modeling",
+    "group": "data-model"
+  },
+  {
+    "topic": "query-builder",
+    "group": "data-model"
+  },
+  {
+    "topic": "database-framework",
+    "group": "data-model"
+  },
+  {
+    "topic": "migration-tool",
+    "group": "data-model"
+  },
+  {
+    "topic": "schema-first",
+    "group": "data-model"
+  },
+  {
+    "topic": "sql-first",
+    "group": "data-model"
+  },
+  {
+    "topic": "code-generation",
+    "group": "architecture"
+  },
+  {
+    "topic": "validation-library",
+    "group": "data-model"
+  },
+  {
+    "topic": "java-framework",
+    "group": "language"
+  },
+  {
+    "topic": "spring",
+    "group": "language"
+  },
+  {
+    "topic": "spring-boot",
+    "group": "language"
+  },
+  {
+    "topic": "jakarta-ee",
+    "group": "language"
+  },
+  {
+    "topic": "jvm-framework",
+    "group": "language"
+  },
+  {
+    "topic": "php-framework",
+    "group": "language"
+  },
+  {
+    "topic": "laravel",
+    "group": "language"
+  },
+  {
+    "topic": "symfony",
+    "group": "language"
+  },
+  {
+    "topic": "ruby-framework",
+    "group": "language"
+  },
+  {
+    "topic": "ruby-on-rails",
+    "group": "language"
+  },
+  {
+    "topic": "python-framework",
+    "group": "language"
+  },
+  {
+    "topic": "django",
+    "group": "language"
+  },
+  {
+    "topic": "flask",
+    "group": "language"
+  },
+  {
+    "topic": "fastapi",
+    "group": "language"
+  },
+  {
+    "topic": "asgi",
+    "group": "language"
+  },
+  {
+    "topic": "wsgi",
+    "group": "language"
+  },
+  {
+    "topic": "go-framework",
+    "group": "language"
+  },
+  {
+    "topic": "gin",
+    "group": "language"
+  },
+  {
+    "topic": "golang-web-framework",
+    "group": "language"
+  },
+  {
+    "topic": "rust-framework",
+    "group": "language"
+  },
+  {
+    "topic": "rust-web-framework",
+    "group": "language"
+  },
+  {
+    "topic": "dotnet-framework",
+    "group": "language"
+  },
+  {
+    "topic": "aspnet-core",
+    "group": "language"
+  },
+  {
+    "topic": "fsharp",
+    "group": "language"
+  },
+  {
+    "topic": "nodejs-framework",
+    "group": "language"
+  },
+  {
+    "topic": "typescript-framework",
+    "group": "language"
+  },
+  {
+    "topic": "react",
+    "group": "frontend"
+  },
+  {
+    "topic": "vue",
+    "group": "frontend"
+  },
+  {
+    "topic": "angular",
+    "group": "frontend"
+  },
+  {
+    "topic": "svelte",
+    "group": "frontend"
+  },
+  {
+    "topic": "solidjs",
+    "group": "frontend"
+  },
+  {
+    "topic": "qwik",
+    "group": "frontend"
+  },
+  {
+    "topic": "astro",
+    "group": "frontend"
+  },
+  {
+    "topic": "css-framework",
+    "group": "css-ui"
+  },
+  {
+    "topic": "design-system",
+    "group": "css-ui"
+  },
+  {
+    "topic": "component-library",
+    "group": "css-ui"
+  },
+  {
+    "topic": "web-components",
+    "group": "frontend"
+  },
+  {
+    "topic": "mobile-framework",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "desktop-framework",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "cross-platform",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "flutter",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "react-native",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "swiftui",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "jetpack-compose",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "kotlin-multiplatform",
+    "group": "mobile-desktop"
+  },
+  {
+    "topic": "tui",
+    "group": "tui"
+  },
+  {
+    "topic": "terminal-ui",
+    "group": "tui"
+  },
+  {
+    "topic": "terminal-framework",
+    "group": "tui"
+  },
+  {
+    "topic": "cli-framework",
+    "group": "cli"
+  },
+  {
+    "topic": "command-line",
+    "group": "cli"
+  },
+  {
+    "topic": "textual",
+    "group": "tui"
+  },
+  {
+    "topic": "testing-framework",
+    "group": "testing"
+  },
+  {
+    "topic": "unit-testing",
+    "group": "testing"
+  },
+  {
+    "topic": "integration-testing",
+    "group": "testing"
+  },
+  {
+    "topic": "end-to-end-testing",
+    "group": "testing"
+  },
+  {
+    "topic": "property-based-testing",
+    "group": "testing"
+  },
+  {
+    "topic": "snapshot-testing",
+    "group": "testing"
+  },
+  {
+    "topic": "browser-automation",
+    "group": "testing"
+  },
+  {
+    "topic": "game-engine",
+    "group": "game"
+  },
+  {
+    "topic": "game-framework",
+    "group": "game"
+  },
+  {
+    "topic": "ecs",
+    "group": "game"
+  },
+  {
+    "topic": "graphics-framework",
+    "group": "game"
+  },
+  {
+    "topic": "machine-learning-framework",
+    "group": "ai-data"
+  },
+  {
+    "topic": "deep-learning-framework",
+    "group": "ai-data"
+  },
+  {
+    "topic": "data-science-framework",
+    "group": "ai-data"
+  },
+  {
+    "topic": "data-engineering",
+    "group": "ai-data"
+  },
+  {
+    "topic": "llm-framework",
+    "group": "ai-data"
+  },
+  {
+    "topic": "agent-framework",
+    "group": "ai-data"
+  },
+  {
+    "topic": "ai-agents",
+    "group": "ai-data"
+  },
+  {
+    "topic": "multi-agent-systems",
+    "group": "ai-data"
+  },
+  {
+    "topic": "rag",
+    "group": "ai-data"
+  },
+  {
+    "topic": "embedded-framework",
+    "group": "embedded"
+  },
+  {
+    "topic": "iot-framework",
+    "group": "embedded"
+  },
+  {
+    "topic": "robotics-framework",
+    "group": "embedded"
+  },
+  {
+    "topic": "rtos",
+    "group": "embedded"
+  },
+  {
+    "topic": "esp32",
+    "group": "embedded"
+  },
+  {
+    "topic": "serverless-framework",
+    "group": "deployment"
+  },
+  {
+    "topic": "edge-computing",
+    "group": "deployment"
+  },
+  {
+    "topic": "webassembly-framework",
+    "group": "deployment"
+  },
+  {
+    "topic": "wasi",
+    "group": "deployment"
+  }
+]

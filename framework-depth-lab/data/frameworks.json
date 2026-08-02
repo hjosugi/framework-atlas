@@ -1,0 +1,45 @@
+{
+  "as_of": "2026-08-02",
+  "frameworks": [
+    {
+      "id": "spring-boot",
+      "name": "Spring Boot",
+      "version": "4.1.0",
+      "released": "2026-06-10",
+      "language": "Java",
+      "runtime": "Java 17-26",
+      "abstraction": "application-platform",
+      "core": ["auto-configuration", "dependency-injection", "embedded-server", "externalized-configuration", "actuator"],
+      "not_core": ["domain-design", "single-orm", "single-concurrency-model"]
+    },
+    {
+      "id": "fastapi",
+      "name": "FastAPI",
+      "version": "0.141.1",
+      "released": "2026-07-29",
+      "language": "Python",
+      "runtime": "Python >=3.10",
+      "abstraction": "typed-api-framework",
+      "core": ["routing", "dependency-injection", "validation", "serialization", "openapi"],
+      "not_core": ["orm", "process-manager", "job-queue", "domain-design"]
+    },
+    {
+      "id": "gin",
+      "name": "Gin",
+      "version": "1.12.0",
+      "released": "2026-02-28",
+      "language": "Go",
+      "runtime": "Go >=1.25",
+      "abstraction": "http-framework",
+      "core": ["radix-routing", "middleware", "binding", "rendering"],
+      "not_core": ["dependency-injection", "orm", "openapi-generation", "domain-design"]
+    }
+  ],
+  "case_study": {
+    "id": "modular-monolith-with-ddd",
+    "repository": "kgrzybek/modular-monolith-with-ddd",
+    "commit": "91c8ef24b4cb6ef558c95d8267fa07d68c7059f8",
+    "runtime": ".NET 8 sample",
+    "architecture": ["modular-monolith", "ddd", "cqrs", "outbox-inbox", "event-sourcing"]
+  }
+}

@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -21,24 +21,20 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.12'
-      - name: Run the same offline gate as CI
+          python-version: "3.13"
+      - name: Validate exact checked-out content
         run: make check
-      - uses: actions/configure-pages@v5
+      - name: Ensure generators are drift-free
+        run: git diff --exit-code
+      - name: Record exact Pages source commit
+        run: python3 scripts/write_source.py --commit "$GITHUB_SHA" --version "$(cat VERSION)"
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
-          enablement: true
-      - name: Prepare immutable Pages artifact
-        env:
-          SOURCE_SHA: ${{ github.sha }}
-        run: |
-          cp -a docs _site
-          printf '{"commit":"%s","deployedAt":"%s"}\n' "$SOURCE_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > _site/source.json
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - name: Deploy GitHub Pages
+          path: docs
+      - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -3,112 +3,245 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="根拠と確度を保持したフレームワーク設計史・系譜・実装対応の公開Atlas">
-  <meta name="color-scheme" content="light dark">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Framework Atlas</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+  <meta name="description" content="あらゆる言語の framework を、歴史・設計思想・影響関係の家系図で比較する静的データベース。">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>Framework Atlas — framework の家系図</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip" href="#main">本文へ移動</a>
-  <header class="hero">
-    <nav aria-label="主要ナビゲーション">
-      <a class="brand" href="#catalog">Framework Atlas</a>
-      <div class="nav-links">
-        <a href="#graph">系譜</a><a href="#timeline">世代</a><a href="#matrix">比較</a><a href="#case-study">DDD</a><a href="#unresolved">未決</a>
+  <a class="skip-link" href="#main-content">本文へ移動</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <button class="brand" type="button" data-view-target="family" aria-label="Framework Atlas の家系図を開く">
+        <span class="brand-mark">FA</span>
+        <span>
+          <strong>Framework Atlas</strong>
+          <small>framework の家系図</small>
+        </span>
+      </button>
+
+      <nav class="main-nav" aria-label="主要メニュー">
+        <button class="nav-button is-active" type="button" data-view-target="family">家系図</button>
+        <button class="nav-button" type="button" data-view-target="catalog">全カタログ</button>
+        <button class="nav-button" type="button" data-view-target="compare">比較</button>
+        <button class="nav-button" type="button" data-view-target="history">歴史</button>
+        <button class="nav-button" type="button" data-view-target="issues">調査 Issue</button>
+      </nav>
+
+      <div class="global-search-wrap">
+        <label class="sr-only" for="global-search">framework を検索</label>
+        <input id="global-search" class="global-search" type="search" autocomplete="off" placeholder="名前・言語・目的で検索">
+        <div id="global-search-results" class="search-popover" hidden></div>
       </div>
-    </nav>
-    <div class="hero-copy">
-      <p class="eyebrow">Evidence before rankings</p>
-      <h1>フレームワークを、名前ではなく<br>設計判断で比較する。</h1>
-      <p>公式資料・一次コード・推定を分離し、歴史、型、routing、DI、effects、operations、本番architectureを同じ根拠モデルで追跡します。</p>
-      <p id="dataset-summary" class="dataset-summary" aria-live="polite">データを読み込み中…</p>
-      <p id="source-revision" class="dataset-summary"></p>
     </div>
   </header>
 
-  <main id="main">
-    <section id="catalog" aria-labelledby="catalog-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">Catalog</p><h2 id="catalog-title">検索・分類</h2></div>
-        <p>topic一致とframework判定を分け、比較母集団外の候補も理由付きで確認できます。</p>
+  <main id="main-content">
+    <section id="view-family" class="view is-active" data-view="family">
+      <div class="hero page-width">
+        <div class="hero-copy">
+          <p class="eyebrow">大きな一枚図ではなく、家族ごとに読む</p>
+          <h1>祖先 → 中核 → 派生を<br>家系図として理解する</h1>
+          <p class="hero-lead">線を見ただけで終わらず、各 framework が何を解決し、どの設計を受け継ぎ、どこを作り直したのかをクリックして確認できます。</p>
+          <div class="hero-actions">
+            <button class="button button-primary" type="button" data-family-jump="textual-tui">Textualize 家系を見る</button>
+            <button class="button button-secondary" type="button" data-family-jump="spring-jvm">Spring 家系を見る</button>
+            <button class="button button-secondary" type="button" data-view-target="catalog">全件を検索する</button>
+          </div>
+        </div>
+        <div class="hero-guide" aria-label="家系図の読み方">
+          <div class="guide-step">
+            <span class="guide-number">1</span>
+            <div><strong>上が祖先</strong><small>標準・pattern・先行 framework</small></div>
+          </div>
+          <span class="guide-arrow" aria-hidden="true">↓</span>
+          <div class="guide-step">
+            <span class="guide-number">2</span>
+            <div><strong>中央が転換点</strong><small>新しい abstraction や統合</small></div>
+          </div>
+          <span class="guide-arrow" aria-hidden="true">↓</span>
+          <div class="guide-step">
+            <span class="guide-number">3</span>
+            <div><strong>下が派生</strong><small>meta-framework・tool・別の解</small></div>
+          </div>
+        </div>
       </div>
-      <form id="filters" class="filters" role="search">
-        <label class="search-field"><span>検索</span><input id="search" name="q" type="search" placeholder="名前、設計特性、言語…" autocomplete="off"></label>
-        <label><span>種類</span><select id="kind" name="kind"><option value="">すべて</option></select></label>
-        <label><span>系統</span><select id="cohort" name="cohort"><option value="">すべて</option></select></label>
-        <label><span>深度</span><select id="profile" name="profile"><option value="">すべて</option></select></label>
-        <label><span>根拠</span><select id="evidence" name="evidence"><option value="">すべて</option><option value="official">公式</option><option value="primary-code">一次コード</option><option value="inference">推定</option><option value="seed-only">seedのみ</option></select></label>
-        <label><span>扱い</span><select id="disposition" name="disposition"><option value="included">収録</option><option value="adjacent">周辺</option><option value="quarantined">隔離</option><option value="">すべて</option></select></label>
-      </form>
-      <p id="result-count" class="result-count" aria-live="polite"></p>
-      <div id="cards" class="cards"></div>
+
+      <div id="stats-strip" class="stats-strip page-width" aria-label="収録統計"></div>
+
+      <section class="section page-width" aria-labelledby="family-picker-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">系統を選ぶ</p>
+            <h2 id="family-picker-title">15の家系図</h2>
+          </div>
+          <div class="select-wrap">
+            <label for="family-select">家系図</label>
+            <select id="family-select"></select>
+          </div>
+        </div>
+        <div id="family-card-list" class="family-card-list"></div>
+      </section>
+
+      <section class="section family-stage" aria-labelledby="family-title">
+        <div class="page-width family-stage-header">
+          <div>
+            <p id="family-question" class="eyebrow"></p>
+            <h2 id="family-title"></h2>
+            <p id="family-summary" class="section-lead"></p>
+          </div>
+          <div class="graph-toolbar" aria-label="家系図表示設定">
+            <button id="graph-zoom-out" class="icon-button" type="button" aria-label="縮小">−</button>
+            <button id="graph-fit" class="text-button" type="button">全体を表示</button>
+            <button id="graph-zoom-in" class="icon-button" type="button" aria-label="拡大">＋</button>
+            <label class="toggle-label"><input id="edge-label-toggle" type="checkbox"> 線の説明を表示</label>
+          </div>
+        </div>
+
+        <div class="graph-legend page-width" aria-label="線の意味">
+          <span><i class="legend-line verified"></i>一次資料で確認</span>
+          <span><i class="legend-line hypothesis"></i>要追加調査</span>
+          <span><i class="legend-line grouping"></i>同じ問題領域・分類</span>
+        </div>
+
+        <div id="graph-scroll" class="graph-scroll" tabindex="0" aria-label="framework 家系図。横にスクロールできます。">
+          <svg id="family-graph" class="family-graph" role="img" aria-labelledby="family-title family-summary"></svg>
+        </div>
+
+        <div class="page-width family-explanation-grid">
+          <article class="explanation-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">線の理由</p>
+                <h3 id="relationship-heading">この家系の関係</h3>
+              </div>
+              <button id="show-all-relations" class="text-button" type="button">すべて表示</button>
+            </div>
+            <div id="relationship-list" class="relationship-list"></div>
+          </article>
+          <article class="explanation-panel takeaway-panel">
+            <p class="eyebrow">まず覚えること</p>
+            <h3>この家系の要点</h3>
+            <ol id="family-takeaways" class="takeaway-list"></ol>
+          </article>
+        </div>
+      </section>
     </section>
 
-    <section id="graph" aria-labelledby="graph-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">Directed lineage</p><h2 id="graph-title">影響・構成・類似</h2></div>
-        <p>矢印は因果を自動的に意味しません。関係種別、確度、根拠種別を各辺に保持します。</p>
+    <section id="view-catalog" class="view" data-view="catalog" hidden>
+      <div class="page-header page-width">
+        <p class="eyebrow">Broad catalog</p>
+        <h1>全 framework・周辺技術</h1>
+        <p>Web だけでなく TUI、mobile/desktop、testing、AI/data、ORM、runtime、router topic の誤分類候補まで収録しています。</p>
       </div>
-      <div class="graph-controls">
-        <label><span>関係</span><select id="relation-type"><option value="">すべて</option></select></label>
-        <label><span>根拠</span><select id="relation-evidence"><option value="">すべて</option><option value="official">公式</option><option value="primary-code">一次コード</option><option value="inference">推定</option></select></label>
-        <label><span>確度</span><select id="relation-confidence"><option value="">すべて</option><option value="high">high</option><option value="medium">medium</option><option value="low">low</option></select></label>
-        <label><span>系統</span><select id="relation-cohort"><option value="">すべて</option></select></label>
+      <div class="catalog-layout page-width">
+        <aside class="filter-panel" aria-label="カタログ絞り込み">
+          <label>検索<input id="catalog-search" type="search" placeholder="例: Spring, Python, routing"></label>
+          <label>カテゴリ<select id="filter-category"><option value="">すべて</option></select></label>
+          <label>言語<select id="filter-language"><option value="">すべて</option></select></label>
+          <label>調査深度<select id="filter-maturity"><option value="">すべて</option><option value="deep">deep</option><option value="standard">standard</option><option value="seed">seed</option></select></label>
+          <label>状態<select id="filter-status"><option value="">すべて</option></select></label>
+          <button id="clear-filters" class="button button-secondary button-full" type="button">絞り込みを解除</button>
+          <div class="filter-note">
+            <strong>調査深度</strong>
+            <p><b>deep</b>: 歴史・設計・tradeoffを詳しく確認済み</p>
+            <p><b>standard</b>: 比較可能、歴史に追加調査あり</p>
+            <p><b>seed</b>: 取りこぼし防止用の候補</p>
+          </div>
+        </aside>
+        <div class="catalog-results">
+          <div class="result-toolbar">
+            <p id="catalog-count" aria-live="polite"></p>
+            <label>並び順<select id="catalog-sort"><option value="name">名前</option><option value="year">開始年</option><option value="depth">調査深度</option></select></label>
+          </div>
+          <div id="catalog-grid" class="catalog-grid"></div>
+          <div id="catalog-pagination" class="pagination"></div>
+        </div>
       </div>
-      <div class="graph-shell" tabindex="0" aria-label="フレームワーク関係グラフ。下に同内容の一覧があります">
-        <svg id="lineage-graph" viewBox="0 0 1000 600" role="img" aria-labelledby="graph-svg-title graph-svg-desc">
-          <title id="graph-svg-title">フレームワーク有向関係グラフ</title>
-          <desc id="graph-svg-desc">ノード間の線を関係種別と根拠で絞り込めます。</desc>
-          <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z"></path></marker></defs>
-        </svg>
+    </section>
+
+    <section id="view-compare" class="view" data-view="compare" hidden>
+      <div class="page-header page-width">
+        <p class="eyebrow">Design comparison</p>
+        <h1>設計を横に並べて比較</h1>
+        <p>人気や star 数ではなく、control flow、data model、DI、state、deployment、tradeoff を比較します。</p>
       </div>
-      <div id="relation-list" class="relation-list" aria-label="関係のテキスト一覧"></div>
-    </section>
-
-    <section id="timeline" aria-labelledby="timeline-title">
-      <div class="section-heading"><div><p class="eyebrow">Generations</p><h2 id="timeline-title">世代交代</h2></div><p>新しい世代が古い世代を単純に置換したのではなく、最適化する問題が移動しています。</p></div>
-      <div id="timeline-list" class="timeline"></div>
-    </section>
-
-    <section id="matrix" aria-labelledby="matrix-title">
-      <div class="section-heading"><div><p class="eyebrow">Evidence matrix</p><h2 id="matrix-title">重点比較</h2></div><p>空欄を推測で埋めず、収録したclaimだけを表示します。</p></div>
-      <label class="matrix-picker"><span>比較対象</span><select id="matrix-select"></select></label>
-      <div class="table-scroll"><table id="comparison-table"><caption>Spring Boot、FastAPI、Ginほか重点対象の設計claim</caption></table></div>
-    </section>
-
-    <section id="case-study" aria-labelledby="case-title">
-      <div class="section-heading"><div><p class="eyebrow">Architecture case</p><h2 id="case-title">Modular Monolith + DDD</h2></div><p id="case-scope"></p></div>
-      <div id="case-evidence" class="relation-list"></div>
-      <div id="patterns" class="pattern-grid"></div>
-      <h3>実装対応</h3>
-      <div class="table-scroll"><table id="mapping-table"><caption>同じarchitecture decisionを各frameworkで実装する場合の対応</caption></table></div>
-    </section>
-
-    <section id="unresolved" aria-labelledby="unresolved-title">
-      <div class="section-heading"><div><p class="eyebrow">Open evidence</p><h2 id="unresolved-title">残る未決</h2></div><p>未測定を結論に変えず、次に必要な証拠を記録します。</p></div>
-      <div class="graph-controls unresolved-controls">
-        <label><span>系統</span><select id="unresolved-cohort"><option value="">すべて</option></select></label>
-        <label><span>次元</span><select id="unresolved-dimension"><option value="">すべて</option></select></label>
-        <label><span>状態</span><select id="unresolved-status"><option value="">すべて</option></select></label>
+      <div class="page-width compare-builder">
+        <div class="compare-add">
+          <label for="compare-search">framework を追加（最大4件）</label>
+          <input id="compare-search" type="search" placeholder="Spring Boot, Laravel, Gin..." autocomplete="off">
+          <div id="compare-search-results" class="inline-search-results" hidden></div>
+        </div>
+        <div id="compare-selection" class="compare-selection"></div>
       </div>
-      <div id="unresolved-list" class="unresolved-grid"></div>
+      <div class="page-width compare-table-wrap">
+        <table id="compare-table" class="compare-table"></table>
+      </div>
     </section>
 
-    <section id="issues-section" aria-labelledby="issues-title">
-      <div class="section-heading"><div><p class="eyebrow">Implementation ledger</p><h2 id="issues-title">実装Issue</h2></div><p>調査メモではなく、成果物と受入条件を持つ実装単位です。</p></div>
-      <div id="issue-stats" class="issue-stats"></div>
-      <ol id="issue-list" class="issue-list"></ol>
+    <section id="view-history" class="view" data-view="history" hidden>
+      <div class="page-header page-width">
+        <p class="eyebrow">Timeline</p>
+        <h1>framework の歴史</h1>
+        <p>MVC、Actor model、WSGI、component UI、Virtual DOM、ASGI、islands、resumability など、framework を生んだ問題と転換点を時系列で追います。</p>
+      </div>
+      <div class="page-width history-toolbar">
+        <label>カテゴリ<select id="history-category"><option value="">すべて</option></select></label>
+        <label>検索<input id="history-search" type="search" placeholder="例: MVC, React, async"></label>
+      </div>
+      <div id="timeline" class="timeline page-width"></div>
+    </section>
+
+    <section id="view-issues" class="view" data-view="issues" hidden>
+      <div class="page-header page-width">
+        <p class="eyebrow">Research backlog</p>
+        <h1>追加調査を GitHub Issue にする</h1>
+        <p>未確認の影響関係や不足分は断定せず、完了条件付きの Markdown Issue として管理します。</p>
+      </div>
+      <div class="page-width issue-command">
+        <div>
+          <strong>公開 repo 作成後</strong>
+          <code>python scripts/create_issues.py --repo OWNER/REPO --dry-run</code>
+        </div>
+        <button id="copy-issue-command" class="button button-secondary" type="button">command をコピー</button>
+      </div>
+      <div class="page-width issue-toolbar">
+        <label>優先度<select id="issue-priority"><option value="">すべて</option><option value="P0">P0</option><option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option></select></label>
+        <label>検索<input id="issue-search" type="search" placeholder="例: TUI, ORM, security"></label>
+      </div>
+      <div id="issue-grid" class="issue-grid page-width"></div>
     </section>
   </main>
 
-  <dialog id="detail-dialog" aria-labelledby="detail-title">
-    <div class="dialog-head"><h2 id="detail-title"></h2><button id="dialog-close" type="button" aria-label="詳細を閉じる">閉じる</button></div>
-    <div id="detail-body"></div>
-  </dialog>
+  <aside id="detail-drawer" class="detail-drawer" aria-hidden="true" aria-labelledby="detail-title">
+    <div class="drawer-backdrop" data-close-drawer></div>
+    <div class="drawer-panel" role="dialog" aria-modal="true">
+      <div class="drawer-header">
+        <div id="detail-badges" class="badge-row"></div>
+        <button class="drawer-close" type="button" data-close-drawer aria-label="詳細を閉じる">×</button>
+      </div>
+      <div id="detail-content" class="drawer-content"></div>
+    </div>
+  </aside>
 
-  <footer><p>Framework Atlas · <a href="https://github.com/hjosugi/framework-atlas">source and evidence</a> · 性能は同一条件の測定がない限り unmeasured</p></footer>
-  <noscript><p class="noscript">検索とグラフ表示にはJavaScriptが必要です。<a href="https://github.com/hjosugi/framework-atlas#データの読み方">methodology</a>、<a href="atlas-data.json">公開data</a>、<a href="https://github.com/hjosugi/framework-atlas/releases/tag/v0.1.1">offline ZIP</a>は直接確認できます。</p></noscript>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="site-footer">
+    <div class="page-width footer-inner">
+      <div><strong>Framework Atlas</strong><p>evidence-aware, static, GitHub Pages ready.</p></div>
+      <div class="footer-links">
+        <a href="data/atlas.pretty.json">JSON</a>
+        <a href="data/frameworks.csv">CSV</a>
+        <a href="methodology.html">Methodology</a>
+      </div>
+    </div>
+  </footer>
+
+  <noscript>このサイトの検索・家系図表示には JavaScript が必要です。data/frameworks.csv と data/atlas.pretty.json は直接参照できます。</noscript>
+  <script src="data/atlas.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

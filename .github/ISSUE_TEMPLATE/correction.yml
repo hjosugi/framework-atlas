@@ -1,0 +1,23 @@
+name: Correction
+description: Report an inaccurate, stale, ambiguous, or misleading catalog entry.
+title: "fix: "
+labels: ["correction"]
+body:
+  - type: input
+    id: record
+    attributes:
+      label: Record ID or framework name
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Correct information and sources
+    validations:
+      required: true

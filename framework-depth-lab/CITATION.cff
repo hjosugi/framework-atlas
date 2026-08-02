@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this research artifact, please cite it as below."
+title: "Framework Depth Lab"
+type: dataset
+version: "2026.08.02"
+date-released: 2026-08-02
+license: MIT
+abstract: "A source-grounded comparison of Spring Boot, FastAPI, Gin, and a modular-monolith-with-DDD case study."

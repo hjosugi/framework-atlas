@@ -1,3 +1,4 @@
+02a04ed0e1ab7508becae462104dd9ed4d026863f43af6912d99f7972587f337  ./.claude/CLAUDE.md
 71589501b7a5dd84d122c08a34d94001034ec89843a90e2e790a65087c8a4fcc  ./.editorconfig
 a45232128bfa4a160be344e534e0476f3d4bbe7f4e05741f52530d30840a8464  ./.gitattributes
 e71bea835ed1158881306294d96968f125b0b0c5eff66cd94df559336bd0b210  ./.github/ISSUE_TEMPLATE/config.yml
@@ -11,8 +12,10 @@ c843ab3f931d0da2498ecf40c559f67c2caef5f9ca50d3233ef21124ec676b24  ./.github/work
 06aa58305b284cff973081dea18d79c83004fd20eef6bf9edd4f7417c8533bb8  ./.github/workflows/pages.yml
 e1ac4b9008be50403df87461ca924343e77f2b4922bdce92f5eda55a2b6b327f  ./.github/workflows/refresh-catalog.yml
 f33f22cd263abb2712534cf325a09ba78a54f9697b895f6e00a7608ab6c278f3  ./.github/workflows/validate.yml
-26e787e84d74259b8fc44fb3d21e4c8b2506457946d8afab491fd2f5c4be4060  ./.gitignore
+4099473ba17c7ce3e9fb6c4697cf6069f4d1738a52a9d04ab7c98df533a1ee37  ./.gitignore
+6a4a2e13159f2d89a9ab83351766e72ab94de06929d80767ac50913e4350e3a5  ./AGENTS.md
 6e33c7d67be478dfd07f074902da0ebd5a88ef04877a09a47e20d643d85537cf  ./CITATION.cff
+5a599e9f148ebbf0a8786c4508c3954daf95d0d74b88223d890dbf37aad23ec6  ./CLAUDE.md
 4949be428ef5fe18e4ea4e12a573bb0e65e6640fbb96532e90799ac08ba85eaf  ./CODE_OF_CONDUCT.md
 c45eae3228d4ce08060c321fdcfc9312b2646bb9c406bf18a0a531634ecf2887  ./CONTRIBUTING.md
 b8ff105adfc83af7e426b4acec7fc0d6f957a885af6e7bfe203c38bed21c4eb0  ./COVERAGE.md
@@ -20,7 +23,7 @@ b8ff105adfc83af7e426b4acec7fc0d6f957a885af6e7bfe203c38bed21c4eb0  ./COVERAGE.md
 4a86fc7a79fe5d2a9d17e34e3aeb9be72e959ed6be70fa47b52f2808853e5296  ./LICENSE
 bcea3de360d4e450cb2ca8c85a9c9828571fec5430a3c7b82771d510da290a55  ./LIMITATIONS.md
 8b1d2bbc01401219b9f5cce24ce39a8eb9755a0dcb9d558de976804d7efb2ee7  ./METHODOLOGY.md
-2b101e12e3dd14283ad6f331c490dd78e4a2c00d8bb531e61bd7b44336a42b1d  ./Makefile
+ed72549604d166624a1b30750068ea0f34ea2b089c624d7ed88e2ae8c86e8db6  ./Makefile
 7b5ce0760c916abf0fb5a3b032185078933f6e642a75584532671173ac6ffd31  ./README.md
 62b91f19438243d723cf0d844a732ea344b1e75dc95cf3636f4c7372a329574d  ./RELEASE_NOTES.md
 9782469a67fb4680407ae24af8aef0e0b0b9c8e848e2fdb2bf3515458d324d7f  ./ROADMAP.md
@@ -34,11 +37,12 @@ a7b2fb1b7d5bda679c3ae27a3c1c03f8a5c1fc2b0b73a785fb59bdac928a8b95  ./data/case-st
 15f5adc26b08be6418913505160f0c9200666449063acfa38c93f82c36bc8151  ./data/claims.v1.json
 2685d8c5a420577196467e06f4c55f54fd9cb111ad2fb0acba38c57e87f281b0  ./data/classification-examples.json
 fe9d0b090653424c10c7063d0b52a85ad628c70f1cbe71bf4938011c55e8fa80  ./data/concepts.json
+5abdf33d630590b3c09dc116e4fce724474220f9e8b01427a5b77f30c4e897cf  ./data/discovered/github-topics.json
 10fd285f22f7d1de55cff19288339b621c53f3a03247814566d0809b94bd313c  ./data/ecosystems.json
 2fd87c98e27df7b387a8fcddc72709295f6c208da5d7ac4e9fd2cb254a66e6c4  ./data/entities.v1.json
 aaf16426ee6318e9b26b71fe3e000d3c0655c99370beacd008c81480ab53a20f  ./data/families.json
-9905ddb6ef1c8cb772c31dcf254f1d67454dc10fbcd20c58f064ab1bc7775d85  ./data/frameworks.csv
-00c0354593435064c8fdfd86a1d871952f99686cefcc7bde9dbea73a866ceccb  ./data/frameworks.json
+6bbc968466f7d69bf1b44ef35797eaa039e45736fbf48d359179440c619c99a7  ./data/frameworks.csv
+6a5eb62ec18c8d86cf4889b571b995411148637b6889d474753cead1893a2e5f  ./data/frameworks.json
 31af3aea857a64144d930f696c2f3e6ed8567dc60fc1cbecd58efb12102b2baa  ./data/generations.v1.json
 0639e69b026e2133aaaea74a54ee53626ab6dc01562c648c943aeece7d8761bb  ./data/host-adapters.v1.json
 c99f8b4a4f2860be0cbf66740ed881af23d74b9f384c56b9686b7e2208521879  ./data/matrices.v1.json
@@ -47,7 +51,7 @@ eef30f1531bd5c53273f4ab05d5abf88003103ac341e4c487a12c474ac3e62ac  ./data/relatio
 bfa0bb6bbcb17a67b6a320302b229a366886ad35f2e32fcad46379351951e9c1  ./data/research-gaps.json
 61e72e0f7aa94c06d7f5321aa1caa8a3667d5932c1bc4ca40b61a482e858a693  ./data/router-matrix.v1.json
 be2cbe5071209eda1e45dedacadc04fe6c1305ec3198d6fc29e22326062c88cd  ./data/rules/classification.v1.json
-a4df7cebef8ee3e28d8cb7cb3fb0d06f604708b0dd9c35e37b1b61d4d910eabf  ./data/stats.json
+1f8d06f7905f7e144dcd8791b6165eec3af7387d474730a77ec00521c313cf3c  ./data/stats.json
 3318973e44b1b1594c6c3bb3318d9f97cc01d07cad7c04c3edc840a8e3b78651  ./data/taxonomy.json
 1a6c70966028188e12c12f8b984f640560a89de847980d9171dc21bc5f0e9620  ./data/taxonomy.v1.json
 67cdd2a0418e6030b354249cfd6bdf3255741d87a91e5afb96d76c4995141c88  ./data/timeline.json
@@ -59,12 +63,12 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./docs/.nojeky
 d19c44018b6e0f47e0b8a673bfc12879e74de3bab178581981764e009cf3e68c  ./docs/app.js
 702e6e1ecf8a258166924a6b8ced0231de2ae14a224a04b6ecd81f6b8be9d9c5  ./docs/assets/family-tree-preview.png
 54889c6e824672bd36fae4a9b786df09d2d0f14e77b5cca2d72e2682d44b8159  ./docs/assets/favicon.svg
-7c8fa0233188384a1dc8615571a9016fa54d59bf7f822ac75bda55f2d5960040  ./docs/atlas-data.json
-f2c50379bb7b1f85bdb26f4d1d13aef9fe803f0b3f1c774d3fb5c305e4c5e173  ./docs/data/atlas.js
-6e03954acca8d36f4a2136d80b460ba47bb9a24049c78a00c0e0116d304c6bfa  ./docs/data/atlas.json
-b9a51bd862fffdb84e9c8da7a6193ee44123ddf4c7f8e454343248b2dd1144fd  ./docs/data/atlas.pretty.json
+7cb1e451ab45a8583a3a055b7a44d9ad86c4d8810338c459bb50f361d63ce3f0  ./docs/atlas-data.json
+15d0ee56c527ea7ce53d2b12ff538335c7216f578f2a11290f8f90f48a488b0a  ./docs/data/atlas.js
+77e95a6f612a38cd3f8642019952cd771b861ca8aa9a254c29b6d2c986dd799e  ./docs/data/atlas.json
+c6abaf61356707de796c291b744360240b3acc4b7d88854e169664518fb92187  ./docs/data/atlas.pretty.json
 aaf16426ee6318e9b26b71fe3e000d3c0655c99370beacd008c81480ab53a20f  ./docs/data/families.json
-9905ddb6ef1c8cb772c31dcf254f1d67454dc10fbcd20c58f064ab1bc7775d85  ./docs/data/frameworks.csv
+6bbc968466f7d69bf1b44ef35797eaa039e45736fbf48d359179440c619c99a7  ./docs/data/frameworks.csv
 54889c6e824672bd36fae4a9b786df09d2d0f14e77b5cca2d72e2682d44b8159  ./docs/favicon.svg
 f829ebaa4c2d0ab4c683210f30b9f2be3762a456ae3eb4adaacaafb128053cd2  ./docs/index.html
 b94b87c551ecd865a385a4f789ba5bdb0900f67bbfd23505d2b535e5363c1a76  ./docs/methodology.html
@@ -305,6 +309,7 @@ f4045a6952049f34cc1077b57112e40c4ef79a3d413f1dff9b764161bdacd200  ./scripts/crea
 cc94e3750bc997b106c72093f84f6567695ab1ab9647b8fe940ad9a3fd10e76c  ./scripts/freshness_report.py
 4c370899b5109e630621da573aa249d3d682ab404fde47868dc97f3f5d382243  ./scripts/generate_issue_markdown.py
 6c03b4600fec71146df340831b9904bdafc81385f5b28e1142e874ce8fb66428  ./scripts/generate_profiles.py
+7c02402746d4211023646586543a82dee94e7f01de2962689f2556fa1f1c4a4c  ./scripts/graphify.sh
 ff5cdbb2eae1044dba72b0824c9aaf3e1ba3d8081b2bcdbefbbc6d85ab3bd44e  ./scripts/manifest.py
 513630570bfa833461aa312f3e3652456fdbb8701da2c9e2661242867b36bfe2  ./scripts/merge_discovered.py
 4a8dfa1639ac1e21581ddb6ea272d4c91f85fb2f2501e17c6b1dddb821bad9b9  ./scripts/normalize_snapshot.py

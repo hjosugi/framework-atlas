@@ -11,19 +11,20 @@ import zipfile
 from pathlib import Path
 
 from common import ROOT, canonical_json, sha256
+from manifest import EXCLUDED_NAMES as MANIFEST_EXCLUDED_NAMES, EXCLUDED_PARTS
 
 INCLUDE_ROOTS = (
     ".github", "data", "docs", "framework-depth-lab", "history", "issues", "profiles",
     "release", "research", "schema", "scripts", "tests",
 )
 INCLUDE_FILES = (
+    ".claude/CLAUDE.md", "AGENTS.md", "CLAUDE.md",
     ".editorconfig", ".gitattributes", ".gitignore", "CITATION.cff", "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md", "COVERAGE.md", "GOVERNANCE.md", "LICENSE",
     "LIMITATIONS.md", "MANIFEST.sha256", "Makefile", "METHODOLOGY.md",
     "README.md", "RELEASE_NOTES.md", "ROADMAP.md", "SCHEMA.md", "SECURITY.md",
     "SOURCES.md", "START_HERE.md", "VERSION", "pyproject.toml",
 )
-EXCLUDED_NAMES = {"__pycache__", ".DS_Store"}
 FIXED_TIME = (2020, 1, 1, 0, 0, 0)
 
 
@@ -38,9 +39,13 @@ def source_files() -> list[Path]:
         if not root.exists():
             continue
         for path in root.rglob("*"):
+            if any(part in EXCLUDED_PARTS for part in path.relative_to(ROOT).parts):
+                continue
+            if path.name in MANIFEST_EXCLUDED_NAMES:
+                continue
             if path.is_symlink():
                 raise RuntimeError(f"symlinks are forbidden in release archives: {path.relative_to(ROOT)}")
-            if not path.is_file() or any(part in EXCLUDED_NAMES for part in path.parts):
+            if not path.is_file():
                 continue
             if path.suffix in {".pyc", ".zip"}:
                 continue

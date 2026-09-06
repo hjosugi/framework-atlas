@@ -1,0 +1,13 @@
+{
+  "name": "graphql-orders-demo",
+  "private": true,
+  "type": "module",
+  "workspaces": ["server", "client"],
+  "scripts": {
+    "dev": "npm run dev --workspace server",
+    "schema": "npm run schema:emit --workspace server",
+    "codegen": "npm run schema && npm run codegen --workspace client",
+    "demo": "npm run demo --workspace client",
+    "typecheck": "npm run typecheck --workspace server && npm run typecheck --workspace client"
+  }
+}

@@ -1,0 +1,7 @@
+[
+  { "id": "p1", "name": "Mechanical Keyboard", "priceJpy": 18500 },
+  { "id": "p2", "name": "4K Monitor",          "priceJpy": 62000 },
+  { "id": "p3", "name": "USB-C Dock",          "priceJpy": 12800 },
+  { "id": "p4", "name": "Ergonomic Mouse",     "priceJpy": 9800 },
+  { "id": "p5", "name": "Webcam",              "priceJpy": 15400 }
+]

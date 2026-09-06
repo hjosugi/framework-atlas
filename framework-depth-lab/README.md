@@ -28,7 +28,7 @@ Spring Boot 4.1.0、FastAPI 0.141.1、Gin 1.12.0を、同じ物差しで分解�
 
 - `docs/`: 歴史、内部構造、data model、concurrency、security、testing、operations、migration、設計原則
 - `data/`: 機械可読な比較表、影響関係edge、一次情報registry
-- `examples/`: 同一API contractのSpring Boot / FastAPI / Gin実装
+- `examples/`: 同一API contractのSpring Boot / FastAPI / Gin実装と、独立したRAG / GraphQL教材
 - `contracts/`: 3実装共通のOpenAPI contract
 - `benchmarks/`: 公平な計測を行うための実験計画とk6 scenario
 - `issues/`: 追加調査・実装課題。1ファイルを1 GitHub Issueとして登録可能
@@ -48,7 +48,7 @@ python3 -m http.server 8000 -d site
 
 ## サンプルの起動
 
-各例は `/healthz`、`GET /items/{item_id}`、`POST /items` を実装します。依存versionは調査対象に固定しています。
+Spring Boot / FastAPI / Ginの各例は `/healthz`、`GET /items/{item_id}`、`POST /items` を実装します。依存versionは調査対象に固定しています。
 
 ```bash
 # Spring Boot: Java 17+ / Maven 3.6.3+
@@ -62,6 +62,8 @@ cd examples/gin && go run .
 ```
 
 ## 検証
+
+[RAG Local Demo](examples/rag-local-demo/README.md) と [GraphQL Orders Demo](examples/graphql-orders-demo/README.md) は、それぞれのREADMEから起動できます。既存のREST比較用contractとは独立した教材です。
 
 ```bash
 python3 scripts/validate.py

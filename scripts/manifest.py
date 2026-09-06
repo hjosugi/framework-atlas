@@ -9,7 +9,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEPTH_LAB = ROOT / "framework-depth-lab"
-EXCLUDED_PARTS = {".git", "__pycache__", ".cache", ".venv", "dist"}
+EXCLUDED_PARTS = {
+    ".git", "__pycache__", ".cache", ".venv", "dist",
+    "node_modules", "index", "graphify-out",
+}
 EXCLUDED_NAMES = {".DS_Store", ".env", "MANIFEST.json", "source.json"}
 
 

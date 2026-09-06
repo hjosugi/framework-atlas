@@ -18,6 +18,15 @@ GitHub Pages だけで公開できます。検索、分類、家系図、比較�
 4. `data/relations.json` — evidence-aware な影響・依存関係
 5. `research/issues/` — 追加調査を GitHub Issue にできる Markdown
 
+## ローカル実装教材
+
+| 教材 | 内容 |
+|---|---|
+| [RAG Local Demo](framework-depth-lab/examples/rag-local-demo/README.md) | 日本語文書の埋め込み、検索、メタデータフィルタ、プロンプト生成、検索デバッグ画面 |
+| [GraphQL Orders Demo](framework-depth-lab/examples/graphql-orders-demo/README.md) | Pothos / Yoga、型付きクライアント、注文データ、DataLoaderとN+1の比較 |
+
+各教材のREADMEに依存関係と起動手順があります。
+
 ## 二つのデータ層
 
 - `data/frameworks.json` などは、380件を検索・家系図・比較へ使う broad catalog です。

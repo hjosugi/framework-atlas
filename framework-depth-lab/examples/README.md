@@ -1,13 +1,13 @@
 # Local implementation examples
 
-## RAG and GraphQL
+## RAG and GraphQL: separate repositories
 
 | Example | What to try |
 |---|---|
-| [rag-local-demo](rag-local-demo/README.md) | Embed Japanese documents locally, compare retrieval scores, filter old policies, inspect the prompt and PCA map. |
-| [graphql-orders-demo](graphql-orders-demo/README.md) | Run a typed orders API and client, then compare DataLoader batching with the naive N+1 path. |
+| [rag-local](https://github.com/hjosugi/rag-local) | Embed Japanese documents locally, compare retrieval scores, filter old policies, inspect the prompt and PCA map. |
+| [graphql-order](https://github.com/hjosugi/graphql-order) | Run a typed orders API and client, then compare DataLoader batching with the naive N+1 path. |
 
-Each example includes its own setup instructions and sample data. They run independently of the catalog site and the comparable REST APIs below.
+These examples are maintained in their own repositories. Each includes setup instructions and sample data.
 
 ## Comparable REST APIs
 

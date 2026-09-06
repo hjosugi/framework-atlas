@@ -1,8 +1,0 @@
-[
-  { "id": "u1", "name": "Aoi Sato",        "email": "aoi@example.com",   "gender": "female", "pronouns": "she/her",   "avatarUrl": "https://example.com/avatars/u1.png", "createdAt": "2024-03-12T09:15:00Z" },
-  { "id": "u2", "name": "Ren Suzuki",      "email": "ren@example.com",   "gender": "male",   "pronouns": "he/him",    "avatarUrl": "https://example.com/avatars/u2.png", "createdAt": "2024-06-01T11:30:00Z" },
-  { "id": "u3", "name": "Mio Tanaka",      "email": "mio@example.com",   "gender": null,      "pronouns": "they/them", "avatarUrl": "https://example.com/avatars/u3.png", "createdAt": "2024-11-20T14:45:00Z" },
-  { "id": "u4", "name": "Kaito Kobayashi", "email": "kaito@example.com", "gender": "male",   "pronouns": "he/him",    "avatarUrl": "https://example.com/avatars/u4.png", "createdAt": "2025-01-08T08:00:00Z" },
-  { "id": "u5", "name": "Yui Nakamura",    "email": "yui@example.com",   "gender": "female", "pronouns": "she/her",   "avatarUrl": "https://example.com/avatars/u5.png", "createdAt": "2025-04-17T16:20:00Z" },
-  { "id": "u6", "name": "Sora Watanabe",   "email": "sora@example.com",  "gender": null,      "pronouns": null,         "avatarUrl": "https://example.com/avatars/u6.png", "createdAt": "2025-09-02T10:05:00Z" }
-]

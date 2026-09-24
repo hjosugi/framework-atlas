@@ -5,7 +5,7 @@ Framework の名前を並べるだけではなく、**何を解決するため�
 GitHub Pages だけで公開できます。検索、分類、家系図、比較、timeline、調査 Issue はすべて静的 HTML / CSS / JavaScript で動き、外部 SaaS、database、CDN package は必要ありません。
 
 - 公開サイト: https://hjosugi.github.io/framework-atlas/
-- 最新 release: https://github.com/hjosugi/framework-atlas/releases/tag/v0.2.0
+- 最新 release: https://github.com/hjosugi/framework-atlas/releases/tag/v0.2.1
 - versioned schema: [`schema/`](schema/) / [`data/*.v1.json`](data/)
 
 ![Rails / Laravel 家系図のプレビュー](docs/assets/family-tree-preview.png)

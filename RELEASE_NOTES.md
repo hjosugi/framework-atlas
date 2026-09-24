@@ -1,14 +1,38 @@
-# Framework Atlas 0.2.0
+# Framework Atlas 0.2.1
+
+Release date: 2026-09-24
+
+## この release の位置付け
+
+0.2.0 の保守 release です。broad catalog、versioned v1 evidence dataset、家系図、Pages の表示内容は 0.2.0 から変わりません。
+
+## 変更点
+
+- RAG Local Demo（[hjosugi/rag-local](https://github.com/hjosugi/rag-local)）と GraphQL Orders Demo（[hjosugi/graphql-order](https://github.com/hjosugi/graphql-order)）を独立 repository として README と `framework-depth-lab/examples/README.md` から案内
+- graphify の導入・更新 entry point（`make graphify-setup` / `make graphify-update`、`scripts/graphify.sh`）を追加。生成物は `.gitignore`、checksum manifest、release ZIP の対象外
+- `scripts/build_zip.py` が `scripts/manifest.py` と同じ除外規則を使うよう統一し、`AGENTS.md`・`CLAUDE.md`・`.claude/CLAUDE.md` を ZIP に同梱
+- `freshness.yml` の `actions/upload-artifact` を v4 から v7 へ更新（#48）
+
+## 公開手順
+
+```bash
+make check
+make zip VERSION=v0.2.1
+```
+
+release は main の exact SHA に tag を作り、ZIP、`SHA256SUMS`、`release-manifest.json` を添付した後、匿名 HTTP で再検証します。
+
+## 0.2.0
 
 Release date: 2026-08-02
 
-## この release の位置付け
+### この release の位置付け
 
 v0.1.1 の厳密な evidence dataset・再現可能 ZIP・公開検証を保持しながら、祖先・転換点・派生を上から下へ追える broad catalog と「家系図」を一つの release に統合した版です。
 
 世界中の全 framework を永久に完全収録したと断定するものではありません。現在の curated catalog と、GitHub Topics を継続的に再収集・分類・レビューする仕組みを一緒に公開します。
 
-## 収録内容
+### 収録内容
 
 - 380 framework / library / runtime / adjacent project records
 - 15 family-tree views
@@ -22,7 +46,7 @@ v0.1.1 の厳密な evidence dataset・再現可能 ZIP・公開検証を保持�
 - versioned v1 evidence dataset と 47件の登録済み実装 Issue digest
 - Spring Boot / FastAPI / Gin / modular-monolith の `framework-depth-lab`
 
-## 家系図としての改善
+### 家系図としての改善
 
 巨大な一枚 graph は使わず、次の15系統へ分割しました。
 
@@ -48,7 +72,7 @@ v0.1.1 の厳密な evidence dataset・再現可能 ZIP・公開検証を保持�
 - 破線: 設計上の応答・影響候補で追加 evidence が必要
 - 点線: 直接の血縁ではなく、同じ問題領域・共通基盤・分類
 
-## 公開サイト
+### 公開サイト
 
 `docs/` は外部 service や package install を必要としない static site です。
 
@@ -63,7 +87,7 @@ v0.1.1 の厳密な evidence dataset・再現可能 ZIP・公開検証を保持�
 
 GitHub Pages 用 workflow は `.github/workflows/pages.yml` に含まれます。
 
-## 統合した release gate
+### 統合した release gate
 
 - broad catalog と versioned v1 dataset の個別 validation
 - curated profile を生成処理が削除しない regression test
@@ -72,7 +96,7 @@ GitHub Pages 用 workflow は `.github/workflows/pages.yml` に含まれます�
 - release ZIP の byte-for-byte reproducibility と安全な path 検査
 - main、tag、Pages、release asset の exact SHA / digest read-back
 
-## 公開手順
+### 公開手順
 
 ```bash
 make check

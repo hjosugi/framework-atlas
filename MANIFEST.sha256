@@ -8,7 +8,7 @@ f4b6a88649c78999f09402912234605348d2ee13e04ed6096743ae2509ce900b  ./.github/ISSU
 e49b0bad89c4caf2a07bb3fa625ff431977115a81a39b455061e96534be291a0  ./.github/dependabot.yml
 9a361a2418ef620eb8116802b94208027f151b50f8cbf41f3232a1534e9ceccc  ./.github/pull_request_template.md
 95e0ccb0c6ab92a9851575cb7c8fcd0687044731968cabfae7af923126629ff0  ./.github/workflows/ci.yml
-c843ab3f931d0da2498ecf40c559f67c2caef5f9ca50d3233ef21124ec676b24  ./.github/workflows/freshness.yml
+c912e936f46f93bb0edcd645d4ab2080349adde2d1590dc0030f42a60eed9efc  ./.github/workflows/freshness.yml
 06aa58305b284cff973081dea18d79c83004fd20eef6bf9edd4f7417c8533bb8  ./.github/workflows/pages.yml
 e1ac4b9008be50403df87461ca924343e77f2b4922bdce92f5eda55a2b6b327f  ./.github/workflows/refresh-catalog.yml
 f33f22cd263abb2712534cf325a09ba78a54f9697b895f6e00a7608ab6c278f3  ./.github/workflows/validate.yml
